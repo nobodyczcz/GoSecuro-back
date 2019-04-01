@@ -4,101 +4,9 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="Model1.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-  <EntityContainer Name="Model1StoreContainer">
-    <EntitySet Name="UserProfileSet" EntityType="Model1.Store.UserProfileSet" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="UserEmergencySet" EntityType="Model1.Store.UserEmergencySet" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="EmergencyContactSet" EntityType="Model1.Store.EmergencyContactSet" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="SuburbSet" EntityType="Model1.Store.SuburbSet" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="CrimeRateSet" EntityType="Model1.Store.CrimeRateSet" store:Type="Tables" Schema="dbo" />
-    <AssociationSet Name="UserProfileUserEmergency" Association="Model1.Store.UserProfileUserEmergency">
-      <End Role="UserProfile" EntitySet="UserProfileSet" />
-      <End Role="UserEmergency" EntitySet="UserEmergencySet" />
-    </AssociationSet>
-    <AssociationSet Name="EmergencyContactUserEmergency" Association="Model1.Store.EmergencyContactUserEmergency">
-      <End Role="EmergencyContact" EntitySet="EmergencyContactSet" />
-      <End Role="UserEmergency" EntitySet="UserEmergencySet" />
-    </AssociationSet>
-    <AssociationSet Name="SuburbCrimeRate" Association="Model1.Store.SuburbCrimeRate">
-      <End Role="Suburb" EntitySet="SuburbSet" />
-      <End Role="CrimeRate" EntitySet="CrimeRateSet" />
-    </AssociationSet>
-  </EntityContainer>
-  <EntityType Name="UserProfileSet">
-    <Key>
-      <PropertyRef Name="UserID" />
-    </Key>
-    <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="address" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="gender" Type="nvarchar(max)" Nullable="false" />
-  </EntityType>
-  <EntityType Name="UserEmergencySet">
-    <Key>
-      <PropertyRef Name="UserProfileUserID" />
-      <PropertyRef Name="EmergencyContactContactPhone" />
-    </Key>
-    <Property Name="UserProfileUserID" Type="int" Nullable="false" />
-    <Property Name="EmergencyContactContactPhone" Type="int" Nullable="false" />
-  </EntityType>
-  <EntityType Name="EmergencyContactSet">
-    <Key>
-      <PropertyRef Name="ContactPhone" />
-    </Key>
-    <Property Name="ContactPhone" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="ContactName" Type="nvarchar(max)" Nullable="false" />
-  </EntityType>
-  <EntityType Name="SuburbSet">
-    <Key>
-      <PropertyRef Name="SuburbName" />
-    </Key>
-    <Property Name="SuburbName" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Postcode" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Boundary" Type="nvarchar(max)" Nullable="false" />
-  </EntityType>
-  <EntityType Name="CrimeRateSet">
-    <Key>
-      <PropertyRef Name="SuburbName" />
-    </Key>
-    <Property Name="SuburbName" Type="int" Nullable="false" />
-    <Property Name="Rate" Type="nvarchar(max)" Nullable="false" />
-  </EntityType>
-  <Association Name="UserProfileUserEmergency">
-    <End Role="UserProfile" Type="Model1.Store.UserProfileSet" Multiplicity="1" />
-    <End Role="UserEmergency" Type="Model1.Store.UserEmergencySet" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="UserProfile">
-        <PropertyRef Name="UserID" />
-      </Principal>
-      <Dependent Role="UserEmergency">
-        <PropertyRef Name="UserProfileUserID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="EmergencyContactUserEmergency">
-    <End Role="EmergencyContact" Type="Model1.Store.EmergencyContactSet" Multiplicity="1" />
-    <End Role="UserEmergency" Type="Model1.Store.UserEmergencySet" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="EmergencyContact">
-        <PropertyRef Name="ContactPhone" />
-      </Principal>
-      <Dependent Role="UserEmergency">
-        <PropertyRef Name="EmergencyContactContactPhone" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="SuburbCrimeRate">
-    <End Role="Suburb" Type="Model1.Store.SuburbSet" Multiplicity="1" />
-    <End Role="CrimeRate" Type="Model1.Store.CrimeRateSet" Multiplicity="0..1" />
-    <ReferentialConstraint>
-      <Principal Role="Suburb">
-        <PropertyRef Name="SuburbName" />
-      </Principal>
-      <Dependent Role="CrimeRate">
-        <PropertyRef Name="SuburbName" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-</Schema></edmx:StorageModels>
+    <Schema Namespace="Model1.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="Model1StoreContainer" />
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Model1" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2009/11/edm" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
@@ -107,45 +15,46 @@
           <EntitySet Name="UserEmergencySet" EntityType="Model1.UserEmergency" />
           <EntitySet Name="EmergencyContactSet" EntityType="Model1.EmergencyContact" />
           <EntitySet Name="SuburbSet" EntityType="Model1.Suburb" />
-          <EntitySet Name="CrimeRateSet" EntityType="Model1.CrimeRate" />
-          <AssociationSet Name="UserProfileUserEmergency" Association="Model1.UserProfileUserEmergency">
-            <End Role="UserProfile" EntitySet="UserProfileSet" />
-            <End Role="UserEmergency" EntitySet="UserEmergencySet" />
+          <EntitySet Name="StatisticSet" EntityType="Model1.Statistic" />
+          <AssociationSet Name="SuburbStatistic" Association="Model1.SuburbStatistic">
+            <End Role="Suburb" EntitySet="SuburbSet" />
+            <End Role="Statistic" EntitySet="StatisticSet" />
           </AssociationSet>
           <AssociationSet Name="EmergencyContactUserEmergency" Association="Model1.EmergencyContactUserEmergency">
             <End Role="EmergencyContact" EntitySet="EmergencyContactSet" />
             <End Role="UserEmergency" EntitySet="UserEmergencySet" />
           </AssociationSet>
-          <AssociationSet Name="SuburbCrimeRate" Association="Model1.SuburbCrimeRate">
-            <End Role="Suburb" EntitySet="SuburbSet" />
-            <End Role="CrimeRate" EntitySet="CrimeRateSet" />
+          <AssociationSet Name="UserProfileUserEmergency" Association="Model1.UserProfileUserEmergency">
+            <End Role="UserProfile" EntitySet="UserProfileSet" />
+            <End Role="UserEmergency" EntitySet="UserEmergencySet" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="UserProfile">
           <Key>
-            <PropertyRef Name="UserID" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="address" Type="String" Nullable="false" />
           <Property Name="gender" Type="String" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" />
           <NavigationProperty Name="UserEmergency" Relationship="Model1.UserProfileUserEmergency" FromRole="UserProfile" ToRole="UserEmergency" />
         </EntityType>
         <EntityType Name="UserEmergency">
           <Key>
-            <PropertyRef Name="UserProfileUserID" />
-            <PropertyRef Name="EmergencyContactContactPhone" />
+            <PropertyRef Name="EmergencyContactPhone" />
+            <PropertyRef Name="UserProfileId" />
           </Key>
-          <NavigationProperty Name="UserProfile" Relationship="Model1.UserProfileUserEmergency" FromRole="UserEmergency" ToRole="UserProfile" />
-          <Property Name="UserProfileUserID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="EmergencyContact" Relationship="Model1.EmergencyContactUserEmergency" FromRole="UserEmergency" ToRole="EmergencyContact" />
-          <Property Name="EmergencyContactContactPhone" Type="Int32" Nullable="false" />
+          <Property Name="EmergencyContactPhone" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="UserProfile" Relationship="Model1.UserProfileUserEmergency" FromRole="UserEmergency" ToRole="UserProfile" />
+          <Property Name="UserProfileId" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="EmergencyContact">
           <Key>
-            <PropertyRef Name="ContactPhone" />
+            <PropertyRef Name="Phone" />
           </Key>
-          <Property Name="ContactPhone" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ContactName" Type="String" Nullable="false" />
+          <Property Name="Phone" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
           <NavigationProperty Name="UserEmergency" Relationship="Model1.EmergencyContactUserEmergency" FromRole="EmergencyContact" ToRole="UserEmergency" />
         </EntityType>
         <EntityType Name="Suburb">
@@ -155,25 +64,25 @@
           <Property Name="SuburbName" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Postcode" Type="String" Nullable="false" />
           <Property Name="Boundary" Type="String" Nullable="false" />
-          <NavigationProperty Name="CrimeRate" Relationship="Model1.SuburbCrimeRate" FromRole="Suburb" ToRole="CrimeRate" />
+          <NavigationProperty Name="Statistic" Relationship="Model1.SuburbStatistic" FromRole="Suburb" ToRole="Statistic" />
         </EntityType>
-        <EntityType Name="CrimeRate">
+        <EntityType Name="Statistic">
           <Key>
-            <PropertyRef Name="SuburbName" />
+            <PropertyRef Name="SuburbSuburbName" />
           </Key>
-          <Property Name="SuburbName" Type="Int32" Nullable="false" />
+          <Property Name="SuburbSuburbName" Type="Int32" Nullable="false" />
           <Property Name="Rate" Type="String" Nullable="false" />
-          <NavigationProperty Name="Suburb" Relationship="Model1.SuburbCrimeRate" FromRole="CrimeRate" ToRole="Suburb" />
+          <NavigationProperty Name="Suburb" Relationship="Model1.SuburbStatistic" FromRole="Statistic" ToRole="Suburb" />
         </EntityType>
-        <Association Name="UserProfileUserEmergency">
-          <End Type="Model1.UserProfile" Role="UserProfile" Multiplicity="1" />
-          <End Type="Model1.UserEmergency" Role="UserEmergency" Multiplicity="*" />
+        <Association Name="SuburbStatistic">
+          <End Type="Model1.Suburb" Role="Suburb" Multiplicity="1" />
+          <End Type="Model1.Statistic" Role="Statistic" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="UserProfile">
-              <PropertyRef Name="UserID" />
+            <Principal Role="Suburb">
+              <PropertyRef Name="SuburbName" />
             </Principal>
-            <Dependent Role="UserEmergency">
-              <PropertyRef Name="UserProfileUserID" />
+            <Dependent Role="Statistic">
+              <PropertyRef Name="SuburbSuburbName" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -182,22 +91,22 @@
           <End Type="Model1.UserEmergency" Role="UserEmergency" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="EmergencyContact">
-              <PropertyRef Name="ContactPhone" />
+              <PropertyRef Name="Phone" />
             </Principal>
             <Dependent Role="UserEmergency">
-              <PropertyRef Name="EmergencyContactContactPhone" />
+              <PropertyRef Name="EmergencyContactPhone" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="SuburbCrimeRate">
-          <End Type="Model1.Suburb" Role="Suburb" Multiplicity="1" />
-          <End Type="Model1.CrimeRate" Role="CrimeRate" Multiplicity="0..1" />
+        <Association Name="UserProfileUserEmergency">
+          <End Type="Model1.UserProfile" Role="UserProfile" Multiplicity="1" />
+          <End Type="Model1.UserEmergency" Role="UserEmergency" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Suburb">
-              <PropertyRef Name="SuburbName" />
+            <Principal Role="UserProfile">
+              <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="CrimeRate">
-              <PropertyRef Name="SuburbName" />
+            <Dependent Role="UserEmergency">
+              <PropertyRef Name="UserProfileId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -205,52 +114,13 @@
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
-    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-  <EntityContainerMapping StorageEntityContainer="Model1StoreContainer" CdmEntityContainer="Model1Container">
-    <EntitySetMapping Name="UserProfileSet">
-      <EntityTypeMapping TypeName="IsTypeOf(Model1.UserProfile)">
-        <MappingFragment StoreEntitySet="UserProfileSet">
-          <ScalarProperty Name="UserID" ColumnName="UserID" />
-          <ScalarProperty Name="address" ColumnName="address" />
-          <ScalarProperty Name="gender" ColumnName="gender" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="UserEmergencySet">
-      <EntityTypeMapping TypeName="IsTypeOf(Model1.UserEmergency)">
-        <MappingFragment StoreEntitySet="UserEmergencySet">
-          <ScalarProperty Name="UserProfileUserID" ColumnName="UserProfileUserID" />
-          <ScalarProperty Name="EmergencyContactContactPhone" ColumnName="EmergencyContactContactPhone" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="EmergencyContactSet">
-      <EntityTypeMapping TypeName="IsTypeOf(Model1.EmergencyContact)">
-        <MappingFragment StoreEntitySet="EmergencyContactSet">
-          <ScalarProperty Name="ContactPhone" ColumnName="ContactPhone" />
-          <ScalarProperty Name="ContactName" ColumnName="ContactName" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="SuburbSet">
-      <EntityTypeMapping TypeName="IsTypeOf(Model1.Suburb)">
-        <MappingFragment StoreEntitySet="SuburbSet">
-          <ScalarProperty Name="SuburbName" ColumnName="SuburbName" />
-          <ScalarProperty Name="Postcode" ColumnName="Postcode" />
-          <ScalarProperty Name="Boundary" ColumnName="Boundary" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="CrimeRateSet">
-      <EntityTypeMapping TypeName="IsTypeOf(Model1.CrimeRate)">
-        <MappingFragment StoreEntitySet="CrimeRateSet">
-          <ScalarProperty Name="SuburbName" ColumnName="SuburbName" />
-          <ScalarProperty Name="Rate" ColumnName="Rate" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-  </EntityContainerMapping>
-</Mapping></edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <Alias Key="Model" Value="Model1" />
+        <Alias Key="Target" Value="Model1.Store" />
+        <EntityContainerMapping CdmEntityContainer="Model1Container" StorageEntityContainer="Model1StoreContainer">
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
   </edmx:Runtime>
   <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
   <edmx:Designer>
@@ -264,6 +134,7 @@
         <edmx:DesignerProperty Name="ValidateOnBuild" Value="true" />
         <edmx:DesignerProperty Name="EnablePluralization" Value="False" />
         <edmx:DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <edmx:DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
         <edmx:DesignerProperty Name="UseLegacyProvider" Value="False" />
       </edmx:DesignerInfoPropertySet>
     </edmx:Options>
