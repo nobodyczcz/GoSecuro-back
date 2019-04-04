@@ -19,8 +19,8 @@ def get_each_record(data1):
     f2 = open('Suburb.txt','w')
 
     for i in data1:
-        print("INSERT INTO [dbo].['{}'](SuburbSuburbName, Rate, OffenceCount, Totpopulation) VALUES ('{}','{}','{}','{}');".format('CrimeRate',i[0],i[4],i[2],i[3]),file = f1)
-        print("INSERT INTO [dbo].['{}'](SuburbName, Postcode, Boundary) VALUES ('{}','{}','{}');".format('Suburb',i[0],i[1],i[5]),file = f2)
+        print("INSERT INTO [dbo].[{}](SuburbSuburbName, Rate, OffenceCount, Totpopulation) VALUES ('{}','{}','{}','{}');".format('CrimeRate',i[0],i[4],i[2],i[3]),file = f1)
+        print("INSERT INTO [dbo].[{}](SuburbName, Postcode, Boundary) VALUES ('{}','{}','{}');".format('Suburb',i[0],i[1],i[5]),file = f2)
     f1.close()
     f2.close()
 
