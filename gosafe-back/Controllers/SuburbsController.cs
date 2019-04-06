@@ -18,22 +18,29 @@ namespace gosafe_back.Controllers
         public ActionResult Index()
         {
             var suburb = db.Suburb.Include(s => s.CrimeRate);
-            return View(suburb.ToList());
+            return View();
         }
 
-        // GET: Suburbs/Details/5
-        public ActionResult Details(string id)
+        // GET: Suburbs/Details
+        [HttpPost]
+        public ActionResult Details(SuburbList suburbList)
         {
-            if (id == null)
+            if (suburbList != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                System.Diagnostics.Debug.WriteLine(suburbList);
+                String respond = "";
+                for (int i=0;i<suburbList.suburbs.Count();i++)
+                {
+                    respond += suburbList.suburbs[i];
+                }
+                return Json(respond);
             }
-            Suburb suburb = db.Suburb.Find(id);
-            if (suburb == null)
+            else
             {
-                return HttpNotFound();
+                return Json("failed");
             }
-            return View(suburb);
+            //Suburb suburb = db.Suburb.Find(id);
+
         }
 
         // GET: Suburbs/Create
@@ -47,6 +54,7 @@ namespace gosafe_back.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "SuburbName,Postcode,Boundary1,Boundary2")] Suburb suburb)
         {
             if (ModelState.IsValid)

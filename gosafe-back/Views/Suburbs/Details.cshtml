@@ -1,0 +1,51 @@
+﻿@model gosafe_back.Models.Suburb
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Suburb</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Postcode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Postcode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Boundary1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Boundary1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Boundary2)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Boundary2)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CrimeRate.Rate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CrimeRate.Rate)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.SuburbName }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

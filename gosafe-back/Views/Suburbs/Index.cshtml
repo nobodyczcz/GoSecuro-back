@@ -1,0 +1,21 @@
+﻿@model IEnumerable<gosafe_back.Models.Suburb>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+<script>
+    var data = {'suburbs': ['CAULFIELDs', 'CAULFIELD EAST']};
+    var jsonData = JSON.stringify(data);
+    console.log('send:'+jsonData);
+    $.post("Suburbs/Details",
+        jsonData,
+        function (data, status) {
+            console.log(data);
+            console.log(status);
+        });
+
+</script>
