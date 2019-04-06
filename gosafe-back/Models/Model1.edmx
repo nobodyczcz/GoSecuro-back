@@ -53,8 +53,9 @@
       <PropertyRef Name="SuburbName" />
     </Key>
     <Property Name="SuburbName" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Postcode" Type="nchar" Nullable="false" />
-    <Property Name="Boundary" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Postcode" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Boundary1" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Boundary2" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="CrimeRate">
     <Key>
@@ -157,9 +158,10 @@
             <PropertyRef Name="SuburbName" />
           </Key>
           <Property Name="SuburbName" Type="String" Nullable="false" annotation:StoreGeneratedPattern="None" />
-          <Property Name="Postcode" Type="String" Nullable="false" FixedLength="true" />
-          <Property Name="Boundary" Type="String" Nullable="false" />
+          <Property Name="Postcode" Type="String" Nullable="false" MaxLength="Max" />
           <NavigationProperty Name="CrimeRate" Relationship="Model1.SuburbCrimeRate" FromRole="Suburb" ToRole="CrimeRate" />
+          <Property Name="Boundary1" Type="String" Nullable="false" MaxLength="Max" />
+          <Property Name="Boundary2" Type="String" Nullable="false" MaxLength="Max" />
         </EntityType>
         <EntityType Name="CrimeRate">
           <Key>
@@ -244,7 +246,8 @@
         <MappingFragment StoreEntitySet="Suburb">
           <ScalarProperty Name="SuburbName" ColumnName="SuburbName" />
           <ScalarProperty Name="Postcode" ColumnName="Postcode" />
-          <ScalarProperty Name="Boundary" ColumnName="Boundary" />
+          <ScalarProperty Name="Boundary1" ColumnName="Boundary1" />
+          <ScalarProperty Name="Boundary2" ColumnName="Boundary2" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

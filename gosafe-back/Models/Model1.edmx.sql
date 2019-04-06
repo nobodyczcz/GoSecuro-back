@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/04/2019 15:47:15
+-- Date Created: 04/06/2019 19:08:00
 -- Generated from EDMX file: C:\Users\Jennifer\Desktop\IEproject\gosafe-back\gosafe-back\Models\Model1.edmx
 -- --------------------------------------------------
 
@@ -24,7 +24,7 @@ IF OBJECT_ID(N'[dbo].[FK_UserProfileUserEmergency]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[UserEmergency] DROP CONSTRAINT [FK_UserProfileUserEmergency];
 GO
 IF OBJECT_ID(N'[dbo].[FK_SuburbCrimeRate]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Suburb] DROP CONSTRAINT [FK_SuburbCrimeRate];
+    ALTER TABLE [dbo].[CrimeRate] DROP CONSTRAINT [FK_SuburbCrimeRate];
 GO
 
 -- --------------------------------------------------
@@ -77,8 +77,9 @@ GO
 -- Creating table 'Suburb'
 CREATE TABLE [dbo].[Suburb] (
     [SuburbName] nvarchar(max)  NOT NULL,
-    [Postcode] nchar(4000)  NOT NULL,
-    [Boundary] nvarchar(max)  NOT NULL
+    [Postcode] nvarchar(max)  NOT NULL,
+    [Boundary1] nvarchar(max)  NOT NULL,
+    [Boundary2] nvarchar(max)  NOT NULL
 );
 GO
 
