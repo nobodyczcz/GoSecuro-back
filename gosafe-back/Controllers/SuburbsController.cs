@@ -10,6 +10,11 @@ using gosafe_back.Models;
 
 namespace gosafe_back.Controllers
 {
+    public class SuburbList
+    {
+        public List<String> suburbs { get; set; }
+    }
+
     public class SuburbsController : Controller
     {
         private Model1Container db = new Model1Container();
@@ -23,15 +28,17 @@ namespace gosafe_back.Controllers
 
         // GET: Suburbs/Details
         [HttpPost]
-        public ActionResult Details(SuburbList suburbList)
+        public ActionResult Details(List<String> suburbs)
         {
-            if (suburbList != null)
+            System.Diagnostics.Debug.WriteLine("debug:");
+            System.Diagnostics.Debug.WriteLine(suburbs);
+            if (suburbs != null)
             {
-                System.Diagnostics.Debug.WriteLine(suburbList);
-                String respond = "";
-                for (int i=0;i<suburbList.suburbs.Count();i++)
+                
+                String respond = " ";
+                for (int i=0;i< suburbs.Count();i++)
                 {
-                    respond += suburbList.suburbs[i];
+                    respond += suburbs[i];
                 }
                 return Json(respond);
             }
