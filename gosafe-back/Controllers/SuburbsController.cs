@@ -46,11 +46,18 @@ namespace gosafe_back.Controllers
                 List<SuburbCrime> SuburbCrimeList = new List<SuburbCrime>();
                 foreach (var i in suburbs)
                 {
-                    var newSub = new SuburbCrime();
-                    newSub.suburbname = i;
-                    newSub.boundary = db.Suburb.Find(i).Boundary1 + db.Suburb.Find(i).Boundary2;
-                    newSub.crimeRate = db.CrimeRate.Find(i).Rate;
-                    SuburbCrimeList.Add(newSub);
+                    Suburb theSuburb = db.Suburb.Find(i);
+                    CrimeRate theRate = db.CrimeRate.Find(i);
+                    if (theSuburb != null)
+                    {
+                        var newSub = new SuburbCrime();
+                        newSub.suburbname = i;
+                        newSub.boundary = theSuburb.Boundary1 + theSuburb.Boundary2;
+                        newSub.crimeRate = theRate.Rate;
+                        SuburbCrimeList.Add(newSub);
+                    }
+                        
+                    
                 }
 
                 String json = JsonConvert.SerializeObject(SuburbCrimeList);
