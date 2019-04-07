@@ -7,12 +7,20 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using gosafe_back.Models;
+using Newtonsoft.Json;
 
 namespace gosafe_back.Controllers
 {
     public class SuburbList
     {
         public List<String> suburbs { get; set; }
+    }
+
+    public class SuburbCrime
+    {
+        public String suburbname { get; set; }
+        public String crimeRate { get; set; }
+        public String boundary { get; set; }
     }
 
     public class SuburbsController : Controller
@@ -34,13 +42,21 @@ namespace gosafe_back.Controllers
             System.Diagnostics.Debug.WriteLine(suburbs);
             if (suburbs != null)
             {
-                
-                String respond = " ";
-                for (int i=0;i< suburbs.Count();i++)
+                //find suburbs
+                List<SuburbCrime> SuburbCrimeList = new List<SuburbCrime>();
+                foreach (var i in suburbs)
                 {
-                    respond += suburbs[i];
+                    var newSub = new SuburbCrime();
+                    newSub.suburbname = i;
+                    newSub.boundary = db.Suburb.Find(i).Boundary1 + db.Suburb.Find(i).Boundary2;
+                    newSub.crimeRate = db.CrimeRate.Find(i).Rate;
+                    SuburbCrimeList.Add(newSub);
                 }
-                return Json(respond);
+
+                String json = JsonConvert.SerializeObject(SuburbCrimeList);
+
+                //output Json type suburb details to front-end
+                return Json(json);
             }
             else
             {
