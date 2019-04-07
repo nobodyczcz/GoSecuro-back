@@ -2,13 +2,13 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/06/2019 19:08:00
+-- Date Created: 04/07/2019 21:46:10
 -- Generated from EDMX file: C:\Users\Jennifer\Desktop\IEproject\gosafe-back\gosafe-back\Models\Model1.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
 GO
-USE [Database1];
+USE [gosafe-back20190407071339_db];
 GO
 IF SCHEMA_ID(N'dbo') IS NULL EXECUTE(N'CREATE SCHEMA [dbo]');
 GO
