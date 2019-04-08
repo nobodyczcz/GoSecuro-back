@@ -8,6 +8,8 @@ using System.Web;
 using System.Web.Mvc;
 using gosafe_back.Models;
 using Newtonsoft.Json;
+using Twilio;
+using Twilio.Rest.Api.V2010.Account;
 
 namespace gosafe_back.Controllers
 {
@@ -64,6 +66,36 @@ namespace gosafe_back.Controllers
 
                 //output Json type suburb details to front-end
                 return Json(json);
+            }
+            else
+            {
+                return Json("failed");
+            }
+            //Suburb suburb = db.Suburb.Find(id);
+
+        }
+
+        [HttpPost]
+        public ActionResult Message(List<String> message)
+        {
+            string accountSid = "AC90b329101b6566d76485239d50f6ea00";
+            string authToken = "be4151a4e580bf43eadb860c61217e2b";
+            System.Diagnostics.Debug.WriteLine("debug:");
+            System.Diagnostics.Debug.WriteLine(message);
+            if (message != null)
+            {
+                TwilioClient.Init(accountSid, authToken);
+
+                var content = MessageResource.Create(
+                    body: message[1],
+                    from: new Twilio.Types.PhoneNumber("+61480015535"),
+                    to: new Twilio.Types.PhoneNumber(message[0])
+                );
+
+                Console.WriteLine(content.Sid);
+
+
+                return Json(content.Sid);
             }
             else
             {
