@@ -15,9 +15,9 @@ namespace gosafe_back.Models
     public partial class CrimeRate
     {
         public string SuburbSuburbName { get; set; }
-        public string Rate { get; set; }
-        public string OffenceCount { get; set; }
-        public string Totpopulation { get; set; }
+        public Nullable<float> Rate { get; set; }
+        public Nullable<int> OffenceCount { get; set; }
+        public Nullable<int> Totpopulation { get; set; }
     
         public virtual Suburb Suburb { get; set; }
     }

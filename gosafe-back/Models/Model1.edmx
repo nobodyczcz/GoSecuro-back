@@ -53,7 +53,7 @@
       <PropertyRef Name="SuburbName" />
     </Key>
     <Property Name="SuburbName" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Postcode" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Postcode" Type="int" Nullable="true" />
     <Property Name="Boundary1" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Boundary2" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
@@ -62,9 +62,9 @@
       <PropertyRef Name="SuburbSuburbName" />
     </Key>
     <Property Name="SuburbSuburbName" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Rate" Type="nchar" Nullable="false" />
-    <Property Name="OffenceCount" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Totpopulation" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Rate" Type="real" Nullable="true" />
+    <Property Name="OffenceCount" Type="int" Nullable="true" />
+    <Property Name="Totpopulation" Type="int" Nullable="true" />
   </EntityType>
   <Association Name="EmergencyContactUserEmergency">
     <End Role="EmergencyContact" Type="Model1.Store.EmergencyContact" Multiplicity="1" />
@@ -158,7 +158,7 @@
             <PropertyRef Name="SuburbName" />
           </Key>
           <Property Name="SuburbName" Type="String" Nullable="false" annotation:StoreGeneratedPattern="None" />
-          <Property Name="Postcode" Type="String" Nullable="false" MaxLength="Max" />
+          <Property Name="Postcode" Type="Int32" Nullable="true" />
           <NavigationProperty Name="CrimeRate" Relationship="Model1.SuburbCrimeRate" FromRole="Suburb" ToRole="CrimeRate" />
           <Property Name="Boundary1" Type="String" Nullable="false" MaxLength="Max" />
           <Property Name="Boundary2" Type="String" Nullable="false" MaxLength="Max" />
@@ -168,9 +168,9 @@
             <PropertyRef Name="SuburbSuburbName" />
           </Key>
           <Property Name="SuburbSuburbName" Type="String" Nullable="false" />
-          <Property Name="Rate" Type="String" Nullable="false" annotation:StoreGeneratedPattern="None" FixedLength="true" />
-          <Property Name="OffenceCount" Type="String" Nullable="false" />
-          <Property Name="Totpopulation" Type="String" Nullable="false" />
+          <Property Name="Rate" Type="Single" Nullable="true" annotation:StoreGeneratedPattern="None" />
+          <Property Name="OffenceCount" Type="Int32" Nullable="true" />
+          <Property Name="Totpopulation" Type="Int32" Nullable="true" />
           <NavigationProperty Name="Suburb" Relationship="Model1.SuburbCrimeRate" FromRole="CrimeRate" ToRole="Suburb" />
         </EntityType>
         <Association Name="EmergencyContactUserEmergency">

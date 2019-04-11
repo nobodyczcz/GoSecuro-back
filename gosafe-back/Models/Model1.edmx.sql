@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/07/2019 21:46:10
+-- Date Created: 04/11/2019 20:11:44
 -- Generated from EDMX file: C:\Users\Jennifer\Desktop\IEproject\gosafe-back\gosafe-back\Models\Model1.edmx
 -- --------------------------------------------------
 
@@ -77,7 +77,7 @@ GO
 -- Creating table 'Suburb'
 CREATE TABLE [dbo].[Suburb] (
     [SuburbName] nvarchar(max)  NOT NULL,
-    [Postcode] nvarchar(max)  NOT NULL,
+    [Postcode] int  NULL,
     [Boundary1] nvarchar(max)  NOT NULL,
     [Boundary2] nvarchar(max)  NOT NULL
 );
@@ -86,9 +86,9 @@ GO
 -- Creating table 'CrimeRate'
 CREATE TABLE [dbo].[CrimeRate] (
     [SuburbSuburbName] nvarchar(max)  NOT NULL,
-    [Rate] nchar(4000)  NOT NULL,
-    [OffenceCount] nvarchar(max)  NOT NULL,
-    [Totpopulation] nvarchar(max)  NOT NULL
+    [Rate] real  NULL,
+    [OffenceCount] int  NULL,
+    [Totpopulation] int  NULL
 );
 GO
 
