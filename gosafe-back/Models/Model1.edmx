@@ -28,10 +28,11 @@
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="address" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="gender" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Id" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Address" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Gender" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="LastName" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="UserEmergency">
     <Key>
@@ -39,7 +40,7 @@
       <PropertyRef Name="UserProfileId" />
     </Key>
     <Property Name="EmergencyContactPhone" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="UserProfileId" Type="int" Nullable="false" />
+    <Property Name="UserProfileId" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="EmergencyContact">
     <Key>
@@ -129,11 +130,12 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="address" Type="String" Nullable="false" />
-          <Property Name="gender" Type="String" Nullable="false" />
-          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Id" Type="String" Nullable="false" annotation:StoreGeneratedPattern="None" MaxLength="Max" />
+          <Property Name="Address" Nullable="false" Type="String" />
+          <Property Name="Gender" Type="String" Nullable="false" />
+          <Property Name="FirstName" Type="String" Nullable="false" />
           <NavigationProperty Name="UserEmergency" Relationship="Model1.UserProfileUserEmergency" FromRole="UserProfile" ToRole="UserEmergency" />
+          <Property Name="LastName" Type="String" Nullable="false" />
         </EntityType>
         <EntityType Name="UserEmergency">
           <Key>
@@ -143,7 +145,7 @@
           <NavigationProperty Name="EmergencyContact" Relationship="Model1.EmergencyContactUserEmergency" FromRole="UserEmergency" ToRole="EmergencyContact" />
           <Property Name="EmergencyContactPhone" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <NavigationProperty Name="UserProfile" Relationship="Model1.UserProfileUserEmergency" FromRole="UserEmergency" ToRole="UserProfile" />
-          <Property Name="UserProfileId" Type="Int32" Nullable="false" />
+          <Property Name="UserProfileId" Type="String" Nullable="false" MaxLength="Max" />
         </EntityType>
         <EntityType Name="EmergencyContact">
           <Key>
@@ -219,9 +221,10 @@
       <EntityTypeMapping TypeName="IsTypeOf(Model1.UserProfile)">
         <MappingFragment StoreEntitySet="UserProfile">
           <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="address" ColumnName="address" />
-          <ScalarProperty Name="gender" ColumnName="gender" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

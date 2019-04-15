@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/11/2019 20:11:44
+-- Date Created: 04/15/2019 17:06:34
 -- Generated from EDMX file: C:\Users\Jennifer\Desktop\IEproject\gosafe-back\gosafe-back\Models\Model1.edmx
 -- --------------------------------------------------
 
@@ -53,17 +53,18 @@ GO
 
 -- Creating table 'UserProfile'
 CREATE TABLE [dbo].[UserProfile] (
-    [Id] int IDENTITY(1,1) NOT NULL,
-    [address] nvarchar(max)  NOT NULL,
-    [gender] nvarchar(max)  NOT NULL,
-    [Name] nvarchar(max)  NOT NULL
+    [Id] nvarchar(max)  NOT NULL,
+    [Address] nvarchar(max)  NOT NULL,
+    [Gender] nvarchar(max)  NOT NULL,
+    [FirstName] nvarchar(max)  NOT NULL,
+    [LastName] nvarchar(max)  NOT NULL
 );
 GO
 
 -- Creating table 'UserEmergency'
 CREATE TABLE [dbo].[UserEmergency] (
     [EmergencyContactPhone] int IDENTITY(1,1) NOT NULL,
-    [UserProfileId] int  NOT NULL
+    [UserProfileId] nvarchar(max)  NOT NULL
 );
 GO
 
