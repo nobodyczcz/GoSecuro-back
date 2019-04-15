@@ -46,6 +46,22 @@ namespace gosafe_back.Models
         public string Email { get; set; }
     }
 
+    public class LoginPhoneModel
+    {
+        [Required]
+        [Display(Name = "Phone Number")]
+        [Phone]
+        public string Phone { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
+        [Display(Name = "Password")]
+        public string Password { get; set; }
+
+        [Display(Name = "Remember me?")]
+        public bool RememberMe { get; set; }
+    }
+
     public class LoginViewModel
     {
         [Required]

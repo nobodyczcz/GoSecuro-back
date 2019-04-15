@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/15/2019 17:06:34
+-- Date Created: 04/15/2019 17:25:08
 -- Generated from EDMX file: C:\Users\Jennifer\Desktop\IEproject\gosafe-back\gosafe-back\Models\Model1.edmx
 -- --------------------------------------------------
 
@@ -64,14 +64,15 @@ GO
 -- Creating table 'UserEmergency'
 CREATE TABLE [dbo].[UserEmergency] (
     [EmergencyContactPhone] int IDENTITY(1,1) NOT NULL,
-    [UserProfileId] nvarchar(max)  NOT NULL
+    [UserProfileId] nvarchar(max)  NOT NULL,
+    [ECname] nvarchar(max)  NOT NULL
 );
 GO
 
 -- Creating table 'EmergencyContact'
 CREATE TABLE [dbo].[EmergencyContact] (
     [Phone] int IDENTITY(1,1) NOT NULL,
-    [Name] nvarchar(max)  NOT NULL
+    [UserProfile_Id] nvarchar(max)  NOT NULL
 );
 GO
 
@@ -162,6 +163,21 @@ ADD CONSTRAINT [FK_SuburbCrimeRate]
     REFERENCES [dbo].[Suburb]
         ([SuburbName])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating foreign key on [UserProfile_Id] in table 'EmergencyContact'
+ALTER TABLE [dbo].[EmergencyContact]
+ADD CONSTRAINT [FK_EmergencyContactUserProfile]
+    FOREIGN KEY ([UserProfile_Id])
+    REFERENCES [dbo].[UserProfile]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_EmergencyContactUserProfile'
+CREATE INDEX [IX_FK_EmergencyContactUserProfile]
+ON [dbo].[EmergencyContact]
+    ([UserProfile_Id]);
 GO
 
 -- --------------------------------------------------

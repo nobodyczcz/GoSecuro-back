@@ -21,9 +21,9 @@ namespace gosafe_back.Models
         }
     
         public int Phone { get; set; }
-        public string Name { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserEmergency> UserEmergency { get; set; }
+        public virtual UserProfile UserProfile { get; set; }
     }
 }
