@@ -51,7 +51,7 @@
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Type="nvarchar" Nullable="false" MaxLength="128" />
+    <Property Name="Id" Type="nvarchar" Nullable="false" MaxLength="128" StoreGeneratedPattern="None" />
     <Property Name="Address" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Gender" Type="nvarchar(max)" Nullable="true" />
     <Property Name="FirstName" Type="nvarchar(max)" Nullable="false" />
@@ -97,7 +97,7 @@
     </Key>
     <Property Name="JourneyId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="StartTime" Type="datetime" Nullable="false" />
-    <Property Name="EndTime" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="EndTime" Type="datetime" Nullable="false" />
     <Property Name="NavigateRoute" Type="nvarchar(max)" Nullable="true" />
     <Property Name="SCoordLat" Type="decimal" Nullable="false" Precision="10" />
     <Property Name="SCoordLog" Type="decimal" Nullable="false" Precision="10" />
@@ -361,7 +361,7 @@
           </Key>
           <Property Name="JourneyId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="StartTime" Type="DateTime" Nullable="false" />
-          <Property Name="EndTime" Type="String" Nullable="false" />
+          <Property Name="EndTime" Type="DateTime" Nullable="false" />
           <Property Name="NavigateRoute" Type="String" Nullable="true" />
           <Property Name="SCoordLat" Type="Decimal" Nullable="false" Precision="10" />
           <Property Name="SCoordLog" Type="Decimal" Nullable="false" Precision="10" />

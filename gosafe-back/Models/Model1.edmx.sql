@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/24/2019 17:02:13
+-- Date Created: 04/24/2019 18:45:25
 -- Generated from EDMX file: C:\Users\Jennifer\Desktop\IEproject\gosafe-back\gosafe-back\Models\Model1.edmx
 -- --------------------------------------------------
 
@@ -122,7 +122,7 @@ GO
 CREATE TABLE [dbo].[Journey] (
     [JourneyId] int IDENTITY(1,1) NOT NULL,
     [StartTime] datetime  NOT NULL,
-    [EndTime] nvarchar(max)  NOT NULL,
+    [EndTime] datetime  NOT NULL,
     [NavigateRoute] nvarchar(max)  NULL,
     [SCoordLat] decimal(10,0)  NOT NULL,
     [SCoordLog] decimal(10,0)  NOT NULL,

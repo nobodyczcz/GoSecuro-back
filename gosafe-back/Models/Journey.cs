@@ -23,7 +23,7 @@ namespace gosafe_back.Models
     
         public int JourneyId { get; set; }
         public System.DateTime StartTime { get; set; }
-        public string EndTime { get; set; }
+        public System.DateTime EndTime { get; set; }
         public string NavigateRoute { get; set; }
         public decimal SCoordLat { get; set; }
         public decimal SCoordLog { get; set; }
