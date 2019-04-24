@@ -52,10 +52,10 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="nvarchar" Nullable="false" MaxLength="128" />
-    <Property Name="Address" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Gender" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Address" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Gender" Type="nvarchar(max)" Nullable="true" />
     <Property Name="FirstName" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="LastName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="LastName" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
   <EntityType Name="UserEmergency">
     <Key>
@@ -271,11 +271,11 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="String" Nullable="false" annotation:StoreGeneratedPattern="None" MaxLength="128" />
-          <Property Name="Address" Nullable="false" Type="String" />
-          <Property Name="Gender" Type="String" Nullable="false" />
+          <Property Name="Address" Nullable="true" Type="String" />
+          <Property Name="Gender" Type="String" Nullable="true" />
           <Property Name="FirstName" Type="String" Nullable="false" />
           <NavigationProperty Name="UserEmergency" Relationship="Model1.UserProfileUserEmergency" FromRole="UserProfile" ToRole="UserEmergency" />
-          <Property Name="LastName" Type="String" Nullable="false" />
+          <Property Name="LastName" Type="String" Nullable="true" />
           <NavigationProperty Name="Journey" Relationship="Model1.UserProfileJourney" FromRole="UserProfile" ToRole="Journey" />
           <NavigationProperty Name="TempLink" Relationship="Model1.UserProfileTempLink" FromRole="UserProfile" ToRole="TempLink" />
           <NavigationProperty Name="EmergencyContact" Relationship="Model1.UserProfileEmergencyContact" FromRole="UserProfile" ToRole="EmergencyContact" />

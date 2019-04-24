@@ -162,30 +162,36 @@ namespace gosafe_back.Controllers
                 {
                     await Task.Run(() =>
                     {
-                        SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                        UserProfile profile = new UserProfile();
-                        profile.Id = user.Id;
-                        profile.Address = model.Address;
-                        profile.Gender = model.Gender;
-                        profile.FirstName = model.FirstName;
-                        profile.LastName = model.LastName;
-                        db.UserProfile.Add(profile);
-                        try
-                        {
-                            db.SaveChanges();
-                        }
-                        catch (DbEntityValidationException e)
-                        {
+                    SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    UserProfile profile = new UserProfile();
+                    profile.Id = user.Id;
+                    profile.Address = model.Address;
+                    profile.Gender = model.Gender;
+                    profile.FirstName = model.FirstName;
+                    profile.LastName = model.LastName;
+                    db.UserProfile.Add(profile);
+                    Trace.WriteLine(profile);
+                    try
+                    {
+                        db.SaveChanges();
+                    }
+                    catch (DbEntityValidationException e)
+                    {
+
                             foreach (var i in e.EntityValidationErrors)
                             {
-                                Debug.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
-                                   i.Entry.Entity.GetType().Name, i.Entry.State);
+                                Trace.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                                Trace.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:");
+                                Trace.WriteLine(i.Entry.Entity.GetType().Name);
+                                Trace.WriteLine(i.Entry.State);
                                 foreach (var ve in i.ValidationErrors)
                                 {
-                                    Debug.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
-                                        ve.PropertyName, ve.ErrorMessage);
-                                }
+                                    Trace.WriteLine("- Property: \"{0}\", Error: \"{1}\"");
+                                    Trace.WriteLine(ve.PropertyName);
+                                    Trace.WriteLine(ve.ErrorMessage);
+                                };
                             }
+
                             throw;
                         }
                     });

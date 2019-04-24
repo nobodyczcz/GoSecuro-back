@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/18/2019 16:49:22
+-- Date Created: 04/24/2019 17:02:13
 -- Generated from EDMX file: C:\Users\Jennifer\Desktop\IEproject\gosafe-back\gosafe-back\Models\Model1.edmx
 -- --------------------------------------------------
 
@@ -78,10 +78,10 @@ GO
 -- Creating table 'UserProfile'
 CREATE TABLE [dbo].[UserProfile] (
     [Id] nvarchar(128)  NOT NULL,
-    [Address] nvarchar(max)  NOT NULL,
-    [Gender] nvarchar(max)  NOT NULL,
+    [Address] nvarchar(max)  NULL,
+    [Gender] nvarchar(max)  NULL,
     [FirstName] nvarchar(max)  NOT NULL,
-    [LastName] nvarchar(max)  NOT NULL
+    [LastName] nvarchar(max)  NULL
 );
 GO
 
