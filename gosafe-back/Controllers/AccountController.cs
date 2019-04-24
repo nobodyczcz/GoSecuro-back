@@ -16,6 +16,10 @@ using Microsoft.Owin.Security.OAuth;
 using gosafe_back.Models;
 using gosafe_back.Providers;
 using gosafe_back.Results;
+using System.Diagnostics;
+using System.Data.Entity.Validation;
+
+
 
 namespace gosafe_back.Controllers
 {
@@ -25,6 +29,7 @@ namespace gosafe_back.Controllers
     {
         private const string LocalLoginProvider = "Local";
         private ApplicationUserManager _userManager;
+        private Model1Container db = new Model1Container();
 
         public AccountController()
         {
@@ -241,6 +246,7 @@ namespace gosafe_back.Controllers
 
             if (externalLogin == null)
             {
+                Trace.WriteLine("external login is null");
                 return InternalServerError();
             }
 
@@ -321,23 +327,69 @@ namespace gosafe_back.Controllers
         // POST api/Account/Register
         [AllowAnonymous]
         [Route("Register")]
-        public async Task<IHttpActionResult> Register(RegisterBindingModel model)
+        public async Task<IHttpActionResult> Register(RegisterPhoneModel model)
         {
-            if (!ModelState.IsValid)
+            Trace.WriteLine("Receive Model:" + model);
+            if (ModelState.IsValid)
             {
+                var newUser = new ApplicationUser { PhoneNumber = model.Phone, Email = model.Email, UserName = model.Phone };
+                Trace.WriteLine("User:" + newUser);
+                var signUpResult = await UserManager.CreateAsync(newUser, model.Password);
+                Trace.WriteLine("Result:" + signUpResult);
+                if (signUpResult.Succeeded)
+                {
+                    //await Task.Run(() =>
+                    //{
+                        
+                    //    UserProfile profile = new UserProfile();
+                    //    profile.Id = User.Identity.GetUserId();
+                    //    profile.Address = model.Address;
+                    //    profile.Gender = model.Gender;
+                    //    profile.FirstName = model.FirstName;
+                    //    profile.LastName = model.LastName;
+                    //    Trace.WriteLine(profile.Id);
+                    //    Trace.WriteLine(profile.FirstName);
+                    //    db.UserProfile.Add(profile);
+                    //    Trace.WriteLine(profile);
+                    //    try
+                    //    {
+                    //        db.SaveChanges();
+                    //    }
+                    //    catch (DbEntityValidationException e)
+                    //    {
+
+                    //        foreach (var i in e.EntityValidationErrors)
+                    //        {
+                    //            Trace.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                    //            Trace.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:");
+                    //            Trace.WriteLine(i.Entry.Entity.GetType().Name);
+                    //            Trace.WriteLine(i.Entry.State);
+                    //            foreach (var ve in i.ValidationErrors)
+                    //            {
+                    //                Trace.WriteLine("- Property: \"{0}\", Error: \"{1}\"");
+                    //                Trace.WriteLine(ve.PropertyName);
+                    //                Trace.WriteLine(ve.ErrorMessage);
+                    //            };
+                    //        }
+
+                    //        throw;
+                    //    }
+                    //});
+                    return Ok();
+                }
+                else
+                {
+                    return GetErrorResult(signUpResult);
+                }
+            }
+            else
+            {
+                Trace.WriteLine("Invalid Model");
+                Trace.WriteLine(ModelState);
                 return BadRequest(ModelState);
             }
 
-            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
-
-            IdentityResult result = await UserManager.CreateAsync(user, model.Password);
-
-            if (!result.Succeeded)
-            {
-                return GetErrorResult(result);
-            }
-
-            return Ok();
+            
         }
 
         // POST api/Account/RegisterExternal
