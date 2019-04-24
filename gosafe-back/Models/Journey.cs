@@ -12,28 +12,30 @@ namespace gosafe_back.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class UserProfile
+    public partial class Journey
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public UserProfile()
+        public Journey()
         {
-            this.UserEmergency = new HashSet<UserEmergency>();
-            this.Journey = new HashSet<Journey>();
             this.TempLink = new HashSet<TempLink>();
+            this.JTracking = new HashSet<JTracking>();
         }
     
-        public string Id { get; set; }
-        public string Address { get; set; }
-        public string Gender { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public int JourneyId { get; set; }
+        public System.DateTime StartTime { get; set; }
+        public string EndTime { get; set; }
+        public string NavigateRoute { get; set; }
+        public decimal SCoordLat { get; set; }
+        public decimal SCoordLog { get; set; }
+        public decimal ECoordLat { get; set; }
+        public decimal ECoordLog { get; set; }
+        public string Status { get; set; }
+        public string UserProfileId { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserEmergency> UserEmergency { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Journey> Journey { get; set; }
+        public virtual UserProfile UserProfile { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TempLink> TempLink { get; set; }
-        public virtual EmergencyContact EmergencyContact { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<JTracking> JTracking { get; set; }
     }
 }
