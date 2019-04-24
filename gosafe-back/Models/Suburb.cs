@@ -15,7 +15,7 @@ namespace gosafe_back.Models
     public partial class Suburb
     {
         public string SuburbName { get; set; }
-        public string Postcode { get; set; }
+        public Nullable<int> Postcode { get; set; }
         public string Boundary1 { get; set; }
         public string Boundary2 { get; set; }
     

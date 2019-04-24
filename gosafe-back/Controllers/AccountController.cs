@@ -8,7 +8,9 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using System.Diagnostics;
 using gosafe_back.Models;
+using System.Data.Entity.Validation;
 
 namespace gosafe_back.Controllers
 {
@@ -17,6 +19,7 @@ namespace gosafe_back.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private Model1Container db = new Model1Container();
 
         public AccountController()
         {
@@ -66,7 +69,7 @@ namespace gosafe_back.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        public async Task<ActionResult> Login(LoginPhoneModel model, string returnUrl)
         {
             if (!ModelState.IsValid)
             {
@@ -75,7 +78,7 @@ namespace gosafe_back.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            var result = await SignInManager.PasswordSignInAsync(model.Phone, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -147,15 +150,52 @@ namespace gosafe_back.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public async Task<ActionResult> Register(RegisterPhoneModel model)
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { PhoneNumber = model.Phone, Email = model.Email, UserName = model.FirstName +" "+ model.LastName };
+                Debug.WriteLine("User:"+user);
                 var result = await UserManager.CreateAsync(user, model.Password);
+                Debug.WriteLine("Result:"+result);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+                    await Task.Run(() =>
+                    {
+                    SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    UserProfile profile = new UserProfile();
+                    profile.Id = user.Id;
+                    profile.Address = model.Address;
+                    profile.Gender = model.Gender;
+                    profile.FirstName = model.FirstName;
+                    profile.LastName = model.LastName;
+                    db.UserProfile.Add(profile);
+                    Trace.WriteLine(profile);
+                    try
+                    {
+                        db.SaveChanges();
+                    }
+                    catch (DbEntityValidationException e)
+                    {
+
+                            foreach (var i in e.EntityValidationErrors)
+                            {
+                                Trace.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                                Trace.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:");
+                                Trace.WriteLine(i.Entry.Entity.GetType().Name);
+                                Trace.WriteLine(i.Entry.State);
+                                foreach (var ve in i.ValidationErrors)
+                                {
+                                    Trace.WriteLine("- Property: \"{0}\", Error: \"{1}\"");
+                                    Trace.WriteLine(ve.PropertyName);
+                                    Trace.WriteLine(ve.ErrorMessage);
+                                };
+                            }
+
+                            throw;
+                        }
+                    });
+                    
                     
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link

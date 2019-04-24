@@ -21,7 +21,7 @@ namespace gosafe_back.Controllers
     public class SuburbCrime
     {
         public String suburbname { get; set; }
-        public String crimeRate { get; set; }
+        public float? crimeRate { get; set; }
         public String boundary { get; set; }
     }
 

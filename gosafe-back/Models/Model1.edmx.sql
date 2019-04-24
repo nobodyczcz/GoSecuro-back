@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/07/2019 21:46:10
+-- Date Created: 04/24/2019 17:02:13
 -- Generated from EDMX file: C:\Users\Jennifer\Desktop\IEproject\gosafe-back\gosafe-back\Models\Model1.edmx
 -- --------------------------------------------------
 
@@ -26,6 +26,21 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_SuburbCrimeRate]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[CrimeRate] DROP CONSTRAINT [FK_SuburbCrimeRate];
 GO
+IF OBJECT_ID(N'[dbo].[FK_UserProfileJourney]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Journey] DROP CONSTRAINT [FK_UserProfileJourney];
+GO
+IF OBJECT_ID(N'[dbo].[FK_TempLinkJourney]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[TempLink] DROP CONSTRAINT [FK_TempLinkJourney];
+GO
+IF OBJECT_ID(N'[dbo].[FK_UserProfileTempLink]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[TempLink] DROP CONSTRAINT [FK_UserProfileTempLink];
+GO
+IF OBJECT_ID(N'[dbo].[FK_JTrackingJourney]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[JTracking] DROP CONSTRAINT [FK_JTrackingJourney];
+GO
+IF OBJECT_ID(N'[dbo].[FK_UserProfileEmergencyContact]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[EmergencyContact] DROP CONSTRAINT [FK_UserProfileEmergencyContact];
+GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
@@ -46,6 +61,15 @@ GO
 IF OBJECT_ID(N'[dbo].[CrimeRate]', 'U') IS NOT NULL
     DROP TABLE [dbo].[CrimeRate];
 GO
+IF OBJECT_ID(N'[dbo].[Journey]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Journey];
+GO
+IF OBJECT_ID(N'[dbo].[TempLink]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[TempLink];
+GO
+IF OBJECT_ID(N'[dbo].[JTracking]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[JTracking];
+GO
 
 -- --------------------------------------------------
 -- Creating all tables
@@ -53,31 +77,33 @@ GO
 
 -- Creating table 'UserProfile'
 CREATE TABLE [dbo].[UserProfile] (
-    [Id] int IDENTITY(1,1) NOT NULL,
-    [address] nvarchar(max)  NOT NULL,
-    [gender] nvarchar(max)  NOT NULL,
-    [Name] nvarchar(max)  NOT NULL
+    [Id] nvarchar(128)  NOT NULL,
+    [Address] nvarchar(max)  NULL,
+    [Gender] nvarchar(max)  NULL,
+    [FirstName] nvarchar(max)  NOT NULL,
+    [LastName] nvarchar(max)  NULL
 );
 GO
 
 -- Creating table 'UserEmergency'
 CREATE TABLE [dbo].[UserEmergency] (
     [EmergencyContactPhone] int IDENTITY(1,1) NOT NULL,
-    [UserProfileId] int  NOT NULL
+    [UserProfileId] nvarchar(128)  NOT NULL,
+    [ECname] nvarchar(max)  NOT NULL
 );
 GO
 
 -- Creating table 'EmergencyContact'
 CREATE TABLE [dbo].[EmergencyContact] (
     [Phone] int IDENTITY(1,1) NOT NULL,
-    [Name] nvarchar(max)  NOT NULL
+    [UserProfile_Id] nvarchar(128)  NULL
 );
 GO
 
 -- Creating table 'Suburb'
 CREATE TABLE [dbo].[Suburb] (
-    [SuburbName] nvarchar(max)  NOT NULL,
-    [Postcode] nvarchar(max)  NOT NULL,
+    [SuburbName] nvarchar(128)  NOT NULL,
+    [Postcode] int  NULL,
     [Boundary1] nvarchar(max)  NOT NULL,
     [Boundary2] nvarchar(max)  NOT NULL
 );
@@ -85,10 +111,42 @@ GO
 
 -- Creating table 'CrimeRate'
 CREATE TABLE [dbo].[CrimeRate] (
-    [SuburbSuburbName] nvarchar(max)  NOT NULL,
-    [Rate] nchar(4000)  NOT NULL,
-    [OffenceCount] nvarchar(max)  NOT NULL,
-    [Totpopulation] nvarchar(max)  NOT NULL
+    [SuburbSuburbName] nvarchar(128)  NOT NULL,
+    [Rate] real  NULL,
+    [OffenceCount] int  NULL,
+    [Totpopulation] int  NULL
+);
+GO
+
+-- Creating table 'Journey'
+CREATE TABLE [dbo].[Journey] (
+    [JourneyId] int IDENTITY(1,1) NOT NULL,
+    [StartTime] datetime  NOT NULL,
+    [EndTime] nvarchar(max)  NOT NULL,
+    [NavigateRoute] nvarchar(max)  NULL,
+    [SCoordLat] decimal(10,0)  NOT NULL,
+    [SCoordLog] decimal(10,0)  NOT NULL,
+    [ECoordLat] decimal(10,0)  NOT NULL,
+    [ECoordLog] decimal(10,0)  NOT NULL,
+    [Status] nvarchar(max)  NOT NULL,
+    [UserProfileId] nvarchar(128)  NOT NULL
+);
+GO
+
+-- Creating table 'TempLink'
+CREATE TABLE [dbo].[TempLink] (
+    [TempLinkId] nvarchar(20)  NOT NULL,
+    [JourneyJourneyId] int  NOT NULL,
+    [UserProfileId] nvarchar(128)  NOT NULL
+);
+GO
+
+-- Creating table 'JTracking'
+CREATE TABLE [dbo].[JTracking] (
+    [JourneyJourneyId] int  NOT NULL,
+    [Time] datetime  NOT NULL,
+    [CoordLat] decimal(10,0)  NOT NULL,
+    [CoordLog] decimal(10,0)  NOT NULL
 );
 GO
 
@@ -126,6 +184,24 @@ ADD CONSTRAINT [PK_CrimeRate]
     PRIMARY KEY CLUSTERED ([SuburbSuburbName] ASC);
 GO
 
+-- Creating primary key on [JourneyId] in table 'Journey'
+ALTER TABLE [dbo].[Journey]
+ADD CONSTRAINT [PK_Journey]
+    PRIMARY KEY CLUSTERED ([JourneyId] ASC);
+GO
+
+-- Creating primary key on [TempLinkId] in table 'TempLink'
+ALTER TABLE [dbo].[TempLink]
+ADD CONSTRAINT [PK_TempLink]
+    PRIMARY KEY CLUSTERED ([TempLinkId] ASC);
+GO
+
+-- Creating primary key on [Time], [JourneyJourneyId] in table 'JTracking'
+ALTER TABLE [dbo].[JTracking]
+ADD CONSTRAINT [PK_JTracking]
+    PRIMARY KEY CLUSTERED ([Time], [JourneyJourneyId] ASC);
+GO
+
 -- --------------------------------------------------
 -- Creating all FOREIGN KEY constraints
 -- --------------------------------------------------
@@ -161,6 +237,81 @@ ADD CONSTRAINT [FK_SuburbCrimeRate]
     REFERENCES [dbo].[Suburb]
         ([SuburbName])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating foreign key on [UserProfileId] in table 'Journey'
+ALTER TABLE [dbo].[Journey]
+ADD CONSTRAINT [FK_UserProfileJourney]
+    FOREIGN KEY ([UserProfileId])
+    REFERENCES [dbo].[UserProfile]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_UserProfileJourney'
+CREATE INDEX [IX_FK_UserProfileJourney]
+ON [dbo].[Journey]
+    ([UserProfileId]);
+GO
+
+-- Creating foreign key on [JourneyJourneyId] in table 'TempLink'
+ALTER TABLE [dbo].[TempLink]
+ADD CONSTRAINT [FK_TempLinkJourney]
+    FOREIGN KEY ([JourneyJourneyId])
+    REFERENCES [dbo].[Journey]
+        ([JourneyId])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_TempLinkJourney'
+CREATE INDEX [IX_FK_TempLinkJourney]
+ON [dbo].[TempLink]
+    ([JourneyJourneyId]);
+GO
+
+-- Creating foreign key on [UserProfileId] in table 'TempLink'
+ALTER TABLE [dbo].[TempLink]
+ADD CONSTRAINT [FK_UserProfileTempLink]
+    FOREIGN KEY ([UserProfileId])
+    REFERENCES [dbo].[UserProfile]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_UserProfileTempLink'
+CREATE INDEX [IX_FK_UserProfileTempLink]
+ON [dbo].[TempLink]
+    ([UserProfileId]);
+GO
+
+-- Creating foreign key on [JourneyJourneyId] in table 'JTracking'
+ALTER TABLE [dbo].[JTracking]
+ADD CONSTRAINT [FK_JTrackingJourney]
+    FOREIGN KEY ([JourneyJourneyId])
+    REFERENCES [dbo].[Journey]
+        ([JourneyId])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_JTrackingJourney'
+CREATE INDEX [IX_FK_JTrackingJourney]
+ON [dbo].[JTracking]
+    ([JourneyJourneyId]);
+GO
+
+-- Creating foreign key on [UserProfile_Id] in table 'EmergencyContact'
+ALTER TABLE [dbo].[EmergencyContact]
+ADD CONSTRAINT [FK_UserProfileEmergencyContact]
+    FOREIGN KEY ([UserProfile_Id])
+    REFERENCES [dbo].[UserProfile]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_UserProfileEmergencyContact'
+CREATE INDEX [IX_FK_UserProfileEmergencyContact]
+ON [dbo].[EmergencyContact]
+    ([UserProfile_Id]);
 GO
 
 -- --------------------------------------------------
