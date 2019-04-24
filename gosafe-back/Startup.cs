@@ -1,7 +1,11 @@
-﻿using Microsoft.Owin;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartupAttribute(typeof(gosafe_back.Startup))]
+[assembly: OwinStartup(typeof(gosafe_back.Startup))]
+
 namespace gosafe_back
 {
     public partial class Startup
