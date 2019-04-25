@@ -20,7 +20,7 @@ namespace gosafe_back.Models
             this.UserEmergency = new HashSet<UserEmergency>();
         }
     
-        public int Phone { get; set; }
+        public string Phone { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserEmergency> UserEmergency { get; set; }

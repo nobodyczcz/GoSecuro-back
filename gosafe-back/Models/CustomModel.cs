@@ -49,6 +49,13 @@ namespace gosafe_back.Models
         public List<JTracking> trackDetails { get; set; }
     }
 
+    public class Users
+    {
+        [Phone]
+        public string phone { get; set; }
+        public List<UserProfile> userDetails { get; set; }
+    }
+
     public class test
     {
         public string action { get; set; }
@@ -74,7 +81,8 @@ namespace gosafe_back.Models
     }
     public class ContactModel
     {
-        public int EmergencyContactPhone { get; set; }
+        [Phone]
+        public string EmergencyContactPhone { get; set; }
         public string ECname { get; set; }
 
     }

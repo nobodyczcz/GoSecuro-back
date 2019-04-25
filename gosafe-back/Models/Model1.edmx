@@ -98,7 +98,7 @@
       <PropertyRef Name="EmergencyContactPhone" />
       <PropertyRef Name="UserProfileId" />
     </Key>
-    <Property Name="EmergencyContactPhone" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="EmergencyContactPhone" Type="nvarchar" Nullable="false" MaxLength="128" />
     <Property Name="UserProfileId" Type="nvarchar" Nullable="false" MaxLength="128" />
     <Property Name="ECname" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
@@ -106,7 +106,7 @@
     <Key>
       <PropertyRef Name="Phone" />
     </Key>
-    <Property Name="Phone" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Phone" Type="nvarchar" StoreGeneratedPattern="Identity" Nullable="false" MaxLength="128" />
     <Property Name="UserProfile_Id" Type="nvarchar" MaxLength="128" Nullable="false" />
   </EntityType>
   <EntityType Name="Journey">
@@ -326,7 +326,7 @@
             <PropertyRef Name="EmergencyContactPhone" />
             <PropertyRef Name="UserProfileId" />
           </Key>
-          <Property Name="EmergencyContactPhone" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmergencyContactPhone" Type="String" Nullable="false" annotation:StoreGeneratedPattern="None" MaxLength="128" />
           <Property Name="UserProfileId" Type="String" Nullable="false" MaxLength="128" />
           <Property Name="ECname" Type="String" Nullable="false" />
           <NavigationProperty Name="UserProfile" Relationship="Model1.UserProfileUserEmergency" FromRole="UserEmergency" ToRole="UserProfile" />
@@ -336,7 +336,7 @@
           <Key>
             <PropertyRef Name="Phone" />
           </Key>
-          <Property Name="Phone" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Phone" Type="String" Nullable="false" annotation:StoreGeneratedPattern="Identity" MaxLength="128" />
           <NavigationProperty Name="UserEmergency" Relationship="Model1.EmergencyContactUserEmergency" FromRole="EmergencyContact" ToRole="UserEmergency" />
           <NavigationProperty Name="UserProfile" Relationship="Model1.EmergencyContactUserProfile" FromRole="EmergencyContact" ToRole="UserProfile" />
         </EntityType>

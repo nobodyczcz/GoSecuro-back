@@ -16,7 +16,8 @@ namespace gosafe_back.Models
     public partial class UserEmergency
     {
         [Required]
-        public int EmergencyContactPhone { get; set; }
+        [Phone]
+        public string EmergencyContactPhone { get; set; }
         [Required]
         public string UserProfileId { get; set; }
         public string ECname { get; set; }
