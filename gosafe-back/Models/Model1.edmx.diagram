@@ -11,7 +11,7 @@
         <EntityTypeShape EntityType="Model1.JTracking" Width="1.5" PointX="6.25" PointY="6.125" />
         <EntityTypeShape EntityType="Model1.UserProfile" Width="1.5" PointX="2.75" PointY="1.375" />
         <EntityTypeShape EntityType="Model1.UserEmergency" Width="1.5" PointX="5" PointY="1.375" />
-        <EntityTypeShape EntityType="Model1.EmergencyContact" Width="1.5" PointX="10.5" PointY="1.25" />
+        <EntityTypeShape EntityType="Model1.EmergencyContact" Width="1.5" PointX="7.625" PointY="1.5" />
         <EntityTypeShape EntityType="Model1.Journey" Width="1.5" PointX="3.125" PointY="4.625" />
         <AssociationConnector Association="Model1.SuburbCrimeRate" />
         <AssociationConnector Association="Model1.TempLinkJourney" />
