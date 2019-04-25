@@ -52,7 +52,7 @@
 
         $.ajax({
             type: 'GET',
-            url: '/api/values',
+            url: 'api/values',
             headers: headers
         }).done(function (data) {
             self.result(data);

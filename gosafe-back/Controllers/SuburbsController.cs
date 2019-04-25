@@ -25,6 +25,7 @@ namespace gosafe_back.Controllers
         public String boundary { get; set; }
     }
 
+    [RoutePrefix("api/Suburbs")]
     public class SuburbsController : Controller
     {
         private Model1Container db = new Model1Container();
@@ -32,7 +33,7 @@ namespace gosafe_back.Controllers
         // GET: Suburbs
         public ActionResult Index()
         {
-            var suburb = db.Suburb.Include(s => s.CrimeRate);
+            var suburb = db.Suburb.Count();
             return View();
         }
 

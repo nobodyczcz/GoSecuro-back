@@ -4,11 +4,206 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl" Namespace="Model1.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005">
-        <EntityContainer Name="Model1TargetContainer" >
-        </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+    <Schema Namespace="Model1.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="Model1StoreContainer">
+    <EntitySet Name="Suburb" EntityType="Model1.Store.Suburb" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CrimeRate" EntityType="Model1.Store.CrimeRate" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="TempLink" EntityType="Model1.Store.TempLink" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="JTracking" EntityType="Model1.Store.JTracking" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UserProfile" EntityType="Model1.Store.UserProfile" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UserEmergency" EntityType="Model1.Store.UserEmergency" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="EmergencyContact" EntityType="Model1.Store.EmergencyContact" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Journey" EntityType="Model1.Store.Journey" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="SuburbCrimeRate" Association="Model1.Store.SuburbCrimeRate">
+      <End Role="Suburb" EntitySet="Suburb" />
+      <End Role="CrimeRate" EntitySet="CrimeRate" />
+    </AssociationSet>
+    <AssociationSet Name="TempLinkJourney" Association="Model1.Store.TempLinkJourney">
+      <End Role="TempLink" EntitySet="TempLink" />
+      <End Role="Journey" EntitySet="Journey" />
+    </AssociationSet>
+    <AssociationSet Name="UserProfileTempLink" Association="Model1.Store.UserProfileTempLink">
+      <End Role="UserProfile" EntitySet="UserProfile" />
+      <End Role="TempLink" EntitySet="TempLink" />
+    </AssociationSet>
+    <AssociationSet Name="JTrackingJourney" Association="Model1.Store.JTrackingJourney">
+      <End Role="JTracking" EntitySet="JTracking" />
+      <End Role="Journey" EntitySet="Journey" />
+    </AssociationSet>
+    <AssociationSet Name="UserProfileUserEmergency" Association="Model1.Store.UserProfileUserEmergency">
+      <End Role="UserProfile" EntitySet="UserProfile" />
+      <End Role="UserEmergency" EntitySet="UserEmergency" />
+    </AssociationSet>
+    <AssociationSet Name="UserProfileJourney" Association="Model1.Store.UserProfileJourney">
+      <End Role="UserProfile" EntitySet="UserProfile" />
+      <End Role="Journey" EntitySet="Journey" />
+    </AssociationSet>
+    <AssociationSet Name="EmergencyContactUserEmergency" Association="Model1.Store.EmergencyContactUserEmergency">
+      <End Role="EmergencyContact" EntitySet="EmergencyContact" />
+      <End Role="UserEmergency" EntitySet="UserEmergency" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Suburb">
+    <Key>
+      <PropertyRef Name="SuburbName" />
+    </Key>
+    <Property Name="SuburbName" Type="nvarchar" Nullable="false" MaxLength="128" />
+    <Property Name="Postcode" Type="int" Nullable="true" />
+    <Property Name="Boundary1" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Boundary2" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CrimeRate">
+    <Key>
+      <PropertyRef Name="SuburbSuburbName" />
+    </Key>
+    <Property Name="SuburbSuburbName" Type="nvarchar" Nullable="false" MaxLength="128" />
+    <Property Name="Rate" Type="real" Nullable="true" />
+    <Property Name="OffenceCount" Type="int" Nullable="true" />
+    <Property Name="Totpopulation" Type="int" Nullable="true" />
+  </EntityType>
+  <EntityType Name="TempLink">
+    <Key>
+      <PropertyRef Name="TempLinkId" />
+    </Key>
+    <Property Name="TempLinkId" Type="nvarchar" Nullable="false" MaxLength="20" />
+    <Property Name="JourneyJourneyId" Type="int" Nullable="false" />
+    <Property Name="UserProfileId" Type="nvarchar" Nullable="false" MaxLength="128" />
+  </EntityType>
+  <EntityType Name="JTracking">
+    <Key>
+      <PropertyRef Name="JourneyJourneyId" />
+      <PropertyRef Name="Time" />
+    </Key>
+    <Property Name="JourneyJourneyId" Type="int" Nullable="false" />
+    <Property Name="Time" Type="datetime" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CoordLat" Type="decimal" Nullable="false" Precision="10" />
+    <Property Name="CoordLog" Type="decimal" Nullable="false" Precision="10" />
+  </EntityType>
+  <EntityType Name="UserProfile">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="nvarchar" Nullable="false" MaxLength="128" />
+    <Property Name="Address" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Gender" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="FirstName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="LastName" Type="nvarchar(max)" Nullable="true" />
+  </EntityType>
+  <EntityType Name="UserEmergency">
+    <Key>
+      <PropertyRef Name="EmergencyContactPhone" />
+      <PropertyRef Name="UserProfileId" />
+    </Key>
+    <Property Name="EmergencyContactPhone" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserProfileId" Type="nvarchar" Nullable="false" MaxLength="128" />
+    <Property Name="ECname" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EmergencyContact">
+    <Key>
+      <PropertyRef Name="Phone" />
+    </Key>
+    <Property Name="Phone" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Journey">
+    <Key>
+      <PropertyRef Name="JourneyId" />
+    </Key>
+    <Property Name="JourneyId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="StartTime" Type="datetime" Nullable="false" />
+    <Property Name="EndTime" Type="datetime" Nullable="false" />
+    <Property Name="NavigateRoute" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="SCoordLat" Type="decimal" Nullable="false" Precision="10" />
+    <Property Name="SCoordLog" Type="decimal" Nullable="false" Precision="10" />
+    <Property Name="ECoordLat" Type="decimal" Nullable="false" Precision="10" />
+    <Property Name="ECoordLog" Type="decimal" Nullable="false" Precision="10" />
+    <Property Name="Status" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="UserProfileId" Type="nvarchar" Nullable="false" MaxLength="128" />
+  </EntityType>
+  <Association Name="SuburbCrimeRate">
+    <End Role="Suburb" Type="Model1.Store.Suburb" Multiplicity="1" />
+    <End Role="CrimeRate" Type="Model1.Store.CrimeRate" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Suburb">
+        <PropertyRef Name="SuburbName" />
+      </Principal>
+      <Dependent Role="CrimeRate">
+        <PropertyRef Name="SuburbSuburbName" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="TempLinkJourney">
+    <End Role="TempLink" Type="Model1.Store.TempLink" Multiplicity="*" />
+    <End Role="Journey" Type="Model1.Store.Journey" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Journey">
+        <PropertyRef Name="JourneyId" />
+      </Principal>
+      <Dependent Role="TempLink">
+        <PropertyRef Name="JourneyJourneyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UserProfileTempLink">
+    <End Role="UserProfile" Type="Model1.Store.UserProfile" Multiplicity="1" />
+    <End Role="TempLink" Type="Model1.Store.TempLink" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserProfile">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TempLink">
+        <PropertyRef Name="UserProfileId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="JTrackingJourney">
+    <End Role="JTracking" Type="Model1.Store.JTracking" Multiplicity="*" />
+    <End Role="Journey" Type="Model1.Store.Journey" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Journey">
+        <PropertyRef Name="JourneyId" />
+      </Principal>
+      <Dependent Role="JTracking">
+        <PropertyRef Name="JourneyJourneyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UserProfileUserEmergency">
+    <End Role="UserProfile" Type="Model1.Store.UserProfile" Multiplicity="1" />
+    <End Role="UserEmergency" Type="Model1.Store.UserEmergency" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserProfile">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserEmergency">
+        <PropertyRef Name="UserProfileId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UserProfileJourney">
+    <End Role="UserProfile" Type="Model1.Store.UserProfile" Multiplicity="1" />
+    <End Role="Journey" Type="Model1.Store.Journey" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserProfile">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Journey">
+        <PropertyRef Name="UserProfileId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="EmergencyContactUserEmergency">
+    <End Role="EmergencyContact" Type="Model1.Store.EmergencyContact" Multiplicity="1" />
+    <End Role="UserEmergency" Type="Model1.Store.UserEmergency" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EmergencyContact">
+        <PropertyRef Name="Phone" />
+      </Principal>
+      <Dependent Role="UserEmergency">
+        <PropertyRef Name="EmergencyContactPhone" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Model1" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
@@ -228,13 +423,92 @@
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
-      <Mapping xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs" Space="C-S">
-        <Alias Key="Model" Value="Model1" />
-        <Alias Key="Target" Value="Model1.Store" />
-        <EntityContainerMapping CdmEntityContainer="Model1Container" StorageEntityContainer="Model1TargetContainer">
-        </EntityContainerMapping>
-      </Mapping>
-    </edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Model1StoreContainer" CdmEntityContainer="Model1Container">
+    <EntitySetMapping Name="Suburb">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Suburb)">
+        <MappingFragment StoreEntitySet="Suburb">
+          <ScalarProperty Name="SuburbName" ColumnName="SuburbName" />
+          <ScalarProperty Name="Postcode" ColumnName="Postcode" />
+          <ScalarProperty Name="Boundary1" ColumnName="Boundary1" />
+          <ScalarProperty Name="Boundary2" ColumnName="Boundary2" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CrimeRate">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.CrimeRate)">
+        <MappingFragment StoreEntitySet="CrimeRate">
+          <ScalarProperty Name="SuburbSuburbName" ColumnName="SuburbSuburbName" />
+          <ScalarProperty Name="Rate" ColumnName="Rate" />
+          <ScalarProperty Name="OffenceCount" ColumnName="OffenceCount" />
+          <ScalarProperty Name="Totpopulation" ColumnName="Totpopulation" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TempLink">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.TempLink)">
+        <MappingFragment StoreEntitySet="TempLink">
+          <ScalarProperty Name="TempLinkId" ColumnName="TempLinkId" />
+          <ScalarProperty Name="JourneyJourneyId" ColumnName="JourneyJourneyId" />
+          <ScalarProperty Name="UserProfileId" ColumnName="UserProfileId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="JTracking">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.JTracking)">
+        <MappingFragment StoreEntitySet="JTracking">
+          <ScalarProperty Name="JourneyJourneyId" ColumnName="JourneyJourneyId" />
+          <ScalarProperty Name="Time" ColumnName="Time" />
+          <ScalarProperty Name="CoordLat" ColumnName="CoordLat" />
+          <ScalarProperty Name="CoordLog" ColumnName="CoordLog" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserProfile">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.UserProfile)">
+        <MappingFragment StoreEntitySet="UserProfile">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserEmergency">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.UserEmergency)">
+        <MappingFragment StoreEntitySet="UserEmergency">
+          <ScalarProperty Name="EmergencyContactPhone" ColumnName="EmergencyContactPhone" />
+          <ScalarProperty Name="UserProfileId" ColumnName="UserProfileId" />
+          <ScalarProperty Name="ECname" ColumnName="ECname" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EmergencyContact">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.EmergencyContact)">
+        <MappingFragment StoreEntitySet="EmergencyContact">
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Journey">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Journey)">
+        <MappingFragment StoreEntitySet="Journey">
+          <ScalarProperty Name="JourneyId" ColumnName="JourneyId" />
+          <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+          <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+          <ScalarProperty Name="NavigateRoute" ColumnName="NavigateRoute" />
+          <ScalarProperty Name="SCoordLat" ColumnName="SCoordLat" />
+          <ScalarProperty Name="SCoordLog" ColumnName="SCoordLog" />
+          <ScalarProperty Name="ECoordLat" ColumnName="ECoordLat" />
+          <ScalarProperty Name="ECoordLog" ColumnName="ECoordLog" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="UserProfileId" ColumnName="UserProfileId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
   </edmx:Runtime>
   <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
@@ -248,6 +522,7 @@
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
         <DesignerProperty Name="EnablePluralization" Value="False" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="True" />
       </DesignerInfoPropertySet>
     </edmx:Options>
     <!-- Diagram content (shape and connector positions) -->
