@@ -42,6 +42,7 @@ namespace gosafe_back.Controllers
 
         // POST: api/Suburbs/Details
         [Route("Details")]
+        [AllowAnonymous]
         public IHttpActionResult Details(List<String> suburbs)
         {
             System.Diagnostics.Debug.WriteLine("debug:");
@@ -54,7 +55,7 @@ namespace gosafe_back.Controllers
                 {
                     Suburb theSuburb = db.Suburb.Find(i);
                     CrimeRate theRate = db.CrimeRate.Find(i);
-                    if (theSuburb != null)
+                    if (theSuburb != null && theRate!=null)
                     {
                         var newSub = new SuburbCrime();
                         newSub.suburbname = i;
