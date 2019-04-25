@@ -44,6 +44,10 @@ namespace gosafe_back.Models
         [Display(Name = "Gender")]
         public string Gender { get; set; }
     }
+    public class SingleJourney {
+        public Journey journeyDetails { get; set; }
+        public List<JTracking> trackDetails { get; set; }
+    }
 
     public class test
     {
@@ -51,7 +55,7 @@ namespace gosafe_back.Models
         public RegisterPhoneModel Data { get; set; }
     }
 
-    public class journeyReply
+    public class Reply
     {
         public string result { get; set; }
         //public string Data { get; set; }
@@ -68,8 +72,17 @@ namespace gosafe_back.Models
         [Required]
         public decimal ECoordLog { get; set; }
     }
-
-    public class joRetrieveModel
+    public class ContactModel
     {
+        public int EmergencyContactPhone { get; set; }
+        public string ECname { get; set; }
+
+    }
+
+    public class ContactEditModel
+    {
+        public ContactModel pre { get; set; }
+        public ContactModel now { get; set; }
+
     }
 }

@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/25/2019 10:57:49
--- Generated from EDMX file: C:\Users\czcz2\IEProject\gosafe-back\gosafe-back\Models\Model1.edmx
+-- Date Created: 04/25/2019 14:33:57
+-- Generated from EDMX file: C:\Users\Jennifer\Desktop\IEproject\gosafe-back\gosafe-back\Models\Model1.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -127,7 +127,8 @@ GO
 
 -- Creating table 'EmergencyContact'
 CREATE TABLE [dbo].[EmergencyContact] (
-    [Phone] int IDENTITY(1,1) NOT NULL
+    [Phone] int IDENTITY(1,1) NOT NULL,
+    [UserProfile_Id] nvarchar(128)  NOT NULL
 );
 GO
 
@@ -287,6 +288,21 @@ ADD CONSTRAINT [FK_EmergencyContactUserEmergency]
     REFERENCES [dbo].[EmergencyContact]
         ([Phone])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating foreign key on [UserProfile_Id] in table 'EmergencyContact'
+ALTER TABLE [dbo].[EmergencyContact]
+ADD CONSTRAINT [FK_EmergencyContactUserProfile]
+    FOREIGN KEY ([UserProfile_Id])
+    REFERENCES [dbo].[UserProfile]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_EmergencyContactUserProfile'
+CREATE INDEX [IX_FK_EmergencyContactUserProfile]
+ON [dbo].[EmergencyContact]
+    ([UserProfile_Id]);
 GO
 
 -- --------------------------------------------------

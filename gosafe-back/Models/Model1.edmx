@@ -42,6 +42,10 @@
       <End Role="EmergencyContact" EntitySet="EmergencyContact" />
       <End Role="UserEmergency" EntitySet="UserEmergency" />
     </AssociationSet>
+    <AssociationSet Name="EmergencyContactUserProfile" Association="Model1.Store.EmergencyContactUserProfile">
+      <End Role="EmergencyContact" EntitySet="EmergencyContact" />
+      <End Role="UserProfile" EntitySet="UserProfile" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Suburb">
     <Key>
@@ -103,6 +107,7 @@
       <PropertyRef Name="Phone" />
     </Key>
     <Property Name="Phone" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserProfile_Id" Type="nvarchar" MaxLength="128" Nullable="false" />
   </EntityType>
   <EntityType Name="Journey">
     <Key>
@@ -203,6 +208,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="EmergencyContactUserProfile">
+    <End Role="EmergencyContact" Type="Model1.Store.EmergencyContact" Multiplicity="*" />
+    <End Role="UserProfile" Type="Model1.Store.UserProfile" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="UserProfile">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="EmergencyContact">
+        <PropertyRef Name="UserProfile_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -243,6 +260,10 @@
           <AssociationSet Name="EmergencyContactUserEmergency" Association="Model1.EmergencyContactUserEmergency">
             <End Role="EmergencyContact" EntitySet="EmergencyContact" />
             <End Role="UserEmergency" EntitySet="UserEmergency" />
+          </AssociationSet>
+          <AssociationSet Name="EmergencyContactUserProfile" Association="Model1.EmergencyContactUserProfile">
+            <End Role="EmergencyContact" EntitySet="EmergencyContact" />
+            <End Role="UserProfile" EntitySet="UserProfile" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Suburb">
@@ -298,6 +319,7 @@
           <NavigationProperty Name="TempLink" Relationship="Model1.UserProfileTempLink" FromRole="UserProfile" ToRole="TempLink" />
           <NavigationProperty Name="UserEmergency" Relationship="Model1.UserProfileUserEmergency" FromRole="UserProfile" ToRole="UserEmergency" />
           <NavigationProperty Name="Journey" Relationship="Model1.UserProfileJourney" FromRole="UserProfile" ToRole="Journey" />
+          <NavigationProperty Name="EmergencyContact" Relationship="Model1.EmergencyContactUserProfile" FromRole="UserProfile" ToRole="EmergencyContact" />
         </EntityType>
         <EntityType Name="UserEmergency">
           <Key>
@@ -316,6 +338,7 @@
           </Key>
           <Property Name="Phone" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <NavigationProperty Name="UserEmergency" Relationship="Model1.EmergencyContactUserEmergency" FromRole="EmergencyContact" ToRole="UserEmergency" />
+          <NavigationProperty Name="UserProfile" Relationship="Model1.EmergencyContactUserProfile" FromRole="EmergencyContact" ToRole="UserProfile" />
         </EntityType>
         <EntityType Name="Journey">
           <Key>
@@ -419,6 +442,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="EmergencyContactUserProfile">
+          <End Type="Model1.EmergencyContact" Role="EmergencyContact" Multiplicity="0..1" />
+          <End Type="Model1.UserProfile" Role="UserProfile" Multiplicity="1" />
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -507,6 +534,14 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <AssociationSetMapping Name="EmergencyContactUserProfile" TypeName="Model1.EmergencyContactUserProfile" StoreEntitySet="EmergencyContact">
+      <EndProperty Name="UserProfile">
+        <ScalarProperty Name="Id" ColumnName="UserProfile_Id" />
+      </EndProperty>
+      <EndProperty Name="EmergencyContact">
+        <ScalarProperty Name="Phone" ColumnName="Phone" />
+      </EndProperty>
+    </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>
