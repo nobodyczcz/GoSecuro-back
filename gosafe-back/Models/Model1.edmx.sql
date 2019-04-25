@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/25/2019 14:33:57
+-- Date Created: 04/26/2019 00:12:47
 -- Generated from EDMX file: C:\Users\Jennifer\Desktop\IEproject\gosafe-back\gosafe-back\Models\Model1.edmx
 -- --------------------------------------------------
 
@@ -37,6 +37,9 @@ IF OBJECT_ID(N'[dbo].[FK_UserProfileJourney]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_EmergencyContactUserEmergency]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[UserEmergency] DROP CONSTRAINT [FK_EmergencyContactUserEmergency];
+GO
+IF OBJECT_ID(N'[dbo].[FK_EmergencyContactUserProfile]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[EmergencyContact] DROP CONSTRAINT [FK_EmergencyContactUserProfile];
 GO
 
 -- --------------------------------------------------
@@ -119,7 +122,7 @@ GO
 
 -- Creating table 'UserEmergency'
 CREATE TABLE [dbo].[UserEmergency] (
-    [EmergencyContactPhone] int IDENTITY(1,1) NOT NULL,
+    [EmergencyContactPhone] nvarchar(128)  NOT NULL,
     [UserProfileId] nvarchar(128)  NOT NULL,
     [ECname] nvarchar(max)  NOT NULL
 );
@@ -127,7 +130,7 @@ GO
 
 -- Creating table 'EmergencyContact'
 CREATE TABLE [dbo].[EmergencyContact] (
-    [Phone] int IDENTITY(1,1) NOT NULL,
+    [Phone] nvarchar(128)  NOT NULL,
     [UserProfile_Id] nvarchar(128)  NOT NULL
 );
 GO

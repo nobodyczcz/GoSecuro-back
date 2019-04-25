@@ -1,13 +1,10 @@
-﻿using System;
+﻿using gosafe_back.Models;
+using Microsoft.AspNet.Identity;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Web;
-using gosafe_back.Models;
-using Newtonsoft.Json;
-using Microsoft.AspNet.Identity;
 using System.Web.Http;
 
 
@@ -17,6 +14,7 @@ namespace gosafe_back.Controllers
     public class UserEmergenciesController : ApiController
     {
         private Model1Container db = new Model1Container();
+        private ApplicationDbContext identitydb = new ApplicationDbContext();
 
         //// GET: UserEmergencies
         //public ActionResult Index()
@@ -207,22 +205,33 @@ namespace gosafe_back.Controllers
         {
             Reply reply = new Reply();
             String json = "";
+            List<Users> UserList = new List<Users>();
             var userID = User.Identity.GetUserId();  //get user ID  
-            //UserProfile userEmergency = db.UserEmergency.Find(userID);
-            //if (userEmergency == null)
-            //{
-            //    reply.result = "failed";
-            //    reply.errors = "Not Found";
-            //    json = JsonConvert.SerializeObject(reply);
-            //    return Ok(json);
-            //}
-            //db.UserEmergency.Remove(userEmergency);
-            //db.SaveChanges();
+            var thisUser = identitydb.Users.Find(userID);
+            List<UserEmergency> profiles = db.UserEmergency.Where(s => s.EmergencyContactPhone == thisUser.PhoneNumber).ToList();
+            if (profiles == null)
+            {
+                reply.result = "Not found";
+                json = JsonConvert.SerializeObject(reply);
+                return Ok(json);
+            }
+            foreach (UserEmergency theProfile in profiles)
+            {
+                Users user = getUser(theProfile);
+                UserList.Add(user);
+            }
             reply.result = "success";
             json = JsonConvert.SerializeObject(reply);
             return Ok(json);
         }
 
+        public Users getUser(UserEmergency theProfile)
+        {
+            Users result = new Users();
+            result.phone = theProfile.EmergencyContactPhone;
+            result.userDetails = db.UserProfile.Where(s => s.Id == theProfile.UserProfileId).ToList();
+            return result;
+        }
 
         protected override void Dispose(bool disposing)
         {

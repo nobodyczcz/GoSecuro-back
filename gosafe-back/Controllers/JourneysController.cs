@@ -114,8 +114,12 @@ namespace gosafe_back.Controllers
             var userID = User.Identity.GetUserId();
             List<Journey> journeys = db.Journey.Where(s => s.UserProfileId == userID).ToList();
             if (journeys == null)
-            { return NotFound(); }
-            foreach (Journey theJourney in journeys) {
+            {
+                return NotFound();
+            }
+
+            foreach (Journey theJourney in journeys)
+            {
                 SingleJourney single = getJourney(theJourney);
                 journeyList.Add(single);
             }
