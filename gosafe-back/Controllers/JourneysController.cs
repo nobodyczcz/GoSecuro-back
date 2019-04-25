@@ -5,74 +5,79 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web;
-using System.Web.Mvc;
 using gosafe_back.Models;
 using Newtonsoft.Json;
 using Microsoft.AspNet.Identity;
+using System.Web.Http;
+
 
 namespace gosafe_back.Controllers
 {
-    public class JourneysController : Controller
+    [RoutePrefix("api/Journey")]
+    public class JourneysController : ApiController
     {
         private Model1Container db = new Model1Container();
 
-        // GET: Journeys
-        public ActionResult Index()
-        {
-            var journey = db.Journey.Include(j => j.UserProfile);
-            return View(journey.ToList());
-        }
+        //// GET: Journeys
+        //public ActionResult Index()
+        //{
+        //    var journey = db.Journey.Include(j => j.UserProfile);
+        //    return View(journey.ToList());
+        //}
 
-        // GET: Journeys/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Journey journey = db.Journey.Find(id);
-            if (journey == null)
-            {
-                return HttpNotFound();
-            }
-            return View(journey);
-        }
+        //// GET: Journeys/Details/5
+        //public ActionResult Details(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    Journey journey = db.Journey.Find(id);
+        //    if (journey == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(journey);
+        //}
 
-        // GET: Journeys/Create
-        public ActionResult Create()
-        {
-            ViewBag.UserProfileId = new SelectList(db.UserProfile, "Id", "Address");
-            return View();
-        }
+        //// GET: Journeys/Create
+        //public ActionResult Create()
+        //{
+        //    ViewBag.UserProfileId = new SelectList(db.UserProfile, "Id", "Address");
+        //    return View();
+        //}
 
         // POST: Journeys/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "JourneyId,StartTime,EndTime,NavigateRoute,SCoordLat,SCoordLog,ECoordLat,ECoordLog,Status,UserProfileId")] Journey journey)
+        
+        [Authorize]
+        [Route("create")]
+        public IHttpActionResult Create(Journey journey)
         {
-            journeyReply reply = new journeyReply();
+            Reply reply = new Reply();
             String json = "";
             if (ModelState.IsValid)
             {
+                journey.Status = "Started";
                 db.Journey.Add(journey);
                 db.SaveChanges();
                 reply.result = "success";
                 json = JsonConvert.SerializeObject(reply);
-                return Json(json);
+                return Ok(json);
             }
             reply.result = "failed";
             reply.errors = "data not match";
             json = JsonConvert.SerializeObject(reply);
-            return Json(json);
+            return Ok(json);
         }
 
-        
-        [HttpPost]
-        public ActionResult journeyFinish(journeyFinishModel finishModel)
+        //POST Journey Finish Details
+        [Authorize]
+        [Route("journeyFinish")]
+        public IHttpActionResult journeyFinish(journeyFinishModel finishModel)
         {
-            journeyReply reply = new journeyReply();
+            Reply reply = new Reply();
             String json = "";
             if (User.Identity.IsAuthenticated)
             {
@@ -89,86 +94,110 @@ namespace gosafe_back.Controllers
                     db.SaveChanges();
                     reply.result = "success";
                     json = JsonConvert.SerializeObject(reply);
-                    return Json(json);
+                    return Ok(json);
                 }
             }
             reply.result = "failed";
             reply.errors = "data not match";
             json = JsonConvert.SerializeObject(reply);
-            return Json(json);
+            return Ok(json);
         }
 
-        [HttpPost]
-        public ActionResult journeyRetrieve(joRetrieveModel retrieveModel)
+        //POST: Journey Retrieve Details
+        [Authorize]
+        [Route("retrieveHistory")]
+        public IHttpActionResult retrieveHistory()
         {
-            return View(retrieveModel);
+            Reply reply = new Reply();
+            String json = "";
+            List<SingleJourney> journeyList = new List<SingleJourney>();
+            var userID = User.Identity.GetUserId();
+            List<Journey> journeys = db.Journey.Where(s => s.UserProfileId == userID).ToList();
+            if (journeys == null)
+            { return NotFound(); }
+            foreach (Journey theJourney in journeys) {
+                SingleJourney single = getJourney(theJourney);
+                journeyList.Add(single);
+            }
+            reply.result = "success";
+            json = JsonConvert.SerializeObject(reply);
+            return Ok(json);
         }
+
+        public SingleJourney getJourney(Journey theJourney)
+        {
+            SingleJourney result = new SingleJourney();
+            result.journeyDetails = theJourney;
+            result.trackDetails = db.JTracking.Where(s => s.JourneyJourneyId == theJourney.JourneyId).ToList();
+            return result ;
+        }
+
         // GET: Journeys/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Journey journey = db.Journey.Find(id);
-            if (journey == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.UserProfileId = new SelectList(db.UserProfile, "Id", "Address", journey.UserProfileId);
-            return View(journey);
-        }
+        //public ActionResult Edit(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    Journey journey = db.Journey.Find(id);
+        //    if (journey == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    ViewBag.UserProfileId = new SelectList(db.UserProfile, "Id", "Address", journey.UserProfileId);
+        //    return View(journey);
+        //}
 
-        // POST: Journeys/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "JourneyId,StartTime,EndTime,NavigateRoute,SCoordLat,SCoordLog,ECoordLat,ECoordLog,Status,UserProfileId")] Journey journey)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(journey).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.UserProfileId = new SelectList(db.UserProfile, "Id", "Address", journey.UserProfileId);
-            return View(journey);
-        }
+        //// POST: Journeys/Edit/5
+        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        //// more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Edit([Bind(Include = "JourneyId,StartTime,EndTime,NavigateRoute,SCoordLat,SCoordLog,ECoordLat,ECoordLog,Status,UserProfileId")] Journey journey)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        db.Entry(journey).State = EntityState.Modified;
+        //        db.SaveChanges();
+        //        return RedirectToAction("Index");
+        //    }
+        //    ViewBag.UserProfileId = new SelectList(db.UserProfile, "Id", "Address", journey.UserProfileId);
+        //    return View(journey);
+        //}
 
-        // GET: Journeys/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Journey journey = db.Journey.Find(id);
-            if (journey == null)
-            {
-                return HttpNotFound();
-            }
-            return View(journey);
-        }
+        //// GET: Journeys/Delete/5
+        //public ActionResult Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    Journey journey = db.Journey.Find(id);
+        //    if (journey == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(journey);
+        //}
 
-        // POST: Journeys/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Journey journey = db.Journey.Find(id);
-            db.Journey.Remove(journey);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+        //// POST: Journeys/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult DeleteConfirmed(int id)
+        //{
+        //    Journey journey = db.Journey.Find(id);
+        //    db.Journey.Remove(journey);
+        //    db.SaveChanges();
+        //    return RedirectToAction("Index");
+        //}
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+        //protected override void Dispose(bool disposing)
+        //{
+        //    if (disposing)
+        //    {
+        //        db.Dispose();
+        //    }
+        //    base.Dispose(disposing);
+        //}
     }
 }
