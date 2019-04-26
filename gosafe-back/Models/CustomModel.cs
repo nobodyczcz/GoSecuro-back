@@ -8,6 +8,16 @@ using System.ComponentModel.DataAnnotations;
 
 namespace gosafe_back.Models
 {
+    public class SuburbList
+    {
+        public List<String> suburbs { get; set; }
+    }
+    public class SuburbCrime
+    {
+        public String suburbname { get; set; }
+        public float? crimeRate { get; set; }
+        public String boundary { get; set; }
+    }
     public class RegisterPhoneModel
     {
         [Required]

@@ -61,6 +61,32 @@ namespace gosafe_back.Controllers
             {
                 journey.Status = "Started";
                 db.Journey.Add(journey);
+                
+                //Create Templink;
+                int number = 0;
+                char code;
+                string checkcode = string.Empty;
+                System.Random random = new Random();
+                for (int i = 0; i < 10; i++)
+                {
+                    number = random.Next();
+                    if (number % 2 == 0)
+                    {
+                        code = (char)('0' + (char)(number % 10));
+                    }
+                    else
+                    {
+                        code = (char)('A' + (char)(number % 26));
+                    }
+                    checkcode += code.ToString();
+                }
+
+                TempLink theTemp = new TempLink();
+                theTemp.TempLinkId = checkcode;
+                theTemp.JourneyJourneyId = journey.JourneyId;
+                theTemp.UserProfileId = journey.UserProfileId;
+                db.TempLink.Add(theTemp);
+
                 db.SaveChanges();
                 reply.result = "success";
                 json = JsonConvert.SerializeObject(reply);
@@ -71,6 +97,7 @@ namespace gosafe_back.Controllers
             json = JsonConvert.SerializeObject(reply);
             return Ok(json);
         }
+
 
         //POST Journey Finish Details
         [Authorize]
@@ -89,6 +116,9 @@ namespace gosafe_back.Controllers
                     theJourney.ECoordLat = finishModel.ECoordLat;
                     theJourney.ECoordLog = finishModel.ECoordLog;
                     theJourney.Status = "Finished";
+                    //delete templink
+                    TempLink theTemp = db.TempLink.Find(theJourney.JourneyId);
+                    db.TempLink.Remove(theTemp);
 
                     db.Entry(theJourney).State = EntityState.Modified;
                     db.SaveChanges();
