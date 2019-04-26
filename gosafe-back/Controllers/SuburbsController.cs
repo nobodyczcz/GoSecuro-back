@@ -15,18 +15,6 @@ using Twilio.Rest.Api.V2010.Account;
 
 namespace gosafe_back.Controllers
 {
-    public class SuburbList
-    {
-        public List<String> suburbs { get; set; }
-    }
-
-    public class SuburbCrime
-    {
-        public String suburbname { get; set; }
-        public float? crimeRate { get; set; }
-        public String boundary { get; set; }
-    }
-
     [RoutePrefix("api/Suburbs")]
     public class SuburbsController : ApiController
     {
