@@ -213,12 +213,18 @@
             console.log(e)
         }
         function testFunction() {
-            theApi = 'api/Journey/journeyFinish'
+            theApi = 'api/JTracking/Create'
             var data = {
-                JourneyId: 1,
-                ECoordLat: -37.9105238,
-                ECoordLog: 145.13621820000003,
+                JourneyJourneyId: 1,
+                CoordLat: -37.9105238,
+                CoordLog: 145.13621820000003,
             }
+            //theApi = 'api/Journey/Create'
+            //var data = {
+            //    NavigateRoute: null,
+            //    SCoordLat: -37.9105238,
+            //    SCoordLog: 145.13621820000003,
+            //}
             window.apis.callApi(theApi, data, startSuccess, startError)
         }
     </script>

@@ -79,7 +79,7 @@
       <PropertyRef Name="Time" />
     </Key>
     <Property Name="JourneyJourneyId" Type="int" Nullable="false" />
-    <Property Name="Time" Type="datetime" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Time" Type="datetime" Nullable="false" />
     <Property Name="CoordLat" Type="float" Nullable="false" />
     <Property Name="CoordLog" Type="float" Nullable="false" />
   </EntityType>
@@ -302,7 +302,7 @@
             <PropertyRef Name="Time" />
           </Key>
           <Property Name="JourneyJourneyId" Type="Int32" Nullable="false" />
-          <Property Name="Time" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Time" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <Property Name="CoordLat" Type="Double" Nullable="false" />
           <Property Name="CoordLog" Type="Double" Nullable="false" />
           <NavigationProperty Name="Journey" Relationship="Model1.JTrackingJourney" FromRole="JTracking" ToRole="Journey" />

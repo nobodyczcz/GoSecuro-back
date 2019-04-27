@@ -427,6 +427,7 @@ namespace gosafe_back.Controllers
             {
                 return GetErrorResult(result); 
             }
+
             return Ok();
         }
 

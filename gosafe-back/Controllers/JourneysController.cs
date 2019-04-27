@@ -66,7 +66,6 @@ namespace gosafe_back.Controllers
             {
                 journey.Status = "Started";
                 var userID = User.Identity.GetUserId();
-                UsefulFunction.chekProfileId(db,userID);
 
                 journey.UserProfileId = userID;
                 journey.StartTime = DateTime.Now;
@@ -118,7 +117,6 @@ namespace gosafe_back.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 var userID = User.Identity.GetUserId();  //get user ID  
-                UsefulFunction.chekProfileId(db, userID);
                 Journey theJourney = db.Journey.Find(finishModel.JourneyId);
                 if (theJourney == null)
                 {
@@ -182,7 +180,6 @@ namespace gosafe_back.Controllers
             String json = "";
             List<SingleJourney> journeyList = new List<SingleJourney>();
             var userID = User.Identity.GetUserId();
-            UsefulFunction.chekProfileId(db, userID);
             List<Journey> journeys = db.Journey.Where(s => s.UserProfileId == userID).ToList();
             if (journeys == null)
             {
@@ -304,14 +301,26 @@ namespace gosafe_back.Controllers
 
     public static class UsefulFunction
     {
-        public static void chekProfileId(Model1Container db,string userID)
+        public static void chekProfileId(Model1Container db,string userID, Boolean save = false)
         {
+            Trace.WriteLine("Detecting does userID " + userID + " exist");
             if (db.UserProfile.Find(userID) == null)
             {
+                Trace.WriteLine("Can't find " + userID);
                 UserProfile newProfile = new UserProfile();
                 newProfile.Id = userID;
                 db.UserProfile.Add(newProfile);
+                if (save)
+                {
+                    dbSave(db);
+                }
             }
+            else
+            {
+                Trace.WriteLine("Find " + userID);
+            }
+            
+
 
         }
         public static void dbSave(Model1Container db)

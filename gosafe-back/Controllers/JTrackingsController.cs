@@ -54,12 +54,30 @@ namespace gosafe_back.Controllers
         [Route("create")]
         public IHttpActionResult Create(JTracking jTracking)
         {
+            Trace.WriteLine("Receive create JTracking: " + JsonConvert.SerializeObject(jTracking));
+
             Reply reply = new Reply();
             String json = "";
+            var UserID = User.Identity.GetUserId(); 
+            
             if (ModelState.IsValid)
             {
+                Journey theJourney = db.Journey.Find(jTracking.JourneyJourneyId);
+                if (theJourney == null)
+                {
+                    return BadRequest("journeyId not exist");
+                }
+                if (UserID != theJourney.UserProfileId)
+                {
+                    return BadRequest("You are not authorized to chance this journey ID");
+                }
+
+                jTracking.Time = DateTime.Now;
+                
+                Trace.WriteLine("Write to JTracking: " + JsonConvert.SerializeObject(jTracking));
                 db.JTracking.Add(jTracking);
-                db.SaveChanges();
+                UsefulFunction.dbSave(db);
+                
                 reply.result = "success";
                 json = JsonConvert.SerializeObject(reply);
                 return Ok(json);

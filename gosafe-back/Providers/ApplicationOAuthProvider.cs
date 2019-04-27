@@ -10,12 +10,14 @@ using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using gosafe_back.Models;
+using gosafe_back.Controllers;
 
 namespace gosafe_back.Providers
 {
     public class ApplicationOAuthProvider : OAuthAuthorizationServerProvider
     {
         private readonly string _publicClientId;
+        private Model1Container db = new Model1Container();
 
         public ApplicationOAuthProvider(string publicClientId)
         {
@@ -48,6 +50,8 @@ namespace gosafe_back.Providers
             AuthenticationTicket ticket = new AuthenticationTicket(oAuthIdentity, properties);
             context.Validated(ticket);
             context.Request.Context.Authentication.SignIn(cookiesIdentity);
+            UsefulFunction.chekProfileId(db, user.Id,true);
+
         }
 
         public override Task TokenEndpoint(OAuthTokenEndpointContext context)
