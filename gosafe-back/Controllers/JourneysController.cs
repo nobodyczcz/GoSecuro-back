@@ -123,8 +123,7 @@ namespace gosafe_back.Controllers
                     foreach (TempLink temp in theTemp)
                     {
                         db.TempLink.Remove(temp);
-                    }
-                    
+                    } 
 
                     db.Entry(theJourney).State = EntityState.Modified;
                     db.SaveChanges();
@@ -137,6 +136,27 @@ namespace gosafe_back.Controllers
             reply.errors = "data not match";
             json = JsonConvert.SerializeObject(reply);
             return BadRequest(json);
+        }
+
+        //POST: Emergency Retrieve Journey Details
+        [Route("EmergencyRetrieve")]
+        public IHttpActionResult EmergencyRetrive(string templinkId)
+        {
+            Reply reply = new Reply();
+            String json = "";
+            var theTemp = db.TempLink.Find(templinkId);
+            if (theTemp == null)
+            {
+                reply.result = "failed";
+                reply.errors = "Not found";
+                json = JsonConvert.SerializeObject(reply);
+                return BadRequest(json);
+            }
+            var theJourney = theTemp.Journey;
+            reply.data = JsonConvert.SerializeObject(theJourney);
+            reply.result = "success";
+            json = JsonConvert.SerializeObject(reply);
+            return Ok(json);
         }
 
         //POST: Journey Retrieve Details
@@ -160,6 +180,7 @@ namespace gosafe_back.Controllers
                 journeyList.Add(single);
             }
             reply.result = "success";
+            reply.data = JsonConvert.SerializeObject(journeyList);
             json = JsonConvert.SerializeObject(reply);
             return Ok(json);
         }
