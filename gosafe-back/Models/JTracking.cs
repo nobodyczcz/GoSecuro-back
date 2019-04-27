@@ -16,8 +16,8 @@ namespace gosafe_back.Models
     {
         public int JourneyJourneyId { get; set; }
         public System.DateTime Time { get; set; }
-        public decimal CoordLat { get; set; }
-        public decimal CoordLog { get; set; }
+        public double CoordLat { get; set; }
+        public double CoordLog { get; set; }
     
         public virtual Journey Journey { get; set; }
     }

@@ -10,6 +10,8 @@ using Newtonsoft.Json;
 using Microsoft.AspNet.Identity;
 using System.Web.Http;
 using System.Diagnostics;
+using System.Data.Entity.Validation;
+
 
 
 namespace gosafe_back.Controllers
@@ -56,6 +58,7 @@ namespace gosafe_back.Controllers
         [Route("create")]
         public IHttpActionResult Create(Journey journey)
         {
+
             Trace.WriteLine("Receive create journey: " + JsonConvert.SerializeObject(journey));
             Reply reply = new Reply();
             String json = "";
@@ -63,8 +66,11 @@ namespace gosafe_back.Controllers
             {
                 journey.Status = "Started";
                 var userID = User.Identity.GetUserId();
+                UsefulFunction.chekProfileId(db,userID);
+
                 journey.UserProfileId = userID;
                 journey.StartTime = DateTime.Now;
+                journey.EndTime = null;
                 Trace.WriteLine("Write to database: " + JsonConvert.SerializeObject(journey));
                 journey = db.Journey.Add(journey);
                 Trace.WriteLine("Add finish, journey ID: " + journey.JourneyId);
@@ -84,7 +90,8 @@ namespace gosafe_back.Controllers
                 theTemp.UserProfileId = journey.UserProfileId;
                 db.TempLink.Add(theTemp);
 
-                db.SaveChanges();
+                UsefulFunction.dbSave(db);
+
                 JourneyCreateReplyData data = new JourneyCreateReplyData();
                 data.journeyID = journey.JourneyId;
                 data.tempLinkID = theTemp.TempLinkId;
@@ -111,7 +118,12 @@ namespace gosafe_back.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 var userID = User.Identity.GetUserId();  //get user ID  
+                UsefulFunction.chekProfileId(db, userID);
                 Journey theJourney = db.Journey.Find(finishModel.JourneyId);
+                if (theJourney == null)
+                {
+                    return BadRequest("Journey ID do not exist");
+                }
                 if (userID == theJourney.UserProfileId)
                 {
                     theJourney.EndTime = DateTime.Now;
@@ -119,7 +131,9 @@ namespace gosafe_back.Controllers
                     theJourney.ECoordLog = finishModel.ECoordLog;
                     theJourney.Status = "Finished";
                     //delete templink
-                    List<TempLink> theTemp = db.TempLink.Where(s=>s.JourneyJourneyId == theJourney.JourneyId).ToList();
+                    List<TempLink> theTemp = theJourney.TempLink.ToList();
+                    Trace.WriteLine("find temp links: "+theTemp.Count());
+                        //db.TempLink.Where(s=>s.JourneyJourneyId == theJourney.JourneyId).ToList();
                     foreach (TempLink temp in theTemp)
                     {
                         db.TempLink.Remove(temp);
@@ -127,7 +141,7 @@ namespace gosafe_back.Controllers
                     
 
                     db.Entry(theJourney).State = EntityState.Modified;
-                    db.SaveChanges();
+                    UsefulFunction.dbSave(db);
                     reply.result = "success";
                     json = JsonConvert.SerializeObject(reply);
                     return Ok(json);
@@ -148,6 +162,7 @@ namespace gosafe_back.Controllers
             String json = "";
             List<SingleJourney> journeyList = new List<SingleJourney>();
             var userID = User.Identity.GetUserId();
+            UsefulFunction.chekProfileId(db, userID);
             List<Journey> journeys = db.Journey.Where(s => s.UserProfileId == userID).ToList();
             if (journeys == null)
             {
@@ -194,6 +209,8 @@ namespace gosafe_back.Controllers
             }
             return checkcode;
         }
+
+       
 
         // GET: Journeys/Edit/5
         //public ActionResult Edit(int? id)
@@ -262,5 +279,45 @@ namespace gosafe_back.Controllers
         //    }
         //    base.Dispose(disposing);
         //}
+    }
+
+    public static class UsefulFunction
+    {
+        public static void chekProfileId(Model1Container db,string userID)
+        {
+            if (db.UserProfile.Find(userID) == null)
+            {
+                UserProfile newProfile = new UserProfile();
+                newProfile.Id = userID;
+                db.UserProfile.Add(newProfile);
+            }
+
+        }
+        public static void dbSave(Model1Container db)
+        {
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (DbEntityValidationException e)
+            {
+
+                foreach (var i in e.EntityValidationErrors)
+                {
+                    Trace.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                    Trace.WriteLine("entity of type \"{0}\" in state \"{1}\" has the following validation errors:");
+                    Trace.WriteLine(i.Entry.Entity.GetType().Name);
+                    Trace.WriteLine(i.Entry.State);
+                    foreach (var ve in i.ValidationErrors)
+                    {
+                        Trace.WriteLine("- property: \"{0}\", error: \"{1}\"");
+                        Trace.WriteLine(ve.PropertyName);
+                        Trace.WriteLine(ve.PropertyName);
+                    };
+                }
+
+                throw;
+            }
+        }
     }
 }

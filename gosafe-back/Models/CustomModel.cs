@@ -83,9 +83,9 @@ namespace gosafe_back.Models
         [Required]
         public int JourneyId { get; set; }
         [Required]
-        public decimal ECoordLat { get; set; }
+        public double ECoordLat { get; set; }
         [Required]
-        public decimal ECoordLog { get; set; }
+        public double ECoordLog { get; set; }
     }
     public class ContactModel
     {

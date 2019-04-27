@@ -80,8 +80,8 @@
     </Key>
     <Property Name="JourneyJourneyId" Type="int" Nullable="false" />
     <Property Name="Time" Type="datetime" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="CoordLat" Type="decimal" Nullable="false" Precision="10" />
-    <Property Name="CoordLog" Type="decimal" Nullable="false" Precision="10" />
+    <Property Name="CoordLat" Type="float" Nullable="false" />
+    <Property Name="CoordLog" Type="float" Nullable="false" />
   </EntityType>
   <EntityType Name="UserProfile">
     <Key>
@@ -90,7 +90,7 @@
     <Property Name="Id" Type="nvarchar" Nullable="false" MaxLength="128" />
     <Property Name="Address" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Gender" Type="nvarchar(max)" Nullable="true" />
-    <Property Name="FirstName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar(max)" Nullable="true" />
     <Property Name="LastName" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
   <EntityType Name="UserEmergency">
@@ -100,7 +100,7 @@
     </Key>
     <Property Name="EmergencyContactPhone" Type="nvarchar" Nullable="false" MaxLength="128" />
     <Property Name="UserProfileId" Type="nvarchar" Nullable="false" MaxLength="128" />
-    <Property Name="ECname" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ECname" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
   <EntityType Name="EmergencyContact">
     <Key>
@@ -115,12 +115,12 @@
     </Key>
     <Property Name="JourneyId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="StartTime" Type="datetime" Nullable="false" />
-    <Property Name="EndTime" Type="datetime" Nullable="false" />
+    <Property Name="EndTime" Type="datetime" Nullable="true" />
     <Property Name="NavigateRoute" Type="nvarchar(max)" Nullable="true" />
-    <Property Name="SCoordLat" Type="decimal" Nullable="false" Precision="10" />
-    <Property Name="SCoordLog" Type="decimal" Nullable="false" Precision="10" />
-    <Property Name="ECoordLat" Type="decimal" Nullable="false" Precision="10" />
-    <Property Name="ECoordLog" Type="decimal" Nullable="false" Precision="10" />
+    <Property Name="SCoordLat" Type="float" Nullable="false" />
+    <Property Name="SCoordLog" Type="float" Nullable="false" />
+    <Property Name="ECoordLat" Type="float" Nullable="true" />
+    <Property Name="ECoordLog" Type="float" Nullable="true" />
     <Property Name="Status" Type="nvarchar(max)" Nullable="false" />
     <Property Name="UserProfileId" Type="nvarchar" Nullable="false" MaxLength="128" />
   </EntityType>
@@ -303,8 +303,8 @@
           </Key>
           <Property Name="JourneyJourneyId" Type="Int32" Nullable="false" />
           <Property Name="Time" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CoordLat" Type="Decimal" Nullable="false" Precision="10" />
-          <Property Name="CoordLog" Type="Decimal" Nullable="false" Precision="10" />
+          <Property Name="CoordLat" Type="Double" Nullable="false" />
+          <Property Name="CoordLog" Type="Double" Nullable="false" />
           <NavigationProperty Name="Journey" Relationship="Model1.JTrackingJourney" FromRole="JTracking" ToRole="Journey" />
         </EntityType>
         <EntityType Name="UserProfile">
@@ -314,7 +314,7 @@
           <Property Name="Id" Type="String" Nullable="false" MaxLength="128" annotation:StoreGeneratedPattern="None" />
           <Property Name="Address" Type="String" Nullable="true" />
           <Property Name="Gender" Type="String" Nullable="true" />
-          <Property Name="FirstName" Type="String" Nullable="false" />
+          <Property Name="FirstName" Type="String" Nullable="true" />
           <Property Name="LastName" Type="String" Nullable="true" />
           <NavigationProperty Name="TempLink" Relationship="Model1.UserProfileTempLink" FromRole="UserProfile" ToRole="TempLink" />
           <NavigationProperty Name="UserEmergency" Relationship="Model1.UserProfileUserEmergency" FromRole="UserProfile" ToRole="UserEmergency" />
@@ -326,9 +326,9 @@
             <PropertyRef Name="EmergencyContactPhone" />
             <PropertyRef Name="UserProfileId" />
           </Key>
-          <Property Name="EmergencyContactPhone" Type="String" Nullable="false" annotation:StoreGeneratedPattern="None" MaxLength="Max" />
+          <Property Name="EmergencyContactPhone" Type="String" Nullable="false" annotation:StoreGeneratedPattern="None" MaxLength="128" />
           <Property Name="UserProfileId" Type="String" Nullable="false" MaxLength="128" />
-          <Property Name="ECname" Type="String" Nullable="false" />
+          <Property Name="ECname" Type="String" Nullable="true" />
           <NavigationProperty Name="UserProfile" Relationship="Model1.UserProfileUserEmergency" FromRole="UserEmergency" ToRole="UserProfile" />
           <NavigationProperty Name="EmergencyContact" Relationship="Model1.EmergencyContactUserEmergency" FromRole="UserEmergency" ToRole="EmergencyContact" />
         </EntityType>
@@ -336,7 +336,7 @@
           <Key>
             <PropertyRef Name="Phone" />
           </Key>
-          <Property Name="Phone" Type="String" Nullable="false" annotation:StoreGeneratedPattern="Identity" MaxLength="Max" />
+          <Property Name="Phone" Type="String" Nullable="false" annotation:StoreGeneratedPattern="Identity" MaxLength="128" />
           <NavigationProperty Name="UserEmergency" Relationship="Model1.EmergencyContactUserEmergency" FromRole="EmergencyContact" ToRole="UserEmergency" />
           <NavigationProperty Name="UserProfile" Relationship="Model1.EmergencyContactUserProfile" FromRole="EmergencyContact" ToRole="UserProfile" />
         </EntityType>
@@ -346,12 +346,12 @@
           </Key>
           <Property Name="JourneyId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="StartTime" Type="DateTime" Nullable="false" />
-          <Property Name="EndTime" Type="DateTime" Nullable="false" />
+          <Property Name="EndTime" Type="DateTime" Nullable="true" />
           <Property Name="NavigateRoute" Type="String" Nullable="true" />
-          <Property Name="SCoordLat" Type="Decimal" Nullable="false" Precision="10" />
-          <Property Name="SCoordLog" Type="Decimal" Nullable="false" Precision="10" />
-          <Property Name="ECoordLat" Type="Decimal" Nullable="false" Precision="10" />
-          <Property Name="ECoordLog" Type="Decimal" Nullable="false" Precision="10" />
+          <Property Name="SCoordLat" Type="Double" Nullable="false" />
+          <Property Name="SCoordLog" Type="Double" Nullable="false" />
+          <Property Name="ECoordLat" Type="Double" Nullable="true" />
+          <Property Name="ECoordLog" Type="Double" Nullable="true" />
           <Property Name="Status" Type="String" Nullable="false" />
           <Property Name="UserProfileId" Type="String" Nullable="false" MaxLength="128" />
           <NavigationProperty Name="TempLink" Relationship="Model1.TempLinkJourney" FromRole="Journey" ToRole="TempLink" />
