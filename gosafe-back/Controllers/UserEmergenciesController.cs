@@ -223,6 +223,7 @@ namespace gosafe_back.Controllers
                 UserList.Add(user);
             }
             reply.result = "success";
+            reply.data = JsonConvert.SerializeObject(UserList);
             json = JsonConvert.SerializeObject(reply);
             return Ok(json);
         }
