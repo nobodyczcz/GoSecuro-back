@@ -326,7 +326,7 @@
             <PropertyRef Name="EmergencyContactPhone" />
             <PropertyRef Name="UserProfileId" />
           </Key>
-          <Property Name="EmergencyContactPhone" Type="String" Nullable="false" annotation:StoreGeneratedPattern="None" MaxLength="128" />
+          <Property Name="EmergencyContactPhone" Type="String" Nullable="false" annotation:StoreGeneratedPattern="None" MaxLength="Max" />
           <Property Name="UserProfileId" Type="String" Nullable="false" MaxLength="128" />
           <Property Name="ECname" Type="String" Nullable="false" />
           <NavigationProperty Name="UserProfile" Relationship="Model1.UserProfileUserEmergency" FromRole="UserEmergency" ToRole="UserProfile" />
@@ -336,7 +336,7 @@
           <Key>
             <PropertyRef Name="Phone" />
           </Key>
-          <Property Name="Phone" Type="String" Nullable="false" annotation:StoreGeneratedPattern="Identity" MaxLength="128" />
+          <Property Name="Phone" Type="String" Nullable="false" annotation:StoreGeneratedPattern="Identity" MaxLength="Max" />
           <NavigationProperty Name="UserEmergency" Relationship="Model1.EmergencyContactUserEmergency" FromRole="EmergencyContact" ToRole="UserEmergency" />
           <NavigationProperty Name="UserProfile" Relationship="Model1.EmergencyContactUserProfile" FromRole="EmergencyContact" ToRole="UserProfile" />
         </EntityType>

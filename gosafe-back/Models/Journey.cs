@@ -6,7 +6,6 @@
 //     Manual changes to this file will be overwritten if the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
-using System.ComponentModel.DataAnnotations;
 
 namespace gosafe_back.Models
 {
@@ -21,19 +20,16 @@ namespace gosafe_back.Models
             this.TempLink = new HashSet<TempLink>();
             this.JTracking = new HashSet<JTracking>();
         }
+    
         public int JourneyId { get; set; }
-        [Required]
         public System.DateTime StartTime { get; set; }
         public System.DateTime EndTime { get; set; }
         public string NavigateRoute { get; set; }
-        [Required]
         public decimal SCoordLat { get; set; }
-        [Required]
         public decimal SCoordLog { get; set; }
         public decimal ECoordLat { get; set; }
         public decimal ECoordLog { get; set; }
         public string Status { get; set; }
-        [Required]
         public string UserProfileId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

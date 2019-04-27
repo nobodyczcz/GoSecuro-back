@@ -75,15 +75,13 @@ namespace gosafe_back.Models
     public class Reply
     {
         public string result { get; set; }
-        //public string Data { get; set; }
+        public string data { get; set; }
         public string errors { get; set; }
     }
     public class journeyFinishModel
     {
         [Required]
         public int JourneyId { get; set; }
-        [Required]
-        public System.DateTime EndTime { get; set; }
         [Required]
         public decimal ECoordLat { get; set; }
         [Required]
@@ -101,6 +99,13 @@ namespace gosafe_back.Models
     {
         public ContactModel pre { get; set; }
         public ContactModel now { get; set; }
+
+    }
+
+    public class JourneyCreateReplyData
+    {
+        public int journeyID { get; set; }
+        public string tempLinkID { get; set; }
 
     }
 }

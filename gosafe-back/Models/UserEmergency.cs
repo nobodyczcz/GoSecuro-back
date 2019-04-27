@@ -6,7 +6,6 @@
 //     Manual changes to this file will be overwritten if the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
-using System.ComponentModel.DataAnnotations;
 
 namespace gosafe_back.Models
 {
@@ -15,10 +14,7 @@ namespace gosafe_back.Models
     
     public partial class UserEmergency
     {
-        [Required]
-        [Phone]
         public string EmergencyContactPhone { get; set; }
-        [Required]
         public string UserProfileId { get; set; }
         public string ECname { get; set; }
     

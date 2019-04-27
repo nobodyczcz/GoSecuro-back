@@ -4,8 +4,10 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Http;
+using System.Diagnostics;
 
 
 namespace gosafe_back.Controllers
@@ -53,6 +55,7 @@ namespace gosafe_back.Controllers
         [Route("create")]
         public IHttpActionResult Create(ContactModel theContact)
         {
+            Trace.WriteLine(JsonConvert.SerializeObject(theContact));
             Reply reply = new Reply();
             String json = "";
             var userID = User.Identity.GetUserId();  //get user ID  
@@ -60,8 +63,17 @@ namespace gosafe_back.Controllers
             userEmergency.UserProfileId = userID;
             userEmergency.EmergencyContactPhone = theContact.EmergencyContactPhone;
             userEmergency.ECname = theContact.ECname;
+
+
             if (ModelState.IsValid)
             {
+                //check does the phone number already in emergencyContact table. create one if not exist.
+                if (db.EmergencyContact.Find(theContact.EmergencyContactPhone) == null)
+                {
+                    createNewContact(theContact.EmergencyContactPhone);
+
+                }
+
                 db.UserEmergency.Add(userEmergency);
                 db.SaveChanges();
                 reply.result = "success";
@@ -71,7 +83,7 @@ namespace gosafe_back.Controllers
             reply.result = "failed";
             reply.errors = "data not match";
             json = JsonConvert.SerializeObject(reply);
-            return Ok(json);
+            return BadRequest(json);
         }
 
         //// GET: UserEmergencies/Edit/5
@@ -114,41 +126,32 @@ namespace gosafe_back.Controllers
 
             if (ModelState.IsValid)
             {
+                var userEmergencies = db.UserProfile.Find(userID).UserEmergency;
+                var oldEmergency = userEmergencies.Where(s => s.EmergencyContactPhone == userEmergency.EmergencyContactPhone);
+
+                //Check does the phone exist if not store Contactphone to table EmergencyContacts
+                EmergencyContact thisContact = db.EmergencyContact.Find(newContact.EmergencyContactPhone);
+                if (thisContact == null)
+                {
+                    createNewContact(newContact.EmergencyContactPhone);
+                }
+
+
                 //Check whether old userEmergency exist
-                UserEmergency delete = db.UserEmergency.Find(userEmergency.UserProfileId,userEmergency.EmergencyContactPhone);
-                if (delete == null)
+                if (oldEmergency.Count() == 0)
                 {
-                    reply.result = "Not Found";
-                    json = JsonConvert.SerializeObject(reply);
-                    return Ok(json);
+                    reply.result = "failed";
+                    reply.errors = "Contact do not exist";
+                    return BadRequest(JsonConvert.SerializeObject(reply));
                 }
-
-                //Check whether new userEmergency exist
-                UserEmergency addNew = db.UserEmergency.Find(newContact.UserProfileId, newContact.EmergencyContactPhone);
-                if (addNew != null)
-                {
-                    reply.result = "Contact Existed";
-                    json = JsonConvert.SerializeObject(reply);
-                    return Ok(json);
-                }
-
-                db.UserEmergency.Remove(delete);
-                db.UserEmergency.Add(newContact);
+                oldEmergency.First().EmergencyContactPhone = theContact.now.EmergencyContactPhone;
+                oldEmergency.First().ECname = theContact.now.ECname;
+                db.Entry(oldEmergency.First()).State = EntityState.Modified;
                 db.SaveChanges();
                 reply.result = "Edit success";
                 json = JsonConvert.SerializeObject(reply);
                 
-                //store Contactphone to table EmergencyContacts
-                EmergencyContact thisContact = db.EmergencyContact.Find(newContact.EmergencyContactPhone);
-                if (thisContact != null)
-                {
-                    reply.result = "contact exist, edit success";
-                    json = JsonConvert.SerializeObject(reply);
-                    return Ok(json);
-                }
-                thisContact.Phone = newContact.EmergencyContactPhone;
-                db.EmergencyContact.Add(thisContact);
-                db.SaveChanges();
+                
                 reply.result = "contact create, edit success";
                 json = JsonConvert.SerializeObject(reply);
                 return Ok(json);
@@ -174,21 +177,20 @@ namespace gosafe_back.Controllers
         //    return View(userEmergency);
         //}
 
-        // POST: UserEmergencies/Delete/5
         [Authorize]
         [Route("delete")]
-        public IHttpActionResult Delete(int id)
+        public IHttpActionResult Delete(string phone)
         {
             Reply reply = new Reply();
             String json = "";
             var userID = User.Identity.GetUserId();  //get user ID  
-            UserEmergency userEmergency = db.UserEmergency.Find(id,userID);
+            UserEmergency userEmergency = db.UserEmergency.Find(phone, userID);
             if (userEmergency == null)
             {
                 reply.result = "failed";
                 reply.errors = "Not Found";
                 json = JsonConvert.SerializeObject(reply);
-                return Ok(json);
+                return BadRequest(json);
             }
             db.UserEmergency.Remove(userEmergency);
             db.SaveChanges();
@@ -213,7 +215,7 @@ namespace gosafe_back.Controllers
             {
                 reply.result = "Not found";
                 json = JsonConvert.SerializeObject(reply);
-                return Ok(json);
+                return BadRequest(json);
             }
             foreach (UserEmergency theProfile in profiles)
             {
@@ -233,6 +235,19 @@ namespace gosafe_back.Controllers
             return result;
         }
 
+        private void createNewContact(string EmergencyContactPhone)
+        {
+            EmergencyContact newContact = new EmergencyContact();
+            newContact.Phone = EmergencyContactPhone;
+            var userProfileID = identitydb.Users.Where(s => s.PhoneNumber == EmergencyContactPhone).ToList();
+            if (userProfileID.LongCount() > 0)
+            {
+                UserProfile userProfile = db.UserProfile.Find(userProfileID[0].Id);
+                newContact.UserProfile = userProfile;
+            }
+            newContact = db.EmergencyContact.Add(newContact);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -241,5 +256,6 @@ namespace gosafe_back.Controllers
             }
             base.Dispose(disposing);
         }
+
     }
 }

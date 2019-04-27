@@ -13,8 +13,8 @@ namespace gosafe_back
     {
         public static void Register(HttpConfiguration config)
         {
-            var cors = new EnableCorsAttribute("https://gosafe-back20190407071339.azurewebsites.net", "*", "*");
-            config.EnableCors(cors);
+            //var cors = new EnableCorsAttribute("*", "content-type", "*");
+            //config.EnableCors(cors);
             // Web API configuration and services
             // Configure Web API to use only bearer token authentication.
             config.SuppressDefaultHostAuthentication();

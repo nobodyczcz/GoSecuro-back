@@ -30,6 +30,7 @@ namespace gosafe_back.Controllers
         private const string LocalLoginProvider = "Local";
         private ApplicationUserManager _userManager;
         private Model1Container db = new Model1Container();
+        private ApplicationDbContext idendityDb = new ApplicationDbContext();
 
         public AccountController()
         {
@@ -338,47 +339,51 @@ namespace gosafe_back.Controllers
                 Trace.WriteLine("Result:" + signUpResult);
                 if (signUpResult.Succeeded)
                 {
-                    //await Task.Run(() =>
-                    //{
-                        
-                    //    UserProfile profile = new UserProfile();
-                    //    profile.Id = User.Identity.GetUserId();
-                    //    profile.Address = model.Address;
-                    //    profile.Gender = model.Gender;
-                    //    profile.FirstName = model.FirstName;
-                    //    profile.LastName = model.LastName;
-                    //    Trace.WriteLine(profile.Id);
-                    //    Trace.WriteLine(profile.FirstName);
-                    //    db.UserProfile.Add(profile);
-                    //    Trace.WriteLine(profile);
-                    //    try
-                    //    {
-                    //        db.SaveChanges();
-                    //    }
-                    //    catch (DbEntityValidationException e)
-                    //    {
+                    newUser = UserManager.FindByName(model.Phone);
+                    Trace.WriteLine("Find user:" + newUser.Id);
+                    await Task.Run(() =>
+                    {
 
-                    //        foreach (var i in e.EntityValidationErrors)
-                    //        {
-                    //            Trace.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-                    //            Trace.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:");
-                    //            Trace.WriteLine(i.Entry.Entity.GetType().Name);
-                    //            Trace.WriteLine(i.Entry.State);
-                    //            foreach (var ve in i.ValidationErrors)
-                    //            {
-                    //                Trace.WriteLine("- Property: \"{0}\", Error: \"{1}\"");
-                    //                Trace.WriteLine(ve.PropertyName);
-                    //                Trace.WriteLine(ve.ErrorMessage);
-                    //            };
-                    //        }
+                        UserProfile profile = new UserProfile();
+                        profile.Id = newUser.Id;
+                        profile.Address = model.Address;
+                        profile.Gender = model.Gender;
+                        profile.FirstName = model.FirstName;
+                        profile.LastName = model.LastName;
+                        Trace.WriteLine(profile.Id);
+                        Trace.WriteLine(profile.FirstName);
+                        db.UserProfile.Add(profile);
+                        Trace.WriteLine(profile);
+                        try
+                        {
+                            db.SaveChanges();
+                        }
+                        catch (DbEntityValidationException e)
+                        {
 
-                    //        throw;
-                    //    }
-                    //});
+                            foreach (var i in e.EntityValidationErrors)
+                            {
+                                Trace.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                                Trace.WriteLine("entity of type \"{0}\" in state \"{1}\" has the following validation errors:");
+                                Trace.WriteLine(i.Entry.Entity.GetType().Name);
+                                Trace.WriteLine(i.Entry.State);
+                                foreach (var ve in i.ValidationErrors)
+                                {
+                                    Trace.WriteLine("- property: \"{0}\", error: \"{1}\"");
+                                    Trace.WriteLine(ve.PropertyName);
+                                    Trace.WriteLine(ve.PropertyName);
+                                };
+                            }
+
+                            throw;
+                        }
+                    });
                     return Ok();
                 }
                 else
                 {
+                    Trace.WriteLine(signUpResult.Succeeded);
+                    Trace.WriteLine("Register failed");
                     return GetErrorResult(signUpResult);
                 }
             }

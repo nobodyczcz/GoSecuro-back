@@ -9,6 +9,7 @@ using gosafe_back.Models;
 using Newtonsoft.Json;
 using Microsoft.AspNet.Identity;
 using System.Web.Http;
+using System.Diagnostics;
 
 
 namespace gosafe_back.Controllers
@@ -55,47 +56,47 @@ namespace gosafe_back.Controllers
         [Route("create")]
         public IHttpActionResult Create(Journey journey)
         {
+            Trace.WriteLine("Receive create journey: " + JsonConvert.SerializeObject(journey));
             Reply reply = new Reply();
             String json = "";
             if (ModelState.IsValid)
             {
                 journey.Status = "Started";
-                db.Journey.Add(journey);
-                
+                var userID = User.Identity.GetUserId();
+                journey.UserProfileId = userID;
+                journey.StartTime = DateTime.Now;
+                Trace.WriteLine("Write to database: " + JsonConvert.SerializeObject(journey));
+                journey = db.Journey.Add(journey);
+                Trace.WriteLine("Add finish, journey ID: " + journey.JourneyId);
                 //Create Templink;
-                int number = 0;
-                char code;
-                string checkcode = string.Empty;
-                System.Random random = new Random();
-                for (int i = 0; i < 10; i++)
+                string checkcode = this.generateTempLink();
+
+                //if the checkcode already exist in database, re-generate one if exist
+                while (db.TempLink.Find(checkcode) != null)
                 {
-                    number = random.Next();
-                    if (number % 2 == 0)
-                    {
-                        code = (char)('0' + (char)(number % 10));
-                    }
-                    else
-                    {
-                        code = (char)('A' + (char)(number % 26));
-                    }
-                    checkcode += code.ToString();
+                    checkcode = this.generateTempLink();
                 }
+
 
                 TempLink theTemp = new TempLink();
                 theTemp.TempLinkId = checkcode;
-                theTemp.JourneyJourneyId = journey.JourneyId;
+                theTemp.JourneyJourneyId = journey.JourneyId; ;
                 theTemp.UserProfileId = journey.UserProfileId;
                 db.TempLink.Add(theTemp);
 
                 db.SaveChanges();
+                JourneyCreateReplyData data = new JourneyCreateReplyData();
+                data.journeyID = journey.JourneyId;
+                data.tempLinkID = theTemp.TempLinkId;
                 reply.result = "success";
+                reply.data = JsonConvert.SerializeObject(data);
                 json = JsonConvert.SerializeObject(reply);
                 return Ok(json);
             }
             reply.result = "failed";
             reply.errors = "data not match";
             json = JsonConvert.SerializeObject(reply);
-            return Ok(json);
+            return BadRequest(json);
         }
 
 
@@ -104,6 +105,7 @@ namespace gosafe_back.Controllers
         [Route("journeyFinish")]
         public IHttpActionResult journeyFinish(journeyFinishModel finishModel)
         {
+            Trace.WriteLine("Receive create journey: " + JsonConvert.SerializeObject(finishModel));
             Reply reply = new Reply();
             String json = "";
             if (User.Identity.IsAuthenticated)
@@ -112,13 +114,17 @@ namespace gosafe_back.Controllers
                 Journey theJourney = db.Journey.Find(finishModel.JourneyId);
                 if (userID == theJourney.UserProfileId)
                 {
-                    theJourney.EndTime = finishModel.EndTime;
+                    theJourney.EndTime = DateTime.Now;
                     theJourney.ECoordLat = finishModel.ECoordLat;
                     theJourney.ECoordLog = finishModel.ECoordLog;
                     theJourney.Status = "Finished";
                     //delete templink
-                    TempLink theTemp = db.TempLink.Find(theJourney.JourneyId);
-                    db.TempLink.Remove(theTemp);
+                    List<TempLink> theTemp = db.TempLink.Where(s=>s.JourneyJourneyId == theJourney.JourneyId).ToList();
+                    foreach (TempLink temp in theTemp)
+                    {
+                        db.TempLink.Remove(temp);
+                    }
+                    
 
                     db.Entry(theJourney).State = EntityState.Modified;
                     db.SaveChanges();
@@ -130,7 +136,7 @@ namespace gosafe_back.Controllers
             reply.result = "failed";
             reply.errors = "data not match";
             json = JsonConvert.SerializeObject(reply);
-            return Ok(json);
+            return BadRequest(json);
         }
 
         //POST: Journey Retrieve Details
@@ -164,6 +170,29 @@ namespace gosafe_back.Controllers
             result.journeyDetails = theJourney;
             result.trackDetails = db.JTracking.Where(s => s.JourneyJourneyId == theJourney.JourneyId).ToList();
             return result ;
+        }
+
+        private string generateTempLink()
+        {
+            //Create Templink;
+            int number = 0;
+            char code;
+            string checkcode = string.Empty;
+            System.Random random = new Random();
+            for (int i = 0; i < 10; i++)
+            {
+                number = random.Next();
+                if (number % 2 == 0)
+                {
+                    code = (char)('0' + (char)(number % 10));
+                }
+                else
+                {
+                    code = (char)('A' + (char)(number % 26));
+                }
+                checkcode += code.ToString();
+            }
+            return checkcode;
         }
 
         // GET: Journeys/Edit/5

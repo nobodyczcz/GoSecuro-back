@@ -34,5 +34,6 @@ namespace gosafe_back.Models
         public virtual ICollection<UserEmergency> UserEmergency { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Journey> Journey { get; set; }
+        public virtual EmergencyContact EmergencyContact { get; set; }
     }
 }
