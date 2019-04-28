@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/28/2019 15:23:35
--- Generated from EDMX file: C:\Users\Jennifer\Desktop\IEproject\gosafe-back\gosafe-back\Models\Model1.edmx
+-- Date Created: 04/27/2019 23:02:48
+-- Generated from EDMX file: C:\Users\czcz2\IEProject\gosafe-back\gosafe-back\Models\Model1.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -105,8 +105,8 @@ GO
 CREATE TABLE [dbo].[JTracking] (
     [JourneyJourneyId] int  NOT NULL,
     [Time] datetime  NOT NULL,
-    [CoordLat] decimal(10,0)  NOT NULL,
-    [CoordLog] decimal(10,0)  NOT NULL
+    [CoordLat] float  NOT NULL,
+    [CoordLog] float  NOT NULL
 );
 GO
 
@@ -115,7 +115,7 @@ CREATE TABLE [dbo].[UserProfile] (
     [Id] nvarchar(128)  NOT NULL,
     [Address] nvarchar(max)  NULL,
     [Gender] nvarchar(max)  NULL,
-    [FirstName] nvarchar(max)  NOT NULL,
+    [FirstName] nvarchar(max)  NULL,
     [LastName] nvarchar(max)  NULL
 );
 GO
@@ -124,7 +124,7 @@ GO
 CREATE TABLE [dbo].[UserEmergency] (
     [EmergencyContactPhone] nvarchar(128)  NOT NULL,
     [UserProfileId] nvarchar(128)  NOT NULL,
-    [ECname] nvarchar(max)  NOT NULL
+    [ECname] nvarchar(max)  NULL
 );
 GO
 
@@ -139,12 +139,12 @@ GO
 CREATE TABLE [dbo].[Journey] (
     [JourneyId] int IDENTITY(1,1) NOT NULL,
     [StartTime] datetime  NOT NULL,
-    [EndTime] datetime  NOT NULL,
+    [EndTime] datetime  NULL,
     [NavigateRoute] nvarchar(max)  NULL,
-    [SCoordLat] decimal(10,0)  NOT NULL,
-    [SCoordLog] decimal(10,0)  NOT NULL,
-    [ECoordLat] decimal(10,0)  NOT NULL,
-    [ECoordLog] decimal(10,0)  NOT NULL,
+    [SCoordLat] float  NOT NULL,
+    [SCoordLog] float  NOT NULL,
+    [ECoordLat] float  NULL,
+    [ECoordLog] float  NULL,
     [Status] nvarchar(max)  NOT NULL,
     [UserProfileId] nvarchar(128)  NOT NULL
 );

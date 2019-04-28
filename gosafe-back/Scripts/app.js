@@ -1,4 +1,6 @@
-﻿function ViewModel() {
+﻿
+
+function ViewModel() {
     var self = this;
 
     var tokenKey = 'accessToken';
@@ -123,5 +125,10 @@
     }
 }
 
+
+
+
+
 var app = new ViewModel();
+
 ko.applyBindings(app);

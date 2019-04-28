@@ -10,6 +10,8 @@ using Newtonsoft.Json;
 using Microsoft.AspNet.Identity;
 using System.Web.Http;
 using System.Diagnostics;
+using System.Data.Entity.Validation;
+
 
 
 namespace gosafe_back.Controllers
@@ -18,6 +20,7 @@ namespace gosafe_back.Controllers
     public class JourneysController : ApiController
     {
         private Model1Container db = new Model1Container();
+        private ApplicationDbContext identitydb = new ApplicationDbContext();
 
         //// GET: Journeys
         //public ActionResult Index()
@@ -51,11 +54,12 @@ namespace gosafe_back.Controllers
         // POST: Journeys/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        
+
         [Authorize]
         [Route("create")]
         public IHttpActionResult Create(Journey journey)
         {
+
             Trace.WriteLine("Receive create journey: " + JsonConvert.SerializeObject(journey));
             Reply reply = new Reply();
             String json = "";
@@ -63,8 +67,10 @@ namespace gosafe_back.Controllers
             {
                 journey.Status = "Started";
                 var userID = User.Identity.GetUserId();
+
                 journey.UserProfileId = userID;
                 journey.StartTime = DateTime.Now;
+                journey.EndTime = null;
                 Trace.WriteLine("Write to database: " + JsonConvert.SerializeObject(journey));
                 journey = db.Journey.Add(journey);
                 Trace.WriteLine("Add finish, journey ID: " + journey.JourneyId);
@@ -77,6 +83,11 @@ namespace gosafe_back.Controllers
                     checkcode = this.generateTempLink();
                 }
 
+                List<TempLink> availiableLinks = db.TempLink.Where(s => s.UserProfileId == userID).ToList();
+                foreach (TempLink tempLink in availiableLinks)
+                {
+                    db.TempLink.Remove(tempLink);
+                }
 
                 TempLink theTemp = new TempLink();
                 theTemp.TempLinkId = checkcode;
@@ -84,7 +95,8 @@ namespace gosafe_back.Controllers
                 theTemp.UserProfileId = journey.UserProfileId;
                 db.TempLink.Add(theTemp);
 
-                db.SaveChanges();
+                UsefulFunction.dbSave(db);
+
                 JourneyCreateReplyData data = new JourneyCreateReplyData();
                 data.journeyID = journey.JourneyId;
                 data.tempLinkID = theTemp.TempLinkId;
@@ -112,6 +124,10 @@ namespace gosafe_back.Controllers
             {
                 var userID = User.Identity.GetUserId();  //get user ID  
                 Journey theJourney = db.Journey.Find(finishModel.JourneyId);
+                if (theJourney == null)
+                {
+                    return BadRequest("Journey ID do not exist");
+                }
                 if (userID == theJourney.UserProfileId)
                 {
                     theJourney.EndTime = DateTime.Now;
@@ -119,14 +135,16 @@ namespace gosafe_back.Controllers
                     theJourney.ECoordLog = finishModel.ECoordLog;
                     theJourney.Status = "Finished";
                     //delete templink
-                    List<TempLink> theTemp = db.TempLink.Where(s=>s.JourneyJourneyId == theJourney.JourneyId).ToList();
+                    List<TempLink> theTemp = theJourney.TempLink.ToList();
+                    Trace.WriteLine("find temp links: "+theTemp.Count());
+                        //db.TempLink.Where(s=>s.JourneyJourneyId == theJourney.JourneyId).ToList();
                     foreach (TempLink temp in theTemp)
                     {
                         db.TempLink.Remove(temp);
                     } 
 
                     db.Entry(theJourney).State = EntityState.Modified;
-                    db.SaveChanges();
+                    UsefulFunction.dbSave(db);
                     reply.result = "success";
                     json = JsonConvert.SerializeObject(reply);
                     return Ok(json);
@@ -158,6 +176,9 @@ namespace gosafe_back.Controllers
             json = JsonConvert.SerializeObject(reply);
             return Ok(json);
         }
+
+        
+
 
         //POST: Journey Retrieve Details
         [Authorize]
@@ -215,6 +236,8 @@ namespace gosafe_back.Controllers
             }
             return checkcode;
         }
+
+       
 
         // GET: Journeys/Edit/5
         //public ActionResult Edit(int? id)
@@ -283,5 +306,57 @@ namespace gosafe_back.Controllers
         //    }
         //    base.Dispose(disposing);
         //}
+    }
+
+    public static class UsefulFunction
+    {
+        public static void chekProfileId(Model1Container db,string userID, Boolean save = false)
+        {
+            Trace.WriteLine("Detecting does userID " + userID + " exist");
+            if (db.UserProfile.Find(userID) == null)
+            {
+                Trace.WriteLine("Can't find " + userID);
+                UserProfile newProfile = new UserProfile();
+                newProfile.Id = userID;
+                db.UserProfile.Add(newProfile);
+                if (save)
+                {
+                    dbSave(db);
+                }
+            }
+            else
+            {
+                Trace.WriteLine("Find " + userID);
+            }
+            
+
+
+        }
+        public static void dbSave(Model1Container db)
+        {
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (DbEntityValidationException e)
+            {
+
+                foreach (var i in e.EntityValidationErrors)
+                {
+                    Trace.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                    Trace.WriteLine("entity of type \"{0}\" in state \"{1}\" has the following validation errors:");
+                    Trace.WriteLine(i.Entry.Entity.GetType().Name);
+                    Trace.WriteLine(i.Entry.State);
+                    foreach (var ve in i.ValidationErrors)
+                    {
+                        Trace.WriteLine("- property: \"{0}\", error: \"{1}\"");
+                        Trace.WriteLine(ve.PropertyName);
+                        Trace.WriteLine(ve.PropertyName);
+                    };
+                }
+
+                throw;
+            }
+        }
     }
 }

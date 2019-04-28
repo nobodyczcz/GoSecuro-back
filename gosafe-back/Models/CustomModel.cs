@@ -83,9 +83,9 @@ namespace gosafe_back.Models
         [Required]
         public int JourneyId { get; set; }
         [Required]
-        public decimal ECoordLat { get; set; }
+        public double ECoordLat { get; set; }
         [Required]
-        public decimal ECoordLog { get; set; }
+        public double ECoordLog { get; set; }
     }
     public class ContactModel
     {
@@ -107,5 +107,18 @@ namespace gosafe_back.Models
         public int journeyID { get; set; }
         public string tempLinkID { get; set; }
 
+    }
+
+    public class ReplyTempLinks
+    {
+        public string firstName { get; set; }
+        public string lastName { get; set; }
+        public string tempLink { get; set; }
+    }
+
+    public class ReplyAllEmergencies
+    {
+        public string ECname { get; set; }
+        public string EmergencyContactPhone { get; set; }
     }
 }

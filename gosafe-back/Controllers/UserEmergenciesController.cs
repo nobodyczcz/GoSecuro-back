@@ -200,13 +200,13 @@ namespace gosafe_back.Controllers
         }
 
 
-        // POST: UserEmergencies/RetrieveUser/5
+
         [Authorize]
         [Route("retrieveUser")]
         public IHttpActionResult RetrieveUser()
         {
             Reply reply = new Reply();
-            String json = "";
+            string json = "";
             List<Users> UserList = new List<Users>();
             var userID = User.Identity.GetUserId();  //get user ID  
             var thisUser = identitydb.Users.Find(userID);
@@ -227,6 +227,35 @@ namespace gosafe_back.Controllers
             json = JsonConvert.SerializeObject(reply);
             return Ok(json);
         }
+
+        [Authorize]
+        [Route("retrieveEmergencies")]
+        public IHttpActionResult RetrieveEmergencies()
+        {
+            //return all emergency contacts' name and phone for current user
+            Reply reply = new Reply();
+            string json = "";
+            var userID = User.Identity.GetUserId();  //get user ID  
+            UserProfile user = db.UserProfile.Find(userID);
+            List<UserEmergency> emergencies = user.UserEmergency.ToList();
+
+            List<ReplyAllEmergencies> result = new List<ReplyAllEmergencies>();
+            foreach (UserEmergency eme in emergencies)
+            {
+                ReplyAllEmergencies temp = new ReplyAllEmergencies();
+                temp.EmergencyContactPhone = eme.EmergencyContactPhone;
+                temp.ECname = eme.ECname;
+            }
+            
+            reply.result = "success";
+            reply.data = JsonConvert.SerializeObject(result);
+            json = JsonConvert.SerializeObject(reply);
+            return Ok(json);
+        }
+
+
+
+
 
         public Users getUser(UserEmergency theProfile)
         {
