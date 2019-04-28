@@ -355,8 +355,6 @@ namespace gosafe_back.Controllers
                         profile=db.UserProfile.Add(profile);
                         Trace.WriteLine(profile);
 
-                        
-
                         if (db.EmergencyContact.Find(newUser.PhoneNumber) == null)
                         {
                             EmergencyContact contact = new EmergencyContact();
@@ -364,6 +362,8 @@ namespace gosafe_back.Controllers
                             contact.UserProfile = profile;
                             db.EmergencyContact.Add(contact);
                         }
+
+
 
                         try
                         {
@@ -388,7 +388,11 @@ namespace gosafe_back.Controllers
 
                             throw;
                         }
+
+
                     });
+
+
                     return Ok();
                 }
                 else

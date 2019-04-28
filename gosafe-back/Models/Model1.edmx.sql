@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/28/2019 15:31:33
+-- Date Created: 04/28/2019 18:01:44
 -- Generated from EDMX file: C:\Users\czcz2\IEProject\gosafe-back\gosafe-back\Models\Model1.edmx
 -- --------------------------------------------------
 
@@ -29,17 +29,17 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_JTrackingJourney]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[JTracking] DROP CONSTRAINT [FK_JTrackingJourney];
 GO
-IF OBJECT_ID(N'[dbo].[FK_UserProfileUserEmergency]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[UserEmergency] DROP CONSTRAINT [FK_UserProfileUserEmergency];
-GO
 IF OBJECT_ID(N'[dbo].[FK_UserProfileJourney]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Journey] DROP CONSTRAINT [FK_UserProfileJourney];
 GO
-IF OBJECT_ID(N'[dbo].[FK_EmergencyContactUserEmergency]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[UserEmergency] DROP CONSTRAINT [FK_EmergencyContactUserEmergency];
-GO
 IF OBJECT_ID(N'[dbo].[FK_EmergencyContactUserProfile]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[UserProfile] DROP CONSTRAINT [FK_EmergencyContactUserProfile];
+GO
+IF OBJECT_ID(N'[dbo].[FK_UserEmergencyEmergencyContact]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[UserEmergency] DROP CONSTRAINT [FK_UserEmergencyEmergencyContact];
+GO
+IF OBJECT_ID(N'[dbo].[FK_UserProfileUserEmergency]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[UserEmergency] DROP CONSTRAINT [FK_UserProfileUserEmergency];
 GO
 
 -- --------------------------------------------------

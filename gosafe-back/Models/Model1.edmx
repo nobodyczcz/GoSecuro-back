@@ -107,7 +107,7 @@
     <Key>
       <PropertyRef Name="Phone" />
     </Key>
-    <Property Name="Phone" Type="nvarchar" StoreGeneratedPattern="Identity" Nullable="false" MaxLength="256" />
+    <Property Name="Phone" Type="nvarchar" Nullable="false" MaxLength="256" />
   </EntityType>
   <EntityType Name="Journey">
     <Key>
@@ -336,7 +336,7 @@
           <Key>
             <PropertyRef Name="Phone" />
           </Key>
-          <Property Name="Phone" Type="String" Nullable="false" annotation:StoreGeneratedPattern="Identity" MaxLength="256" />
+          <Property Name="Phone" Type="String" Nullable="false" annotation:StoreGeneratedPattern="None" MaxLength="256" />
           <NavigationProperty Name="UserProfile" Relationship="Model1.EmergencyContactUserProfile" FromRole="EmergencyContact" ToRole="UserProfile" />
           <NavigationProperty Name="UserEmergency" Relationship="Model1.UserEmergencyEmergencyContact" FromRole="EmergencyContact" ToRole="UserEmergency" />
         </EntityType>
