@@ -55,15 +55,9 @@ namespace gosafe_back.Controllers
         [Route("create")]
         public IHttpActionResult Create(ContactModel theContact)
         {
-            Trace.WriteLine(JsonConvert.SerializeObject(theContact));
             Reply reply = new Reply();
             String json = "";
-            var userID = User.Identity.GetUserId();  //get user ID  
-            UserEmergency userEmergency = new UserEmergency();
-            userEmergency.UserProfileId = userID;
-            userEmergency.EmergencyContactPhone = theContact.EmergencyContactPhone;
-            userEmergency.ECname = theContact.ECname;
-
+            var userID = User.Identity.GetUserId();  //get user ID 
 
             if (ModelState.IsValid)
             {
@@ -74,6 +68,18 @@ namespace gosafe_back.Controllers
 
                 }
 
+                UserEmergency userEmergency = new UserEmergency();
+                userEmergency.UserProfileId = userID;
+                userEmergency.EmergencyContactPhone = theContact.EmergencyContactPhone;
+                userEmergency.ECname = theContact.ECname;
+
+                if (db.UserEmergency.Find(userEmergency.EmergencyContactPhone, userEmergency.UserProfileId) != null)
+                {
+                    reply.result = "failed";
+                    reply.errors = "Existed";
+                    json = JsonConvert.SerializeObject(reply);
+                    return BadRequest(json);
+                }
                 db.UserEmergency.Add(userEmergency);
                 db.SaveChanges();
                 reply.result = "success";
@@ -177,9 +183,12 @@ namespace gosafe_back.Controllers
         //    return View(userEmergency);
         //}
 
+        // POST: UserEmergencies/delete
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [Authorize]
         [Route("delete")]
-        public IHttpActionResult Delete(string phone)
+        public IHttpActionResult DeleteUserEmergency(string phone)
         {
             Reply reply = new Reply();
             String json = "";
@@ -253,22 +262,30 @@ namespace gosafe_back.Controllers
             return Ok(json);
         }
 
-
-
-
-
         public Users getUser(UserEmergency theProfile)
         {
             Users result = new Users();
             result.phone = theProfile.EmergencyContactPhone;
-            result.userDetails = db.UserProfile.Where(s => s.Id == theProfile.UserProfileId).ToList();
+            UserProfile thisUser = db.UserProfile.Find(theProfile.UserProfileId);
+            userProfileModel theUser = new userProfileModel();
+            theUser.id = thisUser.Id;
+            theUser.address = thisUser.Address;
+            theUser.FirstName = thisUser.FirstName;
+            theUser.LastName = thisUser.LastName;
+            theUser.Gender = thisUser.Gender;
+            result.userDetails.Add(theUser);
             return result;
         }
 
         private void createNewContact(string EmergencyContactPhone)
         {
+           
             EmergencyContact newContact = new EmergencyContact();
             newContact.Phone = EmergencyContactPhone;
+
+            //Trace.WriteLine(JsonConvert.SerializeObject("~~~~~"));
+            //Trace.WriteLine(JsonConvert.SerializeObject(newContact.Phone));
+
             var userProfileID = identitydb.Users.Where(s => s.PhoneNumber == EmergencyContactPhone).ToList();
             if (userProfileID.LongCount() > 0)
             {
@@ -276,6 +293,9 @@ namespace gosafe_back.Controllers
                 newContact.UserProfile = userProfile;
             }
             newContact = db.EmergencyContact.Add(newContact);
+            //db.SaveChanges();
+            //Trace.WriteLine(JsonConvert.SerializeObject("--------"));
+            //Trace.WriteLine(JsonConvert.SerializeObject(db.EmergencyContact.Find(newContact.Phone)));
         }
 
         protected override void Dispose(bool disposing)
