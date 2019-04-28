@@ -115,7 +115,14 @@ namespace gosafe_back.Controllers
         {
             Users result = new Users();
             result.phone = theProfile.EmergencyContactPhone;
-            result.userDetails = db.UserProfile.Where(s => s.Id == theProfile.UserProfileId).ToList();
+            UserProfile thisUser = db.UserProfile.Find(theProfile.UserProfileId);
+            userProfileModel theUser = new userProfileModel();
+            theUser.id = thisUser.Id;
+            theUser.address = thisUser.Address;
+            theUser.FirstName = thisUser.FirstName;
+            theUser.LastName = thisUser.LastName;
+            theUser.Gender = thisUser.Gender;
+            result.userDetails.Add(theUser);
             return result;
         }
 

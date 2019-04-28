@@ -213,15 +213,39 @@
             console.log(e)
         }
     function testFunction() {
-        //theApi = 'api/UserEmergency/create'
-        //var data = {
-        //    EmergencyContactPhone: "0450560614",
-        //    ECname: "mike"
-        //}
+        theApi = 'api/UserEmergency/retrieveUser'
+        var data = {}
+            //theApi = 'api/UserEmergency/delete'
+            //var data = {
+            //        phone:"0420680910",
+            //}
+            //theApi = 'api/UserEmergency/edit'
+            //var data = {
+            //    pre: {
+            //        EmergencyContactPhone: "0420680910",
+            //        ECname: "Mike",
+            //    },
+            //    now: { EmergencyContactPhone: "0420680910",
+            //        ECname: "Jennifer",}
+            //}
+            //theApi = 'api/UserEmergency/create'
+            //var data = {
+            //    EmergencyContactPhone: "0420680900",
+            //    ECname: "Mike",
+            //}
+            //theApi = 'api/JTracking/Create'
+            //var data = {
+            //    JourneyJourneyId: 1,
+            //    CoordLat: -37.9105238,
+            //    CoordLog: 145.13621820000003,
+            //}
 
-        theApi = 'api/UserEmergency/retrieveEmergencies'
-            var data = {
-            }
+            //theApi = 'api/Journey/Create'
+            //var data = {
+            //    NavigateRoute: null,
+            //    SCoordLat: -37.9105238,
+            //    SCoordLog: 145.13621820000003,
+            //}
             window.apis.callApi(theApi, data, startSuccess, startError)
         }
     </script>

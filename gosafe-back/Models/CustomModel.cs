@@ -18,6 +18,8 @@ namespace gosafe_back.Models
         public float? crimeRate { get; set; }
         public String boundary { get; set; }
     }
+
+  
     public class RegisterPhoneModel
     {
         [Required]
@@ -59,11 +61,26 @@ namespace gosafe_back.Models
         public List<JTracking> trackDetails { get; set; }
     }
 
+    public class userEmergency
+    {
+        public string ECname { get; set; }
+        public string EmergencyContactPhone { get; set; }
+        public string UserProfileId { get; set; }
+
+    }
+    public class userProfileModel
+    {
+        public string id { get; set; }
+        public string address { get; set; }
+        public string Gender { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+    }
     public class Users
     {
         [Phone]
         public string phone { get; set; }
-        public List<UserProfile> userDetails { get; set; }
+        public List<userProfileModel> userDetails { get; set; }
     }
 
     public class test
