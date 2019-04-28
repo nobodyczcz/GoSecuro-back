@@ -260,6 +260,7 @@
     <Compile Include="Controllers\SuburbsController.cs" />
     <Compile Include="Controllers\TempLinksController.cs" />
     <Compile Include="Controllers\UserEmergenciesController.cs" />
+    <Compile Include="Controllers\UserProfilesController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -397,6 +398,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Views\EmergencyContacts\" />
     <Folder Include="Views\UserEmergencies\" />
+    <Folder Include="Views\UserProfiles\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
