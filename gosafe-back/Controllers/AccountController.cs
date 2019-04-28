@@ -352,8 +352,19 @@ namespace gosafe_back.Controllers
                         profile.LastName = model.LastName;
                         Trace.WriteLine(profile.Id);
                         Trace.WriteLine(profile.FirstName);
-                        db.UserProfile.Add(profile);
+                        profile=db.UserProfile.Add(profile);
                         Trace.WriteLine(profile);
+
+                        
+
+                        if (db.EmergencyContact.Find(newUser.PhoneNumber) == null)
+                        {
+                            EmergencyContact contact = new EmergencyContact();
+                            contact.Phone = newUser.PhoneNumber;
+                            contact.UserProfile = profile;
+                            db.EmergencyContact.Add(contact);
+                        }
+
                         try
                         {
                             db.SaveChanges();

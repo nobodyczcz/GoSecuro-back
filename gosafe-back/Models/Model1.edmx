@@ -30,21 +30,21 @@
       <End Role="JTracking" EntitySet="JTracking" />
       <End Role="Journey" EntitySet="Journey" />
     </AssociationSet>
-    <AssociationSet Name="UserProfileUserEmergency" Association="Model1.Store.UserProfileUserEmergency">
-      <End Role="UserProfile" EntitySet="UserProfile" />
-      <End Role="UserEmergency" EntitySet="UserEmergency" />
-    </AssociationSet>
     <AssociationSet Name="UserProfileJourney" Association="Model1.Store.UserProfileJourney">
       <End Role="UserProfile" EntitySet="UserProfile" />
       <End Role="Journey" EntitySet="Journey" />
     </AssociationSet>
-    <AssociationSet Name="EmergencyContactUserEmergency" Association="Model1.Store.EmergencyContactUserEmergency">
-      <End Role="EmergencyContact" EntitySet="EmergencyContact" />
-      <End Role="UserEmergency" EntitySet="UserEmergency" />
-    </AssociationSet>
     <AssociationSet Name="EmergencyContactUserProfile" Association="Model1.Store.EmergencyContactUserProfile">
       <End Role="EmergencyContact" EntitySet="EmergencyContact" />
       <End Role="UserProfile" EntitySet="UserProfile" />
+    </AssociationSet>
+    <AssociationSet Name="UserEmergencyEmergencyContact" Association="Model1.Store.UserEmergencyEmergencyContact">
+      <End Role="UserEmergency" EntitySet="UserEmergency" />
+      <End Role="EmergencyContact" EntitySet="EmergencyContact" />
+    </AssociationSet>
+    <AssociationSet Name="UserProfileUserEmergency" Association="Model1.Store.UserProfileUserEmergency">
+      <End Role="UserProfile" EntitySet="UserProfile" />
+      <End Role="UserEmergency" EntitySet="UserEmergency" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="Suburb">
@@ -92,22 +92,22 @@
     <Property Name="Gender" Type="nvarchar(max)" Nullable="true" />
     <Property Name="FirstName" Type="nvarchar(max)" Nullable="true" />
     <Property Name="LastName" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="EmergencyContact_Phone" Type="nvarchar" MaxLength="256" Nullable="true" />
   </EntityType>
   <EntityType Name="UserEmergency">
     <Key>
       <PropertyRef Name="EmergencyContactPhone" />
       <PropertyRef Name="UserProfileId" />
     </Key>
-    <Property Name="EmergencyContactPhone" Type="nvarchar" Nullable="false" MaxLength="128" />
-    <Property Name="UserProfileId" Type="nvarchar" Nullable="false" MaxLength="128" />
     <Property Name="ECname" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="EmergencyContactPhone" Type="nvarchar" Nullable="false" MaxLength="256" />
+    <Property Name="UserProfileId" Type="nvarchar" Nullable="false" MaxLength="128" />
   </EntityType>
   <EntityType Name="EmergencyContact">
     <Key>
       <PropertyRef Name="Phone" />
     </Key>
-    <Property Name="Phone" Type="nvarchar" StoreGeneratedPattern="Identity" Nullable="false" MaxLength="128" />
-    <Property Name="UserProfile_Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="Phone" Type="nvarchar" StoreGeneratedPattern="Identity" Nullable="false" MaxLength="256" />
   </EntityType>
   <EntityType Name="Journey">
     <Key>
@@ -172,18 +172,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="UserProfileUserEmergency">
-    <End Role="UserProfile" Type="Model1.Store.UserProfile" Multiplicity="1" />
-    <End Role="UserEmergency" Type="Model1.Store.UserEmergency" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="UserProfile">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="UserEmergency">
-        <PropertyRef Name="UserProfileId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="UserProfileJourney">
     <End Role="UserProfile" Type="Model1.Store.UserProfile" Multiplicity="1" />
     <End Role="Journey" Type="Model1.Store.Journey" Multiplicity="*" />
@@ -196,9 +184,21 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="EmergencyContactUserEmergency">
-    <End Role="EmergencyContact" Type="Model1.Store.EmergencyContact" Multiplicity="1" />
+  <Association Name="EmergencyContactUserProfile">
+    <End Role="EmergencyContact" Type="Model1.Store.EmergencyContact" Multiplicity="0..1" />
+    <End Role="UserProfile" Type="Model1.Store.UserProfile" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EmergencyContact">
+        <PropertyRef Name="Phone" />
+      </Principal>
+      <Dependent Role="UserProfile">
+        <PropertyRef Name="EmergencyContact_Phone" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UserEmergencyEmergencyContact">
     <End Role="UserEmergency" Type="Model1.Store.UserEmergency" Multiplicity="*" />
+    <End Role="EmergencyContact" Type="Model1.Store.EmergencyContact" Multiplicity="1" />
     <ReferentialConstraint>
       <Principal Role="EmergencyContact">
         <PropertyRef Name="Phone" />
@@ -208,15 +208,15 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="EmergencyContactUserProfile">
-    <End Role="EmergencyContact" Type="Model1.Store.EmergencyContact" Multiplicity="*" />
+  <Association Name="UserProfileUserEmergency">
     <End Role="UserProfile" Type="Model1.Store.UserProfile" Multiplicity="1" />
+    <End Role="UserEmergency" Type="Model1.Store.UserEmergency" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="UserProfile">
         <PropertyRef Name="Id" />
       </Principal>
-      <Dependent Role="EmergencyContact">
-        <PropertyRef Name="UserProfile_Id" />
+      <Dependent Role="UserEmergency">
+        <PropertyRef Name="UserProfileId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -249,21 +249,21 @@
             <End Role="JTracking" EntitySet="JTracking" />
             <End Role="Journey" EntitySet="Journey" />
           </AssociationSet>
-          <AssociationSet Name="UserProfileUserEmergency" Association="Model1.UserProfileUserEmergency">
-            <End Role="UserProfile" EntitySet="UserProfile" />
-            <End Role="UserEmergency" EntitySet="UserEmergency" />
-          </AssociationSet>
           <AssociationSet Name="UserProfileJourney" Association="Model1.UserProfileJourney">
             <End Role="UserProfile" EntitySet="UserProfile" />
             <End Role="Journey" EntitySet="Journey" />
           </AssociationSet>
-          <AssociationSet Name="EmergencyContactUserEmergency" Association="Model1.EmergencyContactUserEmergency">
-            <End Role="EmergencyContact" EntitySet="EmergencyContact" />
-            <End Role="UserEmergency" EntitySet="UserEmergency" />
-          </AssociationSet>
           <AssociationSet Name="EmergencyContactUserProfile" Association="Model1.EmergencyContactUserProfile">
             <End Role="EmergencyContact" EntitySet="EmergencyContact" />
             <End Role="UserProfile" EntitySet="UserProfile" />
+          </AssociationSet>
+          <AssociationSet Name="UserEmergencyEmergencyContact" Association="Model1.UserEmergencyEmergencyContact">
+            <End Role="UserEmergency" EntitySet="UserEmergency" />
+            <End Role="EmergencyContact" EntitySet="EmergencyContact" />
+          </AssociationSet>
+          <AssociationSet Name="UserProfileUserEmergency" Association="Model1.UserProfileUserEmergency">
+            <End Role="UserProfile" EntitySet="UserProfile" />
+            <End Role="UserEmergency" EntitySet="UserEmergency" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Suburb">
@@ -317,28 +317,28 @@
           <Property Name="FirstName" Type="String" Nullable="true" />
           <Property Name="LastName" Type="String" Nullable="true" />
           <NavigationProperty Name="TempLink" Relationship="Model1.UserProfileTempLink" FromRole="UserProfile" ToRole="TempLink" />
-          <NavigationProperty Name="UserEmergency" Relationship="Model1.UserProfileUserEmergency" FromRole="UserProfile" ToRole="UserEmergency" />
           <NavigationProperty Name="Journey" Relationship="Model1.UserProfileJourney" FromRole="UserProfile" ToRole="Journey" />
           <NavigationProperty Name="EmergencyContact" Relationship="Model1.EmergencyContactUserProfile" FromRole="UserProfile" ToRole="EmergencyContact" />
+          <NavigationProperty Name="UserEmergency" Relationship="Model1.UserProfileUserEmergency" FromRole="UserProfile" ToRole="UserEmergency" />
         </EntityType>
         <EntityType Name="UserEmergency">
           <Key>
             <PropertyRef Name="EmergencyContactPhone" />
             <PropertyRef Name="UserProfileId" />
           </Key>
-          <Property Name="EmergencyContactPhone" Type="String" Nullable="false" annotation:StoreGeneratedPattern="None" MaxLength="128" />
-          <Property Name="UserProfileId" Type="String" Nullable="false" MaxLength="128" />
-          <Property Name="ECname" Type="String" Nullable="true" />
+          <Property Name="ECname" Type="String" Nullable="true" MaxLength="Max" />
+          <NavigationProperty Name="EmergencyContact" Relationship="Model1.UserEmergencyEmergencyContact" FromRole="UserEmergency" ToRole="EmergencyContact" />
+          <Property Name="EmergencyContactPhone" Type="String" Nullable="false" MaxLength="256" />
           <NavigationProperty Name="UserProfile" Relationship="Model1.UserProfileUserEmergency" FromRole="UserEmergency" ToRole="UserProfile" />
-          <NavigationProperty Name="EmergencyContact" Relationship="Model1.EmergencyContactUserEmergency" FromRole="UserEmergency" ToRole="EmergencyContact" />
+          <Property Name="UserProfileId" Type="String" Nullable="false" MaxLength="128" />
         </EntityType>
         <EntityType Name="EmergencyContact">
           <Key>
             <PropertyRef Name="Phone" />
           </Key>
-          <Property Name="Phone" Type="String" Nullable="false" annotation:StoreGeneratedPattern="Identity" MaxLength="128" />
-          <NavigationProperty Name="UserEmergency" Relationship="Model1.EmergencyContactUserEmergency" FromRole="EmergencyContact" ToRole="UserEmergency" />
+          <Property Name="Phone" Type="String" Nullable="false" annotation:StoreGeneratedPattern="Identity" MaxLength="256" />
           <NavigationProperty Name="UserProfile" Relationship="Model1.EmergencyContactUserProfile" FromRole="EmergencyContact" ToRole="UserProfile" />
+          <NavigationProperty Name="UserEmergency" Relationship="Model1.UserEmergencyEmergencyContact" FromRole="EmergencyContact" ToRole="UserEmergency" />
         </EntityType>
         <EntityType Name="Journey">
           <Key>
@@ -406,18 +406,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="UserProfileUserEmergency">
-          <End Type="Model1.UserProfile" Role="UserProfile" Multiplicity="1" />
-          <End Type="Model1.UserEmergency" Role="UserEmergency" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserProfile">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="UserEmergency">
-              <PropertyRef Name="UserProfileId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="UserProfileJourney">
           <End Type="Model1.UserProfile" Role="UserProfile" Multiplicity="1" />
           <End Type="Model1.Journey" Role="Journey" Multiplicity="*" />
@@ -430,9 +418,13 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="EmergencyContactUserEmergency">
-          <End Type="Model1.EmergencyContact" Role="EmergencyContact" Multiplicity="1" />
+        <Association Name="EmergencyContactUserProfile">
+          <End Type="Model1.EmergencyContact" Role="EmergencyContact" Multiplicity="0..1" />
+          <End Type="Model1.UserProfile" Role="UserProfile" Multiplicity="0..1" />
+        </Association>
+        <Association Name="UserEmergencyEmergencyContact">
           <End Type="Model1.UserEmergency" Role="UserEmergency" Multiplicity="*" />
+          <End Type="Model1.EmergencyContact" Role="EmergencyContact" Multiplicity="1" />
           <ReferentialConstraint>
             <Principal Role="EmergencyContact">
               <PropertyRef Name="Phone" />
@@ -442,9 +434,17 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="EmergencyContactUserProfile">
-          <End Type="Model1.EmergencyContact" Role="EmergencyContact" Multiplicity="0..1" />
+        <Association Name="UserProfileUserEmergency">
           <End Type="Model1.UserProfile" Role="UserProfile" Multiplicity="1" />
+          <End Type="Model1.UserEmergency" Role="UserEmergency" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfile">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserEmergency">
+              <PropertyRef Name="UserProfileId" />
+            </Dependent>
+          </ReferentialConstraint>
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -534,13 +534,14 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <AssociationSetMapping Name="EmergencyContactUserProfile" TypeName="Model1.EmergencyContactUserProfile" StoreEntitySet="EmergencyContact">
-      <EndProperty Name="UserProfile">
-        <ScalarProperty Name="Id" ColumnName="UserProfile_Id" />
-      </EndProperty>
+    <AssociationSetMapping Name="EmergencyContactUserProfile" TypeName="Model1.EmergencyContactUserProfile" StoreEntitySet="UserProfile">
       <EndProperty Name="EmergencyContact">
-        <ScalarProperty Name="Phone" ColumnName="Phone" />
+        <ScalarProperty Name="Phone" ColumnName="EmergencyContact_Phone" />
       </EndProperty>
+      <EndProperty Name="UserProfile">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+      <Condition ColumnName="EmergencyContact_Phone" IsNull="false" />
     </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>

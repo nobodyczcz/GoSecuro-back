@@ -14,11 +14,11 @@ namespace gosafe_back.Models
     
     public partial class UserEmergency
     {
+        public string ECname { get; set; }
         public string EmergencyContactPhone { get; set; }
         public string UserProfileId { get; set; }
-        public string ECname { get; set; }
     
-        public virtual UserProfile UserProfile { get; set; }
         public virtual EmergencyContact EmergencyContact { get; set; }
+        public virtual UserProfile UserProfile { get; set; }
     }
 }

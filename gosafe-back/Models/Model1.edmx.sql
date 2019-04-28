@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/27/2019 23:02:48
+-- Date Created: 04/28/2019 15:31:33
 -- Generated from EDMX file: C:\Users\czcz2\IEProject\gosafe-back\gosafe-back\Models\Model1.edmx
 -- --------------------------------------------------
 
@@ -39,7 +39,7 @@ IF OBJECT_ID(N'[dbo].[FK_EmergencyContactUserEmergency]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[UserEmergency] DROP CONSTRAINT [FK_EmergencyContactUserEmergency];
 GO
 IF OBJECT_ID(N'[dbo].[FK_EmergencyContactUserProfile]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[EmergencyContact] DROP CONSTRAINT [FK_EmergencyContactUserProfile];
+    ALTER TABLE [dbo].[UserProfile] DROP CONSTRAINT [FK_EmergencyContactUserProfile];
 GO
 
 -- --------------------------------------------------
@@ -116,22 +116,22 @@ CREATE TABLE [dbo].[UserProfile] (
     [Address] nvarchar(max)  NULL,
     [Gender] nvarchar(max)  NULL,
     [FirstName] nvarchar(max)  NULL,
-    [LastName] nvarchar(max)  NULL
+    [LastName] nvarchar(max)  NULL,
+    [EmergencyContact_Phone] nvarchar(256)  NULL
 );
 GO
 
 -- Creating table 'UserEmergency'
 CREATE TABLE [dbo].[UserEmergency] (
-    [EmergencyContactPhone] nvarchar(128)  NOT NULL,
-    [UserProfileId] nvarchar(128)  NOT NULL,
-    [ECname] nvarchar(max)  NULL
+    [ECname] nvarchar(max)  NULL,
+    [EmergencyContactPhone] nvarchar(256)  NOT NULL,
+    [UserProfileId] nvarchar(128)  NOT NULL
 );
 GO
 
 -- Creating table 'EmergencyContact'
 CREATE TABLE [dbo].[EmergencyContact] (
-    [Phone] nvarchar(128)  NOT NULL,
-    [UserProfile_Id] nvarchar(128)  NOT NULL
+    [Phone] nvarchar(256)  NOT NULL
 );
 GO
 
@@ -254,21 +254,6 @@ ADD CONSTRAINT [FK_JTrackingJourney]
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
--- Creating foreign key on [UserProfileId] in table 'UserEmergency'
-ALTER TABLE [dbo].[UserEmergency]
-ADD CONSTRAINT [FK_UserProfileUserEmergency]
-    FOREIGN KEY ([UserProfileId])
-    REFERENCES [dbo].[UserProfile]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_UserProfileUserEmergency'
-CREATE INDEX [IX_FK_UserProfileUserEmergency]
-ON [dbo].[UserEmergency]
-    ([UserProfileId]);
-GO
-
 -- Creating foreign key on [UserProfileId] in table 'Journey'
 ALTER TABLE [dbo].[Journey]
 ADD CONSTRAINT [FK_UserProfileJourney]
@@ -284,28 +269,43 @@ ON [dbo].[Journey]
     ([UserProfileId]);
 GO
 
+-- Creating foreign key on [EmergencyContact_Phone] in table 'UserProfile'
+ALTER TABLE [dbo].[UserProfile]
+ADD CONSTRAINT [FK_EmergencyContactUserProfile]
+    FOREIGN KEY ([EmergencyContact_Phone])
+    REFERENCES [dbo].[EmergencyContact]
+        ([Phone])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_EmergencyContactUserProfile'
+CREATE INDEX [IX_FK_EmergencyContactUserProfile]
+ON [dbo].[UserProfile]
+    ([EmergencyContact_Phone]);
+GO
+
 -- Creating foreign key on [EmergencyContactPhone] in table 'UserEmergency'
 ALTER TABLE [dbo].[UserEmergency]
-ADD CONSTRAINT [FK_EmergencyContactUserEmergency]
+ADD CONSTRAINT [FK_UserEmergencyEmergencyContact]
     FOREIGN KEY ([EmergencyContactPhone])
     REFERENCES [dbo].[EmergencyContact]
         ([Phone])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
--- Creating foreign key on [UserProfile_Id] in table 'EmergencyContact'
-ALTER TABLE [dbo].[EmergencyContact]
-ADD CONSTRAINT [FK_EmergencyContactUserProfile]
-    FOREIGN KEY ([UserProfile_Id])
+-- Creating foreign key on [UserProfileId] in table 'UserEmergency'
+ALTER TABLE [dbo].[UserEmergency]
+ADD CONSTRAINT [FK_UserProfileUserEmergency]
+    FOREIGN KEY ([UserProfileId])
     REFERENCES [dbo].[UserProfile]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
--- Creating non-clustered index for FOREIGN KEY 'FK_EmergencyContactUserProfile'
-CREATE INDEX [IX_FK_EmergencyContactUserProfile]
-ON [dbo].[EmergencyContact]
-    ([UserProfile_Id]);
+-- Creating non-clustered index for FOREIGN KEY 'FK_UserProfileUserEmergency'
+CREATE INDEX [IX_FK_UserProfileUserEmergency]
+ON [dbo].[UserEmergency]
+    ([UserProfileId]);
 GO
 
 -- --------------------------------------------------
