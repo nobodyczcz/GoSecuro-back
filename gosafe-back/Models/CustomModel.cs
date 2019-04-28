@@ -108,4 +108,17 @@ namespace gosafe_back.Models
         public string tempLinkID { get; set; }
 
     }
+
+    public class ReplyTempLinks
+    {
+        public string firstName { get; set; }
+        public string lastName { get; set; }
+        public string tempLink { get; set; }
+    }
+
+    public class ReplyAllEmergencies
+    {
+        public string ECname { get; set; }
+        public string EmergencyContactPhone { get; set; }
+    }
 }

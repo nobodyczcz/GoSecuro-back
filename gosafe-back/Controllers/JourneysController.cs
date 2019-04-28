@@ -20,6 +20,7 @@ namespace gosafe_back.Controllers
     public class JourneysController : ApiController
     {
         private Model1Container db = new Model1Container();
+        private ApplicationDbContext identitydb = new ApplicationDbContext();
 
         //// GET: Journeys
         //public ActionResult Index()
@@ -53,7 +54,7 @@ namespace gosafe_back.Controllers
         // POST: Journeys/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        
+
         [Authorize]
         [Route("create")]
         public IHttpActionResult Create(Journey journey)
@@ -82,6 +83,11 @@ namespace gosafe_back.Controllers
                     checkcode = this.generateTempLink();
                 }
 
+                List<TempLink> availiableLinks = db.TempLink.Where(s => s.UserProfileId == userID).ToList();
+                foreach (TempLink tempLink in availiableLinks)
+                {
+                    db.TempLink.Remove(tempLink);
+                }
 
                 TempLink theTemp = new TempLink();
                 theTemp.TempLinkId = checkcode;
@@ -170,6 +176,9 @@ namespace gosafe_back.Controllers
             json = JsonConvert.SerializeObject(reply);
             return Ok(json);
         }
+
+        
+
 
         //POST: Journey Retrieve Details
         [Authorize]
