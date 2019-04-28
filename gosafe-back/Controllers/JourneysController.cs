@@ -170,11 +170,20 @@ namespace gosafe_back.Controllers
                 json = JsonConvert.SerializeObject(reply);
                 return BadRequest(json);
             }
-            var theJourney = theTemp.Journey;
+            ReplyEmergencyRetrieve theJourney = new ReplyEmergencyRetrieve();
+            theJourney.tempLink = templinkId;
+            theJourney.StartTime = theTemp.Journey.StartTime;
+            theJourney.EndTime = theTemp.Journey.EndTime;
+            theJourney.NavigateRoute = theTemp.Journey.NavigateRoute;
+            theJourney.SCoordLat = theTemp.Journey.SCoordLat;
+            theJourney.SCoordLog = theTemp.Journey.SCoordLog;
+            theJourney.ECoordLat = theTemp.Journey.ECoordLat;
+            theJourney.ECoordLog = theTemp.Journey.ECoordLog;
+
             reply.data = JsonConvert.SerializeObject(theJourney);
             reply.result = "success";
             json = JsonConvert.SerializeObject(reply);
-            return Ok(json);
+            return Ok(theTemp.Journey);
         }
 
         

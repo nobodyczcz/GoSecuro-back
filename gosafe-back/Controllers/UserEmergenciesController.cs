@@ -245,6 +245,7 @@ namespace gosafe_back.Controllers
                 ReplyAllEmergencies temp = new ReplyAllEmergencies();
                 temp.EmergencyContactPhone = eme.EmergencyContactPhone;
                 temp.ECname = eme.ECname;
+                result.Add(temp);
             }
             
             reply.result = "success";

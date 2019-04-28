@@ -10,6 +10,8 @@ using System.Web;
 using Newtonsoft.Json;
 using Microsoft.AspNet.Identity;
 using System.Data.Entity.Validation;
+using System.Diagnostics;
+
 
 namespace gosafe_back.Controllers
 {
@@ -78,17 +80,18 @@ namespace gosafe_back.Controllers
             var userID = User.Identity.GetUserId();  //get user ID  
             var thisUser = identitydb.Users.Find(userID);
             List<UserEmergency> profiles = db.UserEmergency.Where(s => s.EmergencyContactPhone == thisUser.PhoneNumber).ToList();
-            if (profiles == null)
+            if (profiles.Count == 0)
             {
                 reply.result = "No user set you as emergency contact";
                 json = JsonConvert.SerializeObject(reply);
                 return Ok(json);
             }
-
+            Trace.WriteLine("[INFO] find profiles: "+profiles.Count);
             foreach (UserEmergency theProfile in profiles)
             {
-                links.Concat(theProfile.UserProfile.TempLink.ToList());
+                links = links.Concat(theProfile.UserProfile.TempLink.ToList()).ToList();
             }
+            Trace.WriteLine("[INFO] find links: " + links.Count);
             List<ReplyTempLinks> result = new List<ReplyTempLinks>();
             
             foreach (TempLink link in links)

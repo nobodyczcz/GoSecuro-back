@@ -121,4 +121,16 @@ namespace gosafe_back.Models
         public string ECname { get; set; }
         public string EmergencyContactPhone { get; set; }
     }
+
+    public class ReplyEmergencyRetrieve
+    {
+        public string tempLink { get; set; }
+        public System.DateTime StartTime { get; set; }
+        public Nullable<System.DateTime> EndTime { get; set; }
+        public string NavigateRoute { get; set; }
+        public double SCoordLat { get; set; }
+        public double SCoordLog { get; set; }
+        public Nullable<double> ECoordLat { get; set; }
+        public Nullable<double> ECoordLog { get; set; }
+    }
 }

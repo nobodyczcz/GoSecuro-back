@@ -213,22 +213,15 @@
             console.log(e)
         }
     function testFunction() {
-        theApi = 'api/EmergencyContact'
-        var data = {}
-            }
-            //theApi = 'api/JTracking/Create'
-            //var data = {
-            //    JourneyJourneyId: 1,
-            //    CoordLat: -37.9105238,
-            //    CoordLog: 145.13621820000003,
-            //}
+        //theApi = 'api/UserEmergency/create'
+        //var data = {
+        //    EmergencyContactPhone: "0450560614",
+        //    ECname: "mike"
+        //}
 
-            //theApi = 'api/Journey/Create'
-            //var data = {
-            //    NavigateRoute: null,
-            //    SCoordLat: -37.9105238,
-            //    SCoordLog: 145.13621820000003,
-            //}
+        theApi = 'api/UserEmergency/retrieveEmergencies'
+            var data = {
+            }
             window.apis.callApi(theApi, data, startSuccess, startError)
         }
     </script>
