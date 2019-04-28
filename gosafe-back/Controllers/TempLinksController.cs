@@ -97,7 +97,7 @@ namespace gosafe_back.Controllers
             foreach (TempLink link in links)
             {
                 ReplyTempLinks temp = new ReplyTempLinks();
-                temp.tempLink = link.TempLinkId;
+                temp.TempLinkId = link.TempLinkId;
                 temp.firstName = link.UserProfile.FirstName;
                 temp.lastName = link.UserProfile.LastName;
                 result.Add(temp);
@@ -107,6 +107,30 @@ namespace gosafe_back.Controllers
             reply.data = JsonConvert.SerializeObject(result);
             json = JsonConvert.SerializeObject(reply);
             return Ok(json);
+        }
+
+        [Authorize]
+        [Route("updateLocations")]
+        public IHttpActionResult UpdateLocations(List<LinkAndTime> data)
+        {
+            if (ModelState.IsValid)
+            {
+                List<ReplyUpdateLocations> reply = new List<ReplyUpdateLocations>(); 
+                foreach (LinkAndTime linkTime in data)
+                {
+                    var locations = db.TempLink.Find(linkTime.TempLinkId).Journey.JTracking.Where(s => s.Time > linkTime.lastLocTime).Select(s=> new {s.Time,s.CoordLat,s.CoordLog }).OrderBy(s=>s.Time).ToList();
+                    ReplyUpdateLocations temp = new ReplyUpdateLocations();
+                    temp.TempLinkId = linkTime.TempLinkId;
+                    temp.locationListJson = JsonConvert.SerializeObject(locations);
+                    reply.Add(temp);
+
+                }
+
+                return Ok(reply);
+            }
+            //ViewBag.JourneyJourneyId = new SelectList(db.Journey, "JourneyId", "EndTime", tempLink.JourneyJourneyId);
+            //ViewBag.UserProfileId = new SelectList(db.UserProfile, "Id", "Address", tempLink.UserProfileId);
+            return BadRequest("Check your data");
         }
 
 

@@ -122,7 +122,7 @@ namespace gosafe_back.Models
     public class JourneyCreateReplyData
     {
         public int journeyID { get; set; }
-        public string tempLinkID { get; set; }
+        public string TempLinkId { get; set; }
 
     }
 
@@ -130,7 +130,7 @@ namespace gosafe_back.Models
     {
         public string firstName { get; set; }
         public string lastName { get; set; }
-        public string tempLink { get; set; }
+        public string TempLinkId { get; set; }
     }
 
     public class ReplyAllEmergencies
@@ -141,7 +141,7 @@ namespace gosafe_back.Models
 
     public class ReplyEmergencyRetrieve
     {
-        public string tempLink { get; set; }
+        public string TempLinkId { get; set; }
         public System.DateTime StartTime { get; set; }
         public Nullable<System.DateTime> EndTime { get; set; }
         public string NavigateRoute { get; set; }
@@ -152,12 +152,29 @@ namespace gosafe_back.Models
     }
     public class EmergencyRetrive
     {
-        public string templinkId { get; set; }
+        public string TempLinkId { get; set; }
     }
     public class ReplyRetreiveProfile {
         public string Address { get; set; }
         public string Gender { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string Phone { get; set; }
+        public string Email { get; set; }
     }
+
+    public class LinkAndTime
+    {
+        [Required]
+        public string TempLinkId { get; set; }
+        [Required]
+        public DateTime lastLocTime { get; set; }
+    }
+
+    public class ReplyUpdateLocations
+    {
+        public string TempLinkId { get; set; }
+        public string locationListJson { get; set; }
+    }
+
 }
