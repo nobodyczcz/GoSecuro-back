@@ -188,7 +188,7 @@ namespace gosafe_back.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [Authorize]
         [Route("delete")]
-        public IHttpActionResult DeleteUserEmergency(string phone)
+        public IHttpActionResult DeleteUserEmergency(String phone)
         {
             Reply reply = new Reply();
             String json = "";

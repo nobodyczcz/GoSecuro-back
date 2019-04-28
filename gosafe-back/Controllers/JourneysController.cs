@@ -157,9 +157,11 @@ namespace gosafe_back.Controllers
         }
 
         //POST: Emergency Retrieve Journey Details
+        [AllowAnonymous]
         [Route("EmergencyRetrieve")]
-        public IHttpActionResult EmergencyRetrive(string templinkId)
+        public IHttpActionResult EmergencyRetrive(EmergencyRetrive model)
         {
+            string templinkId = model.templinkId;
             Reply reply = new Reply();
             String json = "";
             var theTemp = db.TempLink.Find(templinkId);
@@ -183,7 +185,7 @@ namespace gosafe_back.Controllers
             reply.data = JsonConvert.SerializeObject(theJourney);
             reply.result = "success";
             json = JsonConvert.SerializeObject(reply);
-            return Ok(theTemp.Journey);
+            return Ok(json);
         }
 
         
