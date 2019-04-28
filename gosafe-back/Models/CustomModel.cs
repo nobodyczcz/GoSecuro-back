@@ -177,4 +177,14 @@ namespace gosafe_back.Models
         public Nullable<double> ECoordLat { get; set; }
         public Nullable<double> ECoordLog { get; set; }
     }
+    public class EmergencyRetrive
+    {
+        public string templinkId { get; set; }
+    }
+    public class ReplyRetreiveProfile {
+        public string Address { get; set; }
+        public string Gender { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+    }
 }

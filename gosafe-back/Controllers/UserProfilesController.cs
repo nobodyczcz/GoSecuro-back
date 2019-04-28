@@ -65,7 +65,13 @@ namespace gosafe_back.Controllers
                 json = JsonConvert.SerializeObject(reply);
                 return BadRequest(json);
             }
-            reply.data = JsonConvert.SerializeObject(theProfile);
+            ReplyRetreiveProfile profile = new ReplyRetreiveProfile();
+            profile.Address = theProfile.Address;
+            profile.Gender = theProfile.Gender;
+            profile.FirstName = theProfile.FirstName;
+            profile.LastName = theProfile.LastName;
+
+            reply.data = JsonConvert.SerializeObject(profile);
             reply.result = "success";
             return Ok(reply);
         }
