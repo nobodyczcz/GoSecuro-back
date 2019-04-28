@@ -213,12 +213,34 @@
             console.log(e)
         }
     function testFunction() {
-        theApi = 'api/UserEmergency/retrieveUser'
+        //theApi = 'api/Journey/Create'
+        //var data = {
+        //    NavigateRoute: null,
+        //    SCoordLat: -37.9105238,
+        //    SCoordLog: 145.13621820000003,
+        //}
+
+        theApi = 'api/Journey/retrieveHistory'
         var data = {}
-            //theApi = 'api/UserEmergency/delete'
-            //var data = {
-            //        phone:"0420680910",
-            //}
+
+       //theApi = 'api/Journey/journeyFinish'
+       //var data = {
+       //         JourneyId: 2,
+       //         Ecoordlat: -37.9105240,
+       //         Ecoordlog: 145.13621820000002,
+       //     }
+
+        //theApi = 'api/UserEmergency/retrieveUser'
+        //var data = {}
+
+        //theApi = 'api/UserEmergency/retrieveEmergencies'
+        //var data = {}
+
+        //theApi = 'api/UserEmergency/delete'
+        //var data = {
+        //            EmergencyContactPhone: "0420680900",
+        //}
+ 
             //theApi = 'api/UserEmergency/edit'
             //var data = {
             //    pre: {
@@ -233,22 +255,14 @@
             //    EmergencyContactPhone: "0420680900",
             //    ECname: "Mike",
             //}
-            theApi = 'api/JTracking/Create'
-            var data = {
-                JourneyJourneyId: 1,
-                CoordLat: -37.9105238,
-                CoordLog: 145.13621820000003,
-            }
-
-        //theApi = 'api/Journey/EmergencyRetrieve';
-        //var data = { templinkId:"04ZT6486V8"}
-
-            //theApi = 'api/Journey/Create'
+            //theApi = 'api/JTracking/Create'
             //var data = {
-            //    NavigateRoute: null,
-            //    SCoordLat: -37.9105238,
-            //    SCoordLog: 145.13621820000003,
+            //    JourneyJourneyId: 1,
+            //    CoordLat: -37.9105238,
+            //    CoordLog: 145.13621820000003,
             //}
+
+
             window.apis.callApi(theApi, data, startSuccess, startError)
         }
     </script>

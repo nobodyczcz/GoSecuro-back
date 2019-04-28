@@ -47,6 +47,28 @@ namespace gosafe_back.Controllers
         //    ViewBag.EmergencyContactPhone = new SelectList(db.EmergencyContact, "Phone", "Phone");
         //    return View();
         //}
+        [HttpPost]
+        [Authorize]
+        [Route("delete")]
+        public IHttpActionResult Delete(EmergencyDelete theEmergency)
+        {
+            Reply reply = new Reply();
+            String json = "";
+            var userID = User.Identity.GetUserId();  //get user ID  
+            UserEmergency userEmergency = db.UserEmergency.Find(theEmergency.EmergencyContactPhone,userID);
+            if (userEmergency == null)
+            {
+                reply.result = "failed";
+                reply.errors = "Not Found";
+                json = JsonConvert.SerializeObject(reply);
+                return BadRequest(json);
+            }
+            db.UserEmergency.Remove(userEmergency);
+            db.SaveChanges();
+            reply.result = "success";
+            json = JsonConvert.SerializeObject(reply);
+            return Ok(json);
+        }
 
         // POST: UserEmergencies/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
@@ -186,28 +208,7 @@ namespace gosafe_back.Controllers
         // POST: UserEmergencies/delete
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize]
-        [Route("delete")]
-        public IHttpActionResult DeleteUserEmergency(String phone)
-        {
-            Reply reply = new Reply();
-            String json = "";
-            var userID = User.Identity.GetUserId();  //get user ID  
-            UserEmergency userEmergency = db.UserEmergency.Find(phone, userID);
-            if (userEmergency == null)
-            {
-                reply.result = "failed";
-                reply.errors = "Not Found";
-                json = JsonConvert.SerializeObject(reply);
-                return BadRequest(json);
-            }
-            db.UserEmergency.Remove(userEmergency);
-            db.SaveChanges();
-            reply.result = "success";
-            json = JsonConvert.SerializeObject(reply);
-            return Ok(json);
-        }
-
+ 
 
 
         [Authorize]
