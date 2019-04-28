@@ -56,9 +56,31 @@ namespace gosafe_back.Models
         [Display(Name = "Gender")]
         public string Gender { get; set; }
     }
+
+    public class JourneyModel
+    {
+        public int Journeyid { get; set; }
+        public DateTime StartTime { get; set; }
+        public Nullable<DateTime> EndTime { get; set; }
+        public string NavigateRoute { get; set; }
+        public double SCoordLat { get; set; }
+        public double SCoordLog { get; set; }
+        public Nullable<double> ECoordLat { get; set; }
+        public Nullable<double> ECoordLog { get; set; }
+        public string Status { get; set; }
+        public string UserProfileId { get; set; }
+    }
+    public class JTrackModel
+    {
+        public int JourneyJourneyId { get; set; }
+        public System.DateTime Time { get; set; }
+        public double CoordLat { get; set; }
+        public double CoordLog { get; set; }
+
+    }
     public class SingleJourney {
-        public Journey journeyDetails { get; set; }
-        public List<JTracking> trackDetails { get; set; }
+        public JourneyModel journeyDetails { get; set; }
+        public List<JTrackModel> trackDetails { get; set; }
     }
 
     public class userEmergency
@@ -66,6 +88,11 @@ namespace gosafe_back.Models
         public string ECname { get; set; }
         public string EmergencyContactPhone { get; set; }
         public string UserProfileId { get; set; }
+
+    }
+    public class EmergencyDelete
+    {
+        public string EmergencyContactPhone { get; set; }
 
     }
     public class userProfileModel

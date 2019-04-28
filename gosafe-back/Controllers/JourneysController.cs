@@ -218,9 +218,31 @@ namespace gosafe_back.Controllers
         public SingleJourney getJourney(Journey theJourney)
         {
             SingleJourney result = new SingleJourney();
-            result.journeyDetails = theJourney;
-            result.trackDetails = db.JTracking.Where(s => s.JourneyJourneyId == theJourney.JourneyId).ToList();
-            return result ;
+            JourneyModel thisjourney = new JourneyModel();
+            thisjourney.ECoordLat = theJourney.ECoordLat;
+            thisjourney.ECoordLog = theJourney.ECoordLog;
+            thisjourney.EndTime = theJourney.EndTime;
+            thisjourney.Journeyid = theJourney.JourneyId;
+            thisjourney.NavigateRoute = theJourney.NavigateRoute;
+            thisjourney.SCoordLat = theJourney.SCoordLat;
+            thisjourney.SCoordLog = theJourney.SCoordLog;
+            thisjourney.StartTime = theJourney.StartTime;
+            thisjourney.Status = theJourney.Status;
+            thisjourney.UserProfileId = theJourney.UserProfileId;
+            result.journeyDetails = thisjourney;
+            
+            List<JTracking> theTrack = db.JTracking.Where(s => s.JourneyJourneyId == theJourney.JourneyId).ToList();
+            foreach (JTracking t in theTrack)
+            {
+                JTrackModel thisTrack = new JTrackModel();
+                thisTrack.CoordLat = t.CoordLat;
+                thisTrack.CoordLog = t.CoordLog;
+                thisTrack.JourneyJourneyId = t.JourneyJourneyId;
+                thisTrack.Time = t.Time;
+                result.trackDetails.Add(thisTrack);
+            }
+            //result.trackDetails = db.JTracking.Where(s => s.JourneyJourneyId == theJourney.JourneyId).ToList();
+            return result;
         }
 
         private string generateTempLink()
