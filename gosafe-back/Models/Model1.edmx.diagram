@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="7111e89d2cad4493ae52a74a4f7a78b1" Name="Diagram1" ZoomLevel="74" >
+      <Diagram DiagramId="7111e89d2cad4493ae52a74a4f7a78b1" Name="Diagram1" ZoomLevel="64" >
         <EntityTypeShape EntityType="Model1.Suburb" Width="1.5" PointX="7.5" PointY="4.5" />
         <EntityTypeShape EntityType="Model1.CrimeRate" Width="1.5" PointX="9.625" PointY="4.5" />
         <EntityTypeShape EntityType="Model1.TempLink" Width="1.5" PointX="0.5" PointY="4.5" />
@@ -17,10 +17,10 @@
         <AssociationConnector Association="Model1.TempLinkJourney" />
         <AssociationConnector Association="Model1.UserProfileTempLink" />
         <AssociationConnector Association="Model1.JTrackingJourney" />
-        <AssociationConnector Association="Model1.UserProfileUserEmergency" />
         <AssociationConnector Association="Model1.UserProfileJourney" />
-        <AssociationConnector Association="Model1.EmergencyContactUserEmergency" />
         <AssociationConnector Association="Model1.EmergencyContactUserProfile" />
+        <AssociationConnector Association="Model1.UserEmergencyEmergencyContact" />
+        <AssociationConnector Association="Model1.UserProfileUserEmergency" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

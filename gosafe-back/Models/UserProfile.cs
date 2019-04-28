@@ -18,8 +18,8 @@ namespace gosafe_back.Models
         public UserProfile()
         {
             this.TempLink = new HashSet<TempLink>();
-            this.UserEmergency = new HashSet<UserEmergency>();
             this.Journey = new HashSet<Journey>();
+            this.UserEmergency = new HashSet<UserEmergency>();
         }
     
         public string Id { get; set; }
@@ -31,9 +31,9 @@ namespace gosafe_back.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TempLink> TempLink { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserEmergency> UserEmergency { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Journey> Journey { get; set; }
         public virtual EmergencyContact EmergencyContact { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserEmergency> UserEmergency { get; set; }
     }
 }

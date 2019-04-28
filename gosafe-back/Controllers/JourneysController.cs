@@ -310,19 +310,44 @@ namespace gosafe_back.Controllers
 
     public static class UsefulFunction
     {
+        private static ApplicationDbContext identitydb = new ApplicationDbContext();
+
         public static void chekProfileId(Model1Container db,string userID, Boolean save = false)
         {
+            
             Trace.WriteLine("Detecting does userID " + userID + " exist");
             if (db.UserProfile.Find(userID) == null)
             {
                 Trace.WriteLine("Can't find " + userID);
                 UserProfile newProfile = new UserProfile();
                 newProfile.Id = userID;
-                db.UserProfile.Add(newProfile);
+                newProfile = db.UserProfile.Add(newProfile);
+
+                
+                var identity = identitydb.Users.Find(userID);
+
+                if (identity.UserName != null && db.EmergencyContact.Find(identity.UserName) == null)
+                {
+                    Trace.WriteLine("[INFO]" + identity.UserName);
+                    EmergencyContact contact = new EmergencyContact();
+                    contact.Phone = identity.UserName;
+                    contact.UserProfile = newProfile;
+                    Trace.WriteLine("[INFO]" + contact.Phone);
+                    contact = db.EmergencyContact.Add(contact);
+                    Trace.WriteLine("[INFO]" + contact.Phone);
+                }
+
                 if (save)
                 {
-                    dbSave(db);
+
+                        db.SaveChanges();
+
+
+                    
                 }
+
+
+
             }
             else
             {
