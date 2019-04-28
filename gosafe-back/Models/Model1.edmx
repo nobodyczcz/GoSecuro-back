@@ -107,7 +107,7 @@
     <Key>
       <PropertyRef Name="Phone" />
     </Key>
-    <Property Name="Phone" Type="nvarchar" StoreGeneratedPattern="None" Nullable="false" MaxLength="256" />
+    <Property Name="Phone" Type="nvarchar" Nullable="false" MaxLength="256" />
   </EntityType>
   <EntityType Name="Journey">
     <Key>

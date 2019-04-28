@@ -339,10 +339,15 @@ namespace gosafe_back.Controllers
 
                 if (save)
                 {
-
+                    try
+                    {
                         db.SaveChanges();
-
-
+                    }
+                    catch(Exception e)
+                    {
+                        Trace.WriteLine(e);
+                        throw;
+                    }
                     
                 }
 
