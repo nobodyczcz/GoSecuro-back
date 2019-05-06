@@ -14,11 +14,19 @@ namespace gosafe_back.Models
     
     public partial class Suburb
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Suburb()
+        {
+            this.Pin = new HashSet<Pin>();
+        }
+    
         public string SuburbName { get; set; }
         public Nullable<int> Postcode { get; set; }
         public string Boundary1 { get; set; }
         public string Boundary2 { get; set; }
     
         public virtual CrimeRate CrimeRate { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Pin> Pin { get; set; }
     }
 }

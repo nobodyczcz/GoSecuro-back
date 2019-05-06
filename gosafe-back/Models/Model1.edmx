@@ -14,6 +14,7 @@
     <EntitySet Name="UserEmergency" EntityType="Model1.Store.UserEmergency" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="EmergencyContact" EntityType="Model1.Store.EmergencyContact" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Journey" EntityType="Model1.Store.Journey" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Pin" EntityType="Model1.Store.Pin" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="SuburbCrimeRate" Association="Model1.Store.SuburbCrimeRate">
       <End Role="Suburb" EntitySet="Suburb" />
       <End Role="CrimeRate" EntitySet="CrimeRate" />
@@ -45,6 +46,14 @@
     <AssociationSet Name="UserProfileUserEmergency" Association="Model1.Store.UserProfileUserEmergency">
       <End Role="UserProfile" EntitySet="UserProfile" />
       <End Role="UserEmergency" EntitySet="UserEmergency" />
+    </AssociationSet>
+    <AssociationSet Name="UserProfilePin" Association="Model1.Store.UserProfilePin">
+      <End Role="UserProfile" EntitySet="UserProfile" />
+      <End Role="Pin" EntitySet="Pin" />
+    </AssociationSet>
+    <AssociationSet Name="SuburbPin" Association="Model1.Store.SuburbPin">
+      <End Role="Suburb" EntitySet="Suburb" />
+      <End Role="Pin" EntitySet="Pin" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="Suburb">
@@ -123,6 +132,24 @@
     <Property Name="ECoordLog" Type="float" Nullable="true" />
     <Property Name="Status" Type="nvarchar(max)" Nullable="false" />
     <Property Name="UserProfileId" Type="nvarchar" Nullable="false" MaxLength="128" />
+  </EntityType>
+  <EntityType Name="Pin">
+    <Key>
+      <PropertyRef Name="PinId" />
+    </Key>
+    <Property Name="PinId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Time" Type="datetime" Nullable="false" />
+    <Property Name="CoordLat" Type="float" Nullable="false" />
+    <Property Name="CoordLog" Type="float" Nullable="false" />
+    <Property Name="StreetLight" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="CCTV" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ExperienceType" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Experience" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="OtherDetails" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="UserProfileId" Type="nvarchar" Nullable="false" MaxLength="128" />
+    <Property Name="State" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Street" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="SuburbSuburbName" Type="nvarchar" Nullable="false" MaxLength="128" />
   </EntityType>
   <Association Name="SuburbCrimeRate">
     <End Role="Suburb" Type="Model1.Store.Suburb" Multiplicity="1" />
@@ -220,6 +247,30 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="UserProfilePin">
+    <End Role="UserProfile" Type="Model1.Store.UserProfile" Multiplicity="1" />
+    <End Role="Pin" Type="Model1.Store.Pin" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserProfile">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Pin">
+        <PropertyRef Name="UserProfileId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SuburbPin">
+    <End Role="Suburb" Type="Model1.Store.Suburb" Multiplicity="1" />
+    <End Role="Pin" Type="Model1.Store.Pin" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Suburb">
+        <PropertyRef Name="SuburbName" />
+      </Principal>
+      <Dependent Role="Pin">
+        <PropertyRef Name="SuburbSuburbName" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -265,6 +316,15 @@
             <End Role="UserProfile" EntitySet="UserProfile" />
             <End Role="UserEmergency" EntitySet="UserEmergency" />
           </AssociationSet>
+          <EntitySet Name="Pin" EntityType="Model1.Pin" />
+          <AssociationSet Name="UserProfilePin" Association="Model1.UserProfilePin">
+            <End Role="UserProfile" EntitySet="UserProfile" />
+            <End Role="Pin" EntitySet="Pin" />
+          </AssociationSet>
+          <AssociationSet Name="SuburbPin" Association="Model1.SuburbPin">
+            <End Role="Suburb" EntitySet="Suburb" />
+            <End Role="Pin" EntitySet="Pin" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Suburb">
           <Key>
@@ -275,6 +335,7 @@
           <Property Name="Boundary1" Type="String" Nullable="false" MaxLength="Max" />
           <Property Name="Boundary2" Type="String" Nullable="false" MaxLength="Max" />
           <NavigationProperty Name="CrimeRate" Relationship="Model1.SuburbCrimeRate" FromRole="Suburb" ToRole="CrimeRate" />
+          <NavigationProperty Name="Pin" Relationship="Model1.SuburbPin" FromRole="Suburb" ToRole="Pin" />
         </EntityType>
         <EntityType Name="CrimeRate">
           <Key>
@@ -320,6 +381,7 @@
           <NavigationProperty Name="Journey" Relationship="Model1.UserProfileJourney" FromRole="UserProfile" ToRole="Journey" />
           <NavigationProperty Name="EmergencyContact" Relationship="Model1.EmergencyContactUserProfile" FromRole="UserProfile" ToRole="EmergencyContact" />
           <NavigationProperty Name="UserEmergency" Relationship="Model1.UserProfileUserEmergency" FromRole="UserProfile" ToRole="UserEmergency" />
+          <NavigationProperty Name="Pin" Relationship="Model1.UserProfilePin" FromRole="UserProfile" ToRole="Pin" />
         </EntityType>
         <EntityType Name="UserEmergency">
           <Key>
@@ -446,6 +508,50 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Pin">
+          <Key>
+            <PropertyRef Name="PinId" />
+          </Key>
+          <Property Name="PinId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Time" Type="DateTime" Nullable="false" />
+          <Property Name="CoordLat" Type="Double" Nullable="false" />
+          <Property Name="CoordLog" Type="Double" Nullable="false" />
+          <Property Name="StreetLight" Type="String" Nullable="false" />
+          <Property Name="CCTV" Type="String" Nullable="false" />
+          <Property Name="ExperienceType" Type="String" Nullable="false" />
+          <Property Name="Experience" Type="String" Nullable="true" />
+          <Property Name="OtherDetails" Type="String" Nullable="true" />
+          <NavigationProperty Name="UserProfile" Relationship="Model1.UserProfilePin" FromRole="Pin" ToRole="UserProfile" />
+          <Property Name="UserProfileId" Type="String" Nullable="false" MaxLength="128" />
+          <Property Name="State" Type="String" Nullable="false" />
+          <Property Name="Street" Type="String" Nullable="false" />
+          <NavigationProperty Name="Suburb" Relationship="Model1.SuburbPin" FromRole="Pin" ToRole="Suburb" />
+          <Property Name="SuburbSuburbName" Type="String" Nullable="false" MaxLength="128" />
+        </EntityType>
+        <Association Name="UserProfilePin">
+          <End Type="Model1.UserProfile" Role="UserProfile" Multiplicity="1" />
+          <End Type="Model1.Pin" Role="Pin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfile">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Pin">
+              <PropertyRef Name="UserProfileId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SuburbPin">
+          <End Type="Model1.Suburb" Role="Suburb" Multiplicity="1" />
+          <End Type="Model1.Pin" Role="Pin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Suburb">
+              <PropertyRef Name="SuburbName" />
+            </Principal>
+            <Dependent Role="Pin">
+              <PropertyRef Name="SuburbSuburbName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -531,6 +637,25 @@
           <ScalarProperty Name="ECoordLog" ColumnName="ECoordLog" />
           <ScalarProperty Name="Status" ColumnName="Status" />
           <ScalarProperty Name="UserProfileId" ColumnName="UserProfileId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Pin">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Pin)">
+        <MappingFragment StoreEntitySet="Pin">
+          <ScalarProperty Name="PinId" ColumnName="PinId" />
+          <ScalarProperty Name="Time" ColumnName="Time" />
+          <ScalarProperty Name="CoordLat" ColumnName="CoordLat" />
+          <ScalarProperty Name="CoordLog" ColumnName="CoordLog" />
+          <ScalarProperty Name="StreetLight" ColumnName="StreetLight" />
+          <ScalarProperty Name="CCTV" ColumnName="CCTV" />
+          <ScalarProperty Name="ExperienceType" ColumnName="ExperienceType" />
+          <ScalarProperty Name="Experience" ColumnName="Experience" />
+          <ScalarProperty Name="OtherDetails" ColumnName="OtherDetails" />
+          <ScalarProperty Name="UserProfileId" ColumnName="UserProfileId" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="Street" ColumnName="Street" />
+          <ScalarProperty Name="SuburbSuburbName" ColumnName="SuburbSuburbName" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

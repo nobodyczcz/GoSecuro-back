@@ -257,6 +257,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\JourneysController.cs" />
     <Compile Include="Controllers\JTrackingsController.cs" />
+    <Compile Include="Controllers\PinsController.cs" />
     <Compile Include="Controllers\SuburbsController.cs" />
     <Compile Include="Controllers\TempLinksController.cs" />
     <Compile Include="Controllers\UserEmergenciesController.cs" />
@@ -295,6 +296,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Pin.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Suburb.cs">
       <DependentUpon>Model1.tt</DependentUpon>
@@ -397,6 +401,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\EmergencyContacts\" />
+    <Folder Include="Views\Pins\" />
     <Folder Include="Views\UserEmergencies\" />
     <Folder Include="Views\UserProfiles\" />
   </ItemGroup>

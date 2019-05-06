@@ -20,6 +20,7 @@ namespace gosafe_back.Models
             this.TempLink = new HashSet<TempLink>();
             this.Journey = new HashSet<Journey>();
             this.UserEmergency = new HashSet<UserEmergency>();
+            this.Pin = new HashSet<Pin>();
         }
     
         public string Id { get; set; }
@@ -35,5 +36,7 @@ namespace gosafe_back.Models
         public virtual EmergencyContact EmergencyContact { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserEmergency> UserEmergency { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Pin> Pin { get; set; }
     }
 }

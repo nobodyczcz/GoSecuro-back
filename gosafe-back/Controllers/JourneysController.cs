@@ -14,6 +14,7 @@ using System.Data.Entity.Validation;
 
 
 
+
 namespace gosafe_back.Controllers
 {
     [RoutePrefix("api/Journey")]
