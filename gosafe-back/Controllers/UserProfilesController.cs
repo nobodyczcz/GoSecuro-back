@@ -17,6 +17,8 @@ namespace gosafe_back.Controllers
     public class UserProfilesController : ApiController
     {
         private Model1Container db = new Model1Container();
+        private ApplicationDbContext identitydb = new ApplicationDbContext();
+
 
         //// GET: UserProfiles
         //public ActionResult Index()
@@ -70,6 +72,9 @@ namespace gosafe_back.Controllers
             profile.Gender = theProfile.Gender;
             profile.FirstName = theProfile.FirstName;
             profile.LastName = theProfile.LastName;
+            var user = identitydb.Users.Find(userID);
+            profile.Phone = user.PhoneNumber;
+            profile.Email = user.Email;
 
             reply.data = JsonConvert.SerializeObject(profile);
             reply.result = "success";
@@ -101,8 +106,10 @@ namespace gosafe_back.Controllers
         {
             Reply reply = new Reply();
             String json = "";
+            
             if (ModelState.IsValid)
             {
+                userProfile.Id = User.Identity.GetUserId();
                 db.Entry(userProfile).State = EntityState.Modified;
                 db.SaveChanges();
                 reply.result = "success";

@@ -100,7 +100,7 @@ namespace gosafe_back.Controllers
 
                 JourneyCreateReplyData data = new JourneyCreateReplyData();
                 data.journeyID = journey.JourneyId;
-                data.tempLinkID = theTemp.TempLinkId;
+                data.TempLinkId = theTemp.TempLinkId;
                 reply.result = "success";
                 reply.data = JsonConvert.SerializeObject(data);
                 json = JsonConvert.SerializeObject(reply);
@@ -162,7 +162,7 @@ namespace gosafe_back.Controllers
         [Route("EmergencyRetrieve")]
         public IHttpActionResult EmergencyRetrive(EmergencyRetrive model)
         {
-            string templinkId = model.templinkId;
+            string templinkId = model.TempLinkId;
             Reply reply = new Reply();
             String json = "";
             var theTemp = db.TempLink.Find(templinkId);
@@ -174,7 +174,7 @@ namespace gosafe_back.Controllers
                 return BadRequest(json);
             }
             ReplyEmergencyRetrieve theJourney = new ReplyEmergencyRetrieve();
-            theJourney.tempLink = templinkId;
+            theJourney.TempLinkId = templinkId;
             theJourney.StartTime = theTemp.Journey.StartTime;
             theJourney.EndTime = theTemp.Journey.EndTime;
             theJourney.NavigateRoute = theTemp.Journey.NavigateRoute;
