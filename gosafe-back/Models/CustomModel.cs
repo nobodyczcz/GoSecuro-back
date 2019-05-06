@@ -203,5 +203,26 @@ namespace gosafe_back.Models
         public string TempLinkId { get; set; }
         public string locationListJson { get; set; }
     }
+    public class SinglePin
+    {
+        public PinRetrieve pinDetails { get; set; }
+    }
 
+    public class PinRetrieve
+    {
+        public int PinId { get; set; }
+        public System.DateTime Time { get; set; }
+        public double CoordLat { get; set; }
+        public double CoordLog { get; set; }
+        public string StreetLight { get; set; }
+        public string CCTV { get; set; }
+        public string ExperienceType { get; set; }
+        public string Experience { get; set; }
+        public string OtherDetails { get; set; }
+        public string UserProfileId { get; set; }
+        public string State { get; set; }
+        public string Street { get; set; }
+        public string SuburbSuburbName { get; set; }
+
+    }
 }

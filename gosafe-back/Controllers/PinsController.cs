@@ -97,22 +97,79 @@ namespace gosafe_back.Controllers
         //    return View(pin);
         //}
 
+        //POST:Pins/Retrieve/5
+        [Authorize]
+        [Route("Retrieve")]
+        public IHttpActionResult Retrieve()
+        {
+            Reply reply = new Reply();
+            String json = "";
+            List<SinglePin> PinList = new List<SinglePin>();
+            var userID = User.Identity.GetUserId();
+            List<Pin> pins = db.Pin.Where(s => s.UserProfileId == userID).ToList();
+
+            if (pins == null)
+            {
+                return NotFound();
+            }
+
+            foreach (Pin thePin in pins)
+            {
+                SinglePin single = getPin(thePin);
+                PinList.Add(single);
+            }
+            reply.result = "success";
+            reply.data = JsonConvert.SerializeObject(PinList);
+            json = JsonConvert.SerializeObject(reply);
+            return Ok(json);
+        }
+
+        public SinglePin getPin(Pin thePin)
+        {
+            SinglePin result = new SinglePin();
+            PinRetrieve thisPin = new PinRetrieve();
+            thisPin.PinId = thePin.PinId;
+            thisPin.Time = thePin.Time;
+            thisPin.CoordLat = thePin.CoordLat;
+            thisPin.CoordLog = thePin.CoordLog;
+            thisPin.StreetLight = thePin.StreetLight;
+            thisPin.CCTV = thePin.CCTV;
+            thisPin.ExperienceType = thePin.ExperienceType;
+            thisPin.Experience = thePin.Experience;
+            thisPin.OtherDetails = thePin.OtherDetails;
+            thisPin.UserProfileId = thePin.UserProfileId;
+            thisPin.State = thePin.State;
+            thisPin.Street = thePin.Street;
+            thisPin.SuburbSuburbName = thePin.SuburbSuburbName;
+            result.pinDetails = thisPin;
+            return result;
+        }
+
+
+
         // POST: Pins/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [Authorize]
         [Route("Edit")]
-        public IHttpActionResult Edit(Pin pin)
+        public IHttpActionResult Edit(Pin thePin)
         {
+            Reply reply = new Reply();
+            String json = "";
+
             if (ModelState.IsValid)
             {
-                db.Entry(pin).State = EntityState.Modified;
+                db.Entry(thePin).State = EntityState.Modified;
                 db.SaveChanges();
-                return Ok("Index");
+                reply.result = "success";
+                json = JsonConvert.SerializeObject(reply);
+                return Ok(json);
             }
+            reply.result = "failed";
+            reply.errors = "Not Found";
+            return BadRequest(json);
             //ViewBag.UserProfileId = new SelectList(db.UserProfile, "Id", "Address", pin.UserProfileId);
             //ViewBag.SuburbSuburbName = new SelectList(db.Suburb, "SuburbName", "Boundary1", pin.SuburbSuburbName);
-            return Ok(pin);
         }
 
         //// GET: Pins/Delete/5
@@ -135,10 +192,14 @@ namespace gosafe_back.Controllers
         [Route("Delete")]
         public IHttpActionResult DeleteConfirmed(int id)
         {
+            Reply reply = new Reply();
+            String json = "";
             Pin pin = db.Pin.Find(id);
             db.Pin.Remove(pin);
             db.SaveChanges();
-            return Ok("Index");
+            reply.result = "success";
+            json = JsonConvert.SerializeObject(reply);
+            return Ok(json);
         }
 
         protected override void Dispose(bool disposing)
