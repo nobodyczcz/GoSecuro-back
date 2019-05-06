@@ -62,6 +62,7 @@ namespace gosafe_back.Controllers
             
             if (ModelState.IsValid)
             {
+                JTracking newTrking = new JTracking();
                 Journey theJourney = db.Journey.Find(jTracking.JourneyJourneyId);
                 if (theJourney == null)
                 {
@@ -71,11 +72,13 @@ namespace gosafe_back.Controllers
                 {
                     return BadRequest("You are not authorized to chance this journey ID");
                 }
-
-                jTracking.Time = DateTime.Now;
+                newTrking.JourneyJourneyId = jTracking.JourneyJourneyId;
+                newTrking.Time = DateTime.Now;
+                newTrking.CoordLat = jTracking.CoordLat;
+                newTrking.CoordLog = jTracking.CoordLog;
                 
-                Trace.WriteLine("Write to JTracking: " + JsonConvert.SerializeObject(jTracking));
-                db.JTracking.Add(jTracking);
+                Trace.WriteLine("Write to JTracking: " + JsonConvert.SerializeObject(newTrking));
+                db.JTracking.Add(newTrking);
                 UsefulFunction.dbSave(db);
                 
                 reply.result = "success";

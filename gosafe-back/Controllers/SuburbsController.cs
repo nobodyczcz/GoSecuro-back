@@ -70,8 +70,8 @@ namespace gosafe_back.Controllers
         [Route("Message")]
         public IHttpActionResult Message(List<String> message)
         {
-            string accountSid = "AC90b329101b6566d76485239d50f6ea00";
-            string authToken = "be4151a4e580bf43eadb860c61217e2b";
+            string accountSid = "AC74cbd14cfcc9ba2223860c576ea50426";
+            string authToken = "e92d1e11608304fa746c5b3c58fbeb29";
             System.Diagnostics.Debug.WriteLine("debug:");
             System.Diagnostics.Debug.WriteLine(message);
             if (message != null)
@@ -80,7 +80,7 @@ namespace gosafe_back.Controllers
 
                 var content = MessageResource.Create(
                     body: message[1],
-                    from: new Twilio.Types.PhoneNumber("+61480015535"),
+                    from: new Twilio.Types.PhoneNumber("+61488850878"),
                     to: new Twilio.Types.PhoneNumber(message[0])
                 );
 

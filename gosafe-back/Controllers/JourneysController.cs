@@ -95,6 +95,15 @@ namespace gosafe_back.Controllers
                 theTemp.UserProfileId = journey.UserProfileId;
                 db.TempLink.Add(theTemp);
 
+                JTracking newTrack = new JTracking();
+                newTrack.JourneyJourneyId = journey.JourneyId;
+                newTrack.Time = DateTime.Now;
+                newTrack.CoordLat = journey.SCoordLat;
+                newTrack.CoordLog = journey.SCoordLog;
+                db.JTracking.Add(newTrack);
+
+
+
                 UsefulFunction.dbSave(db);
 
                 JourneyCreateReplyData data = new JourneyCreateReplyData();

@@ -220,8 +220,8 @@
         //    SCoordLog: 145.13621820000003,
         //}
 
-        theApi = 'api/Journey/retrieveHistory'
-        var data = {}
+        //theApi = 'api/Journey/retrieveHistory'
+        //var data = {}
 
        //theApi = 'api/Journey/journeyFinish'
        //var data = {
@@ -257,10 +257,14 @@
             //}
             //theApi = 'api/JTracking/Create'
             //var data = {
-            //    JourneyJourneyId: 1,
-            //    CoordLat: -37.9105238,
-            //    CoordLog: 145.13621820000003,
+            //    JourneyJourneyId: 32,
+            //    CoordLat: -37.84,
+            //    CoordLog: 145.99,
             //}
+        theApi = 'api/UserEmergency/delete'
+        var data = {
+            EmergencyContactPhone: "0420680900",
+        }
 
 
             window.apis.callApi(theApi, data, startSuccess, startError)
