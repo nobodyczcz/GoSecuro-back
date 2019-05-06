@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/28/2019 18:01:44
--- Generated from EDMX file: C:\Users\czcz2\IEProject\gosafe-back\gosafe-back\Models\Model1.edmx
+-- Date Created: 05/06/2019 17:06:11
+-- Generated from EDMX file: C:\Users\Jennifer\Desktop\IEproject\gosafe-back\gosafe-back\Models\Model1.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -41,6 +41,12 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_UserProfileUserEmergency]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[UserEmergency] DROP CONSTRAINT [FK_UserProfileUserEmergency];
 GO
+IF OBJECT_ID(N'[dbo].[FK_UserProfilePin]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Pin] DROP CONSTRAINT [FK_UserProfilePin];
+GO
+IF OBJECT_ID(N'[dbo].[FK_SuburbPin]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Pin] DROP CONSTRAINT [FK_SuburbPin];
+GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
@@ -69,6 +75,9 @@ IF OBJECT_ID(N'[dbo].[EmergencyContact]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[Journey]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Journey];
+GO
+IF OBJECT_ID(N'[dbo].[Pin]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Pin];
 GO
 
 -- --------------------------------------------------
@@ -150,6 +159,24 @@ CREATE TABLE [dbo].[Journey] (
 );
 GO
 
+-- Creating table 'Pin'
+CREATE TABLE [dbo].[Pin] (
+    [PinId] int IDENTITY(1,1) NOT NULL,
+    [Time] datetime  NOT NULL,
+    [CoordLat] float  NOT NULL,
+    [CoordLog] float  NOT NULL,
+    [StreetLight] nvarchar(max)  NOT NULL,
+    [CCTV] nvarchar(max)  NOT NULL,
+    [ExperienceType] nvarchar(max)  NOT NULL,
+    [Experience] nvarchar(max)  NULL,
+    [OtherDetails] nvarchar(max)  NULL,
+    [UserProfileId] nvarchar(128)  NOT NULL,
+    [State] nvarchar(max)  NOT NULL,
+    [Street] nvarchar(max)  NOT NULL,
+    [SuburbSuburbName] nvarchar(128)  NOT NULL
+);
+GO
+
 -- --------------------------------------------------
 -- Creating all PRIMARY KEY constraints
 -- --------------------------------------------------
@@ -200,6 +227,12 @@ GO
 ALTER TABLE [dbo].[Journey]
 ADD CONSTRAINT [PK_Journey]
     PRIMARY KEY CLUSTERED ([JourneyId] ASC);
+GO
+
+-- Creating primary key on [PinId] in table 'Pin'
+ALTER TABLE [dbo].[Pin]
+ADD CONSTRAINT [PK_Pin]
+    PRIMARY KEY CLUSTERED ([PinId] ASC);
 GO
 
 -- --------------------------------------------------
@@ -306,6 +339,36 @@ GO
 CREATE INDEX [IX_FK_UserProfileUserEmergency]
 ON [dbo].[UserEmergency]
     ([UserProfileId]);
+GO
+
+-- Creating foreign key on [UserProfileId] in table 'Pin'
+ALTER TABLE [dbo].[Pin]
+ADD CONSTRAINT [FK_UserProfilePin]
+    FOREIGN KEY ([UserProfileId])
+    REFERENCES [dbo].[UserProfile]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_UserProfilePin'
+CREATE INDEX [IX_FK_UserProfilePin]
+ON [dbo].[Pin]
+    ([UserProfileId]);
+GO
+
+-- Creating foreign key on [SuburbSuburbName] in table 'Pin'
+ALTER TABLE [dbo].[Pin]
+ADD CONSTRAINT [FK_SuburbPin]
+    FOREIGN KEY ([SuburbSuburbName])
+    REFERENCES [dbo].[Suburb]
+        ([SuburbName])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_SuburbPin'
+CREATE INDEX [IX_FK_SuburbPin]
+ON [dbo].[Pin]
+    ([SuburbSuburbName]);
 GO
 
 -- --------------------------------------------------
