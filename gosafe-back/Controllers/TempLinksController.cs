@@ -203,12 +203,25 @@ namespace gosafe_back.Controllers
         // POST: TempLinks/Delete/5
         [Authorize]
         [Route("delete")]
-        public IHttpActionResult DeleteConfirmed(string id)
+        public IHttpActionResult DeleteConfirmed(TempLinkDelete theTempLink)
         {
-            TempLink tempLink = db.TempLink.Find(id);
+            Reply reply = new Reply();
+            String json = "";
+
+            TempLink tempLink = db.TempLink.Find(theTempLink.TempLinkId);
+            if (tempLink == null)
+            {
+                reply.result = "failed";
+                reply.errors = "NotFound";
+                json = JsonConvert.SerializeObject(reply);
+                return BadRequest(json);
+            }
+            
             db.TempLink.Remove(tempLink);
             db.SaveChanges();
-            return Ok("Index");
+            reply.result = "success";
+            json = JsonConvert.SerializeObject(reply);
+            return Ok(json);
         }
 
         protected override void Dispose(bool disposing)

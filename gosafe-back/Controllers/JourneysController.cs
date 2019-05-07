@@ -280,7 +280,7 @@ namespace gosafe_back.Controllers
             return checkcode;
         }
 
-       
+
 
         // GET: Journeys/Edit/5
         //public ActionResult Edit(int? id)
@@ -330,16 +330,33 @@ namespace gosafe_back.Controllers
         //    return View(journey);
         //}
 
-        //// POST: Journeys/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult DeleteConfirmed(int id)
-        //{
-        //    Journey journey = db.Journey.Find(id);
-        //    db.Journey.Remove(journey);
-        //    db.SaveChanges();
-        //    return RedirectToAction("Index");
-        //}
+        // POST: Journeys/Delete/5
+        // Delete Journey and JTracking records.
+        [Authorize]
+        [Route("delete")]
+        public IHttpActionResult DeleteConfirmed(JourneyDelete theJourney)
+        {
+            Reply reply = new Reply();
+            String json = "";
+            var userID = User.Identity.GetUserId();
+
+            Journey journey = db.Journey.Find(theJourney.Journeyid);
+            if (journey == null)
+            {
+                reply.result = "failed";
+                reply.errors = "NotFound";
+                json = JsonConvert.SerializeObject(reply);
+                return BadRequest(json);
+            }
+
+            JTracking jTracking = db.JTracking.Find(theJourney.Journeyid);
+            db.JTracking.Remove(jTracking);
+            db.Journey.Remove(journey);
+
+            reply.result = "success";
+            json = JsonConvert.SerializeObject(reply);
+            return Ok(json);
+        }
 
         //protected override void Dispose(bool disposing)
         //{

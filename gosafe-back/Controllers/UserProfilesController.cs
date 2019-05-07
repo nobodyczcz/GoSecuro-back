@@ -138,18 +138,22 @@ namespace gosafe_back.Controllers
 
         // POST: UserProfiles/Delete/5
         [Authorize]
-        [Route("Delete Profile")]
-        public IHttpActionResult DeleteConfirmed(string id)
+        [Route("delete")]
+        public IHttpActionResult DeleteConfirmed()
         {
             Reply reply = new Reply();
             String json = "";
-            UserProfile userProfile = db.UserProfile.Find(id);
+            var userID = User.Identity.GetUserId();
+
+            UserProfile userProfile = db.UserProfile.Find(userID);
+
             if (userProfile == null)
             {
                 reply.result = "failed";
                 reply.errors = "Not Found";
                 return BadRequest(json);
             }
+
             db.UserProfile.Remove(userProfile);
             db.SaveChanges();
             reply.result = "success";

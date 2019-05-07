@@ -189,12 +189,22 @@ namespace gosafe_back.Controllers
 
         // POST: Pins/Delete/5
         [Authorize]
-        [Route("Delete")]
-        public IHttpActionResult DeleteConfirmed(int id)
+        [Route("delete")]
+        public IHttpActionResult DeleteConfirmed(PinDelete thePin)
         {
             Reply reply = new Reply();
             String json = "";
-            Pin pin = db.Pin.Find(id);
+            var userID = User.Identity.GetUserId();
+
+            Pin pin = db.Pin.Find(thePin.PinId);
+            if (pin == null)
+            {
+                reply.result = "failed";
+                reply.errors = "NotFound";
+                json = JsonConvert.SerializeObject(reply);
+                return BadRequest(json);
+            }
+
             db.Pin.Remove(pin);
             db.SaveChanges();
             reply.result = "success";

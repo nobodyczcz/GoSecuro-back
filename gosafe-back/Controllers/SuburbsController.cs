@@ -67,6 +67,7 @@ namespace gosafe_back.Controllers
             //Suburb suburb = db.Suburb.Find(id);
 
         }
+
         [Route("Message")]
         public IHttpActionResult Message(List<String> message)
         {

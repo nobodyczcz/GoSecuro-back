@@ -50,11 +50,12 @@ namespace gosafe_back.Controllers
         [HttpPost]
         [Authorize]
         [Route("delete")]
-        public IHttpActionResult Delete(EmergencyDelete theEmergency)
+        public IHttpActionResult DeleteConfirmed(EmergencyDelete theEmergency)
         {
             Reply reply = new Reply();
             String json = "";
             var userID = User.Identity.GetUserId();  //get user ID  
+
             UserEmergency userEmergency = db.UserEmergency.Find(theEmergency.EmergencyContactPhone,userID);
             if (userEmergency == null)
             {

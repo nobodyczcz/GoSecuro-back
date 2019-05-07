@@ -90,11 +90,7 @@ namespace gosafe_back.Models
         public string UserProfileId { get; set; }
 
     }
-    public class EmergencyDelete
-    {
-        public string EmergencyContactPhone { get; set; }
-
-    }
+  
     public class userProfileModel
     {
         public string id { get; set; }
@@ -225,4 +221,27 @@ namespace gosafe_back.Models
         public string SuburbSuburbName { get; set; }
 
     }
+
+    public class EmeContDelete
+    {
+        public string EmergencyContactPhone { get; set; }
+    }
+    public class JourneyDelete
+    {
+        public int Journeyid { get; set; }
+    }
+    public class PinDelete
+    {
+        public int PinId { get; set; }
+    }
+    public class TempLinkDelete
+    {
+        public string TempLinkId { get; set; }
+    }
+    public class EmergencyDelete
+    {
+        public string EmergencyContactPhone { get; set; }
+
+    }
+
 }

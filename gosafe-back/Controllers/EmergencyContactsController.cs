@@ -125,12 +125,25 @@ namespace gosafe_back.Controllers
         // POST: EmergencyContacts/Delete/5
         [Authorize]
         [Route("delete")]
-        public IHttpActionResult DeleteConfirmed(int id)
+        public IHttpActionResult DeleteConfirmed(EmeContDelete theEmeCont)
         {
-            EmergencyContact emergencyContact = db.EmergencyContact.Find(id);
+            Reply reply = new Reply();
+            String json = "";
+            var userID = User.Identity.GetUserId();
+
+            EmergencyContact emergencyContact = db.EmergencyContact.Find(theEmeCont.EmergencyContactPhone,userID);
+            if (emergencyContact == null)
+            {
+                reply.result = "failed";
+                reply.errors = "NotFound";
+                json = JsonConvert.SerializeObject(reply);
+                return BadRequest(json);
+            }
             db.EmergencyContact.Remove(emergencyContact);
             db.SaveChanges();
-            return Ok();
+            reply.result = "success";
+            json = JsonConvert.SerializeObject(reply);
+            return Ok(json);
         }
 
         protected override void Dispose(bool disposing)
