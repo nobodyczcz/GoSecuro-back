@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 05/09/2019 16:25:07
+-- Date Created: 05/09/2019 17:11:48
 -- Generated from EDMX file: C:\Users\Jennifer\Desktop\IEproject\gosafe-back\gosafe-back\Models\Model1.edmx
 -- --------------------------------------------------
 
@@ -47,6 +47,15 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_SuburbPin]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Pin] DROP CONSTRAINT [FK_SuburbPin];
 GO
+IF OBJECT_ID(N'[dbo].[FK_CCTVPin]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Pin] DROP CONSTRAINT [FK_CCTVPin];
+GO
+IF OBJECT_ID(N'[dbo].[FK_StreetLightPin]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Pin] DROP CONSTRAINT [FK_StreetLightPin];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ExperienceTypePin]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Pin] DROP CONSTRAINT [FK_ExperienceTypePin];
+GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
@@ -78,6 +87,15 @@ IF OBJECT_ID(N'[dbo].[Journey]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[Pin]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Pin];
+GO
+IF OBJECT_ID(N'[dbo].[CCTV]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[CCTV];
+GO
+IF OBJECT_ID(N'[dbo].[StreetLight]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[StreetLight];
+GO
+IF OBJECT_ID(N'[dbo].[ExperienceType]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ExperienceType];
 GO
 
 -- --------------------------------------------------

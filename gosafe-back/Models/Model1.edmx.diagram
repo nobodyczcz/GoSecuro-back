@@ -5,8 +5,8 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="7111e89d2cad4493ae52a74a4f7a78b1" Name="Diagram1" ZoomLevel="64" >
-        <EntityTypeShape EntityType="Model1.Suburb" Width="1.5" PointX="0.5" PointY="6" />
-        <EntityTypeShape EntityType="Model1.CrimeRate" Width="1.5" PointX="2.75" PointY="6" />
+        <EntityTypeShape EntityType="Model1.Suburb" Width="1.5" PointX="2.375" PointY="6.375" />
+        <EntityTypeShape EntityType="Model1.CrimeRate" Width="1.5" PointX="4.875" PointY="7.5" />
         <EntityTypeShape EntityType="Model1.TempLink" Width="1.5" PointX="4.875" PointY="5" />
         <EntityTypeShape EntityType="Model1.JTracking" Width="1.5" PointX="10.875" PointY="5" />
         <EntityTypeShape EntityType="Model1.UserProfile" Width="1.5" PointX="4.875" PointY="0.75" />
@@ -27,9 +27,9 @@
         <AssociationConnector Association="Model1.SuburbPin" />
         <EntityTypeShape EntityType="Model1.CCTV" Width="1.5" PointX="0.5" PointY="0.5" />
         <AssociationConnector Association="Model1.CCTVPin" />
-        <EntityTypeShape EntityType="Model1.StreetLight" Width="1.5" PointX="0.5" PointY="2.125" />
+        <EntityTypeShape EntityType="Model1.StreetLight" Width="1.5" PointX="0.5" PointY="2.875" />
         <AssociationConnector Association="Model1.StreetLightPin" />
-        <EntityTypeShape EntityType="Model1.ExperienceType" Width="1.5" PointX="0.5" PointY="4" />
+        <EntityTypeShape EntityType="Model1.ExperienceType" Width="1.5" PointX="0.5" PointY="4.875" />
         <AssociationConnector Association="Model1.ExperienceTypePin" />
       </Diagram>
     </edmx:Diagrams>
