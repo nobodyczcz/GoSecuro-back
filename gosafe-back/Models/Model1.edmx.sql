@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 05/06/2019 17:06:11
+-- Date Created: 05/09/2019 16:25:07
 -- Generated from EDMX file: C:\Users\Jennifer\Desktop\IEproject\gosafe-back\gosafe-back\Models\Model1.edmx
 -- --------------------------------------------------
 
@@ -165,15 +165,36 @@ CREATE TABLE [dbo].[Pin] (
     [Time] datetime  NOT NULL,
     [CoordLat] float  NOT NULL,
     [CoordLog] float  NOT NULL,
-    [StreetLight] nvarchar(max)  NOT NULL,
-    [CCTV] nvarchar(max)  NOT NULL,
-    [ExperienceType] nvarchar(max)  NOT NULL,
     [Experience] nvarchar(max)  NULL,
     [OtherDetails] nvarchar(max)  NULL,
     [UserProfileId] nvarchar(128)  NOT NULL,
     [State] nvarchar(max)  NOT NULL,
-    [Street] nvarchar(max)  NOT NULL,
-    [SuburbSuburbName] nvarchar(128)  NOT NULL
+    [Street] nvarchar(max)  NULL,
+    [SuburbSuburbName] nvarchar(128)  NOT NULL,
+    [CCTVId] int  NOT NULL,
+    [StreetLightId] int  NOT NULL,
+    [ExperienceTypeId] int  NOT NULL
+);
+GO
+
+-- Creating table 'CCTV'
+CREATE TABLE [dbo].[CCTV] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Description] nvarchar(max)  NOT NULL
+);
+GO
+
+-- Creating table 'StreetLight'
+CREATE TABLE [dbo].[StreetLight] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Description] nvarchar(max)  NOT NULL
+);
+GO
+
+-- Creating table 'ExperienceType'
+CREATE TABLE [dbo].[ExperienceType] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Description] nvarchar(max)  NOT NULL
 );
 GO
 
@@ -233,6 +254,24 @@ GO
 ALTER TABLE [dbo].[Pin]
 ADD CONSTRAINT [PK_Pin]
     PRIMARY KEY CLUSTERED ([PinId] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'CCTV'
+ALTER TABLE [dbo].[CCTV]
+ADD CONSTRAINT [PK_CCTV]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'StreetLight'
+ALTER TABLE [dbo].[StreetLight]
+ADD CONSTRAINT [PK_StreetLight]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'ExperienceType'
+ALTER TABLE [dbo].[ExperienceType]
+ADD CONSTRAINT [PK_ExperienceType]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
 -- --------------------------------------------------
@@ -369,6 +408,51 @@ GO
 CREATE INDEX [IX_FK_SuburbPin]
 ON [dbo].[Pin]
     ([SuburbSuburbName]);
+GO
+
+-- Creating foreign key on [CCTVId] in table 'Pin'
+ALTER TABLE [dbo].[Pin]
+ADD CONSTRAINT [FK_CCTVPin]
+    FOREIGN KEY ([CCTVId])
+    REFERENCES [dbo].[CCTV]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_CCTVPin'
+CREATE INDEX [IX_FK_CCTVPin]
+ON [dbo].[Pin]
+    ([CCTVId]);
+GO
+
+-- Creating foreign key on [StreetLightId] in table 'Pin'
+ALTER TABLE [dbo].[Pin]
+ADD CONSTRAINT [FK_StreetLightPin]
+    FOREIGN KEY ([StreetLightId])
+    REFERENCES [dbo].[StreetLight]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_StreetLightPin'
+CREATE INDEX [IX_FK_StreetLightPin]
+ON [dbo].[Pin]
+    ([StreetLightId]);
+GO
+
+-- Creating foreign key on [ExperienceTypeId] in table 'Pin'
+ALTER TABLE [dbo].[Pin]
+ADD CONSTRAINT [FK_ExperienceTypePin]
+    FOREIGN KEY ([ExperienceTypeId])
+    REFERENCES [dbo].[ExperienceType]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_ExperienceTypePin'
+CREATE INDEX [IX_FK_ExperienceTypePin]
+ON [dbo].[Pin]
+    ([ExperienceTypeId]);
 GO
 
 -- --------------------------------------------------

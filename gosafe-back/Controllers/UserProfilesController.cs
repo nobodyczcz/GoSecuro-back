@@ -19,39 +19,8 @@ namespace gosafe_back.Controllers
         private Model1Container db = new Model1Container();
         private ApplicationDbContext identitydb = new ApplicationDbContext();
 
-
-        //// GET: UserProfiles
-        //public ActionResult Index()
-        //{
-        //    var userProfile = db.UserProfile.Include(u => u.EmergencyContact);
-        //    return View(userProfile.ToList());
-        //}
-
-        //// GET: UserProfiles/Details/5
-        //public ActionResult Details(string id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    UserProfile userProfile = db.UserProfile.Find(id);
-        //    if (userProfile == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(userProfile);
-        //}
-
-        //// GET: UserProfiles/Create
-        //public ActionResult Create()
-        //{
-        //    ViewBag.Id = new SelectList(db.EmergencyContact, "Phone", "Phone");
-        //    return View();
-        //}
-
         // POST: UserProfiles/Retrieve
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        // Retrieve the user's profile.
         [Authorize]
         [Route("Retrieve")]
         public IHttpActionResult RetreiveProfile()
@@ -81,25 +50,8 @@ namespace gosafe_back.Controllers
             return Ok(reply);
         }
 
-        //// GET: UserProfiles/Edit/5
-        //public ActionResult Edit(string id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    UserProfile userProfile = db.UserProfile.Find(id);
-        //    if (userProfile == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    ViewBag.Id = new SelectList(db.EmergencyContact, "Phone", "Phone", userProfile.Id);
-        //    return View(userProfile);
-        //}
-
         // POST: UserProfiles/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        // Edit the user's profile.
         [Authorize]
         [Route("EditProfiles")]
         public IHttpActionResult Edit(UserProfile userProfile)
@@ -121,22 +73,8 @@ namespace gosafe_back.Controllers
             return BadRequest(json);
         }
 
-        //// GET: UserProfiles/Delete/5
-        //public ActionResult Delete(string id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    UserProfile userProfile = db.UserProfile.Find(id);
-        //    if (userProfile == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(userProfile);
-        //}
-
         // POST: UserProfiles/Delete/5
+        // Delete the user's profile.
         [Authorize]
         [Route("delete")]
         public IHttpActionResult DeleteConfirmed()

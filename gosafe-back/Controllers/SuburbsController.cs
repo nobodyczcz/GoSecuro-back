@@ -20,7 +20,7 @@ namespace gosafe_back.Controllers
     {
         private Model1Container db = new Model1Container();
 
-        // post: api/Suburbs/Index
+        // POST: api/Suburbs/Index
         [Route("Index")]
         public IHttpActionResult Index()
         {
@@ -29,6 +29,7 @@ namespace gosafe_back.Controllers
         }
 
         // POST: api/Suburbs/Details
+        // Retrieve the suburb and crime rate details.
         [Route("Details")]
         [AllowAnonymous]
         public IHttpActionResult Details(List<String> suburbs)
@@ -68,6 +69,7 @@ namespace gosafe_back.Controllers
 
         }
 
+        //Send a message to the user's emergency contact.
         [Route("Message")]
         public IHttpActionResult Message(List<String> message)
         {
@@ -97,13 +99,6 @@ namespace gosafe_back.Controllers
             //Suburb suburb = db.Suburb.Find(id);
 
         }
-
-
-
-
-
-
-
 
         protected override void Dispose(bool disposing)
         {

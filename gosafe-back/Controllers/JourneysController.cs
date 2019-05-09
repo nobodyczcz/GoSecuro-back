@@ -23,39 +23,8 @@ namespace gosafe_back.Controllers
         private Model1Container db = new Model1Container();
         private ApplicationDbContext identitydb = new ApplicationDbContext();
 
-        //// GET: Journeys
-        //public ActionResult Index()
-        //{
-        //    var journey = db.Journey.Include(j => j.UserProfile);
-        //    return View(journey.ToList());
-        //}
-
-        //// GET: Journeys/Details/5
-        //public ActionResult Details(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    Journey journey = db.Journey.Find(id);
-        //    if (journey == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(journey);
-        //}
-
-        //// GET: Journeys/Create
-        //public ActionResult Create()
-        //{
-        //    ViewBag.UserProfileId = new SelectList(db.UserProfile, "Id", "Address");
-        //    return View();
-        //}
-
         // POST: Journeys/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-
+        // Create a new journey.
         [Authorize]
         [Route("create")]
         public IHttpActionResult Create(Journey journey)
@@ -103,8 +72,6 @@ namespace gosafe_back.Controllers
                 newTrack.CoordLog = journey.SCoordLog;
                 db.JTracking.Add(newTrack);
 
-
-
                 UsefulFunction.dbSave(db);
 
                 JourneyCreateReplyData data = new JourneyCreateReplyData();
@@ -122,7 +89,8 @@ namespace gosafe_back.Controllers
         }
 
 
-        //POST Journey Finish Details
+        // POST Journey Finish Details
+        // Finish a journey, and change the status, end longitude and end latitude of the journey.
         [Authorize]
         [Route("journeyFinish")]
         public IHttpActionResult journeyFinish(journeyFinishModel finishModel)
@@ -167,6 +135,7 @@ namespace gosafe_back.Controllers
         }
 
         //POST: Emergency Retrieve Journey Details
+        //Retrieve the journey by the user's emergency contact.
         [AllowAnonymous]
         [Route("EmergencyRetrieve")]
         public IHttpActionResult EmergencyRetrive(EmergencyRetrive model)
@@ -202,6 +171,7 @@ namespace gosafe_back.Controllers
 
 
         //POST: Journey Retrieve Details
+        //Retrieve the journey by the user itself.
         [Authorize]
         [Route("retrieveHistory")]
         public IHttpActionResult retrieveHistory()
@@ -227,6 +197,7 @@ namespace gosafe_back.Controllers
             return Ok(json);
         }
 
+        //Find a single journey details.
         public SingleJourney getJourney(Journey theJourney)
         {
             SingleJourney result = new SingleJourney();
@@ -257,6 +228,7 @@ namespace gosafe_back.Controllers
             return result;
         }
 
+        //Generate a temp link for a new journey.
         private string generateTempLink()
         {
             //Create Templink;
@@ -279,56 +251,6 @@ namespace gosafe_back.Controllers
             }
             return checkcode;
         }
-
-
-
-        // GET: Journeys/Edit/5
-        //public ActionResult Edit(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    Journey journey = db.Journey.Find(id);
-        //    if (journey == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    ViewBag.UserProfileId = new SelectList(db.UserProfile, "Id", "Address", journey.UserProfileId);
-        //    return View(journey);
-        //}
-
-        //// POST: Journeys/Edit/5
-        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        //// more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Edit([Bind(Include = "JourneyId,StartTime,EndTime,NavigateRoute,SCoordLat,SCoordLog,ECoordLat,ECoordLog,Status,UserProfileId")] Journey journey)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        db.Entry(journey).State = EntityState.Modified;
-        //        db.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
-        //    ViewBag.UserProfileId = new SelectList(db.UserProfile, "Id", "Address", journey.UserProfileId);
-        //    return View(journey);
-        //}
-
-        //// GET: Journeys/Delete/5
-        //public ActionResult Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    Journey journey = db.Journey.Find(id);
-        //    if (journey == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(journey);
-        //}
 
         // POST: Journeys/Delete/5
         // Delete Journey and JTracking records.
@@ -357,15 +279,6 @@ namespace gosafe_back.Controllers
             json = JsonConvert.SerializeObject(reply);
             return Ok(json);
         }
-
-        //protected override void Dispose(bool disposing)
-        //{
-        //    if (disposing)
-        //    {
-        //        db.Dispose();
-        //    }
-        //    base.Dispose(disposing);
-        //}
     }
 
     public static class UsefulFunction
@@ -407,20 +320,13 @@ namespace gosafe_back.Controllers
                     {
                         Trace.WriteLine(e);
                         throw;
-                    }
-                    
+                    }      
                 }
-
-
-
             }
             else
             {
                 Trace.WriteLine("Find " + userID);
             }
-            
-
-
         }
         public static void dbSave(Model1Container db)
         {

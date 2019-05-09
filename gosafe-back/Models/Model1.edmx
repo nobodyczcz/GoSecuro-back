@@ -15,6 +15,9 @@
     <EntitySet Name="EmergencyContact" EntityType="Model1.Store.EmergencyContact" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Journey" EntityType="Model1.Store.Journey" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Pin" EntityType="Model1.Store.Pin" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CCTV" EntityType="Model1.Store.CCTV" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="StreetLight" EntityType="Model1.Store.StreetLight" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ExperienceType" EntityType="Model1.Store.ExperienceType" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="SuburbCrimeRate" Association="Model1.Store.SuburbCrimeRate">
       <End Role="Suburb" EntitySet="Suburb" />
       <End Role="CrimeRate" EntitySet="CrimeRate" />
@@ -53,6 +56,18 @@
     </AssociationSet>
     <AssociationSet Name="SuburbPin" Association="Model1.Store.SuburbPin">
       <End Role="Suburb" EntitySet="Suburb" />
+      <End Role="Pin" EntitySet="Pin" />
+    </AssociationSet>
+    <AssociationSet Name="CCTVPin" Association="Model1.Store.CCTVPin">
+      <End Role="CCTV" EntitySet="CCTV" />
+      <End Role="Pin" EntitySet="Pin" />
+    </AssociationSet>
+    <AssociationSet Name="StreetLightPin" Association="Model1.Store.StreetLightPin">
+      <End Role="StreetLight" EntitySet="StreetLight" />
+      <End Role="Pin" EntitySet="Pin" />
+    </AssociationSet>
+    <AssociationSet Name="ExperienceTypePin" Association="Model1.Store.ExperienceTypePin">
+      <End Role="ExperienceType" EntitySet="ExperienceType" />
       <End Role="Pin" EntitySet="Pin" />
     </AssociationSet>
   </EntityContainer>
@@ -141,15 +156,36 @@
     <Property Name="Time" Type="datetime" Nullable="false" />
     <Property Name="CoordLat" Type="float" Nullable="false" />
     <Property Name="CoordLog" Type="float" Nullable="false" />
-    <Property Name="StreetLight" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="CCTV" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="ExperienceType" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Experience" Type="nvarchar(max)" Nullable="true" />
     <Property Name="OtherDetails" Type="nvarchar(max)" Nullable="true" />
     <Property Name="UserProfileId" Type="nvarchar" Nullable="false" MaxLength="128" />
     <Property Name="State" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Street" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Street" Type="nvarchar(max)" Nullable="true" />
     <Property Name="SuburbSuburbName" Type="nvarchar" Nullable="false" MaxLength="128" />
+    <Property Name="CCTVId" Type="int" Nullable="false" />
+    <Property Name="StreetLightId" Type="int" Nullable="false" />
+    <Property Name="ExperienceTypeId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CCTV">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="StreetLight">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ExperienceType">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <Association Name="SuburbCrimeRate">
     <End Role="Suburb" Type="Model1.Store.Suburb" Multiplicity="1" />
@@ -271,6 +307,42 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="CCTVPin">
+    <End Role="CCTV" Type="Model1.Store.CCTV" Multiplicity="1" />
+    <End Role="Pin" Type="Model1.Store.Pin" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CCTV">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Pin">
+        <PropertyRef Name="CCTVId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="StreetLightPin">
+    <End Role="StreetLight" Type="Model1.Store.StreetLight" Multiplicity="1" />
+    <End Role="Pin" Type="Model1.Store.Pin" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="StreetLight">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Pin">
+        <PropertyRef Name="StreetLightId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ExperienceTypePin">
+    <End Role="ExperienceType" Type="Model1.Store.ExperienceType" Multiplicity="1" />
+    <End Role="Pin" Type="Model1.Store.Pin" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ExperienceType">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Pin">
+        <PropertyRef Name="ExperienceTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -323,6 +395,21 @@
           </AssociationSet>
           <AssociationSet Name="SuburbPin" Association="Model1.SuburbPin">
             <End Role="Suburb" EntitySet="Suburb" />
+            <End Role="Pin" EntitySet="Pin" />
+          </AssociationSet>
+          <EntitySet Name="CCTV" EntityType="Model1.CCTV" />
+          <AssociationSet Name="CCTVPin" Association="Model1.CCTVPin">
+            <End Role="CCTV" EntitySet="CCTV" />
+            <End Role="Pin" EntitySet="Pin" />
+          </AssociationSet>
+          <EntitySet Name="StreetLight" EntityType="Model1.StreetLight" />
+          <AssociationSet Name="StreetLightPin" Association="Model1.StreetLightPin">
+            <End Role="StreetLight" EntitySet="StreetLight" />
+            <End Role="Pin" EntitySet="Pin" />
+          </AssociationSet>
+          <EntitySet Name="ExperienceType" EntityType="Model1.ExperienceType" />
+          <AssociationSet Name="ExperienceTypePin" Association="Model1.ExperienceTypePin">
+            <End Role="ExperienceType" EntitySet="ExperienceType" />
             <End Role="Pin" EntitySet="Pin" />
           </AssociationSet>
         </EntityContainer>
@@ -516,17 +603,20 @@
           <Property Name="Time" Type="DateTime" Nullable="false" />
           <Property Name="CoordLat" Type="Double" Nullable="false" />
           <Property Name="CoordLog" Type="Double" Nullable="false" />
-          <Property Name="StreetLight" Type="String" Nullable="false" />
-          <Property Name="CCTV" Type="String" Nullable="false" />
-          <Property Name="ExperienceType" Type="String" Nullable="false" />
           <Property Name="Experience" Type="String" Nullable="true" />
           <Property Name="OtherDetails" Type="String" Nullable="true" />
           <NavigationProperty Name="UserProfile" Relationship="Model1.UserProfilePin" FromRole="Pin" ToRole="UserProfile" />
           <Property Name="UserProfileId" Type="String" Nullable="false" MaxLength="128" />
           <Property Name="State" Type="String" Nullable="false" />
-          <Property Name="Street" Type="String" Nullable="false" />
+          <Property Name="Street" Type="String" Nullable="true" />
           <NavigationProperty Name="Suburb" Relationship="Model1.SuburbPin" FromRole="Pin" ToRole="Suburb" />
           <Property Name="SuburbSuburbName" Type="String" Nullable="false" MaxLength="128" />
+          <NavigationProperty Name="CCTV1" Relationship="Model1.CCTVPin" FromRole="Pin" ToRole="CCTV" />
+          <Property Name="CCTVId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="StreetLight1" Relationship="Model1.StreetLightPin" FromRole="Pin" ToRole="StreetLight" />
+          <Property Name="StreetLightId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ExperienceType1" Relationship="Model1.ExperienceTypePin" FromRole="Pin" ToRole="ExperienceType" />
+          <Property Name="ExperienceTypeId" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="UserProfilePin">
           <End Type="Model1.UserProfile" Role="UserProfile" Multiplicity="1" />
@@ -549,6 +639,66 @@
             </Principal>
             <Dependent Role="Pin">
               <PropertyRef Name="SuburbSuburbName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CCTV">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int32" />
+          <Property Name="Description" Type="String" Nullable="false" />
+          <NavigationProperty Name="Pin" Relationship="Model1.CCTVPin" FromRole="CCTV" ToRole="Pin" />
+        </EntityType>
+        <Association Name="CCTVPin">
+          <End Type="Model1.CCTV" Role="CCTV" Multiplicity="1" />
+          <End Type="Model1.Pin" Role="Pin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CCTV">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Pin">
+              <PropertyRef Name="CCTVId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="StreetLight">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" Nullable="false" />
+          <NavigationProperty Name="Pin" Relationship="Model1.StreetLightPin" FromRole="StreetLight" ToRole="Pin" />
+        </EntityType>
+        <Association Name="StreetLightPin">
+          <End Type="Model1.StreetLight" Role="StreetLight" Multiplicity="1" />
+          <End Type="Model1.Pin" Role="Pin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StreetLight">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Pin">
+              <PropertyRef Name="StreetLightId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ExperienceType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" Nullable="false" />
+          <NavigationProperty Name="Pin" Relationship="Model1.ExperienceTypePin" FromRole="ExperienceType" ToRole="Pin" />
+        </EntityType>
+        <Association Name="ExperienceTypePin">
+          <End Type="Model1.ExperienceType" Role="ExperienceType" Multiplicity="1" />
+          <End Type="Model1.Pin" Role="Pin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExperienceType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Pin">
+              <PropertyRef Name="ExperienceTypeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -647,15 +797,39 @@
           <ScalarProperty Name="Time" ColumnName="Time" />
           <ScalarProperty Name="CoordLat" ColumnName="CoordLat" />
           <ScalarProperty Name="CoordLog" ColumnName="CoordLog" />
-          <ScalarProperty Name="StreetLight" ColumnName="StreetLight" />
-          <ScalarProperty Name="CCTV" ColumnName="CCTV" />
-          <ScalarProperty Name="ExperienceType" ColumnName="ExperienceType" />
           <ScalarProperty Name="Experience" ColumnName="Experience" />
           <ScalarProperty Name="OtherDetails" ColumnName="OtherDetails" />
           <ScalarProperty Name="UserProfileId" ColumnName="UserProfileId" />
           <ScalarProperty Name="State" ColumnName="State" />
           <ScalarProperty Name="Street" ColumnName="Street" />
           <ScalarProperty Name="SuburbSuburbName" ColumnName="SuburbSuburbName" />
+          <ScalarProperty Name="CCTVId" ColumnName="CCTVId" />
+          <ScalarProperty Name="StreetLightId" ColumnName="StreetLightId" />
+          <ScalarProperty Name="ExperienceTypeId" ColumnName="ExperienceTypeId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CCTV">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.CCTV)">
+        <MappingFragment StoreEntitySet="CCTV">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="StreetLight">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.StreetLight)">
+        <MappingFragment StoreEntitySet="StreetLight">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ExperienceType">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.ExperienceType)">
+        <MappingFragment StoreEntitySet="ExperienceType">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

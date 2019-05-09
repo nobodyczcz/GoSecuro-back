@@ -17,36 +17,8 @@ namespace gosafe_back.Controllers
     {
         private Model1Container db = new Model1Container();
         private ApplicationDbContext identitydb = new ApplicationDbContext();
-
-        //// GET: UserEmergencies
-        //public ActionResult Index()
-        //{
-        //    var userEmergency = db.UserEmergency.Include(u => u.UserProfile).Include(u => u.EmergencyContact);
-        //    return View(userEmergency.ToList());
-        //}
-
-        //// GET: UserEmergencies/Details/5
-        //public ActionResult Details(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    UserEmergency userEmergency = db.UserEmergency.Find(id);
-        //    if (userEmergency == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(userEmergency);
-        //}
-
-        //// GET: UserEmergencies/Create
-        //public ActionResult Create()
-        //{
-        //    ViewBag.UserProfileId = new SelectList(db.UserProfile, "Id", "Address");
-        //    ViewBag.EmergencyContactPhone = new SelectList(db.EmergencyContact, "Phone", "Phone");
-        //    return View();
-        //}
+        // POST: UserEmergencies/Create
+        //Delete the User's emergency contact.
         [HttpPost]
         [Authorize]
         [Route("delete")]
@@ -72,8 +44,7 @@ namespace gosafe_back.Controllers
         }
 
         // POST: UserEmergencies/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        // Create a User's emergency contact.
         [Authorize]
         [Route("create")]
         public IHttpActionResult Create(ContactModel theContact)
@@ -115,26 +86,8 @@ namespace gosafe_back.Controllers
             return BadRequest(json);
         }
 
-        //// GET: UserEmergencies/Edit/5
-        //public ActionResult Edit(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    UserEmergency userEmergency = db.UserEmergency.Find(id);
-        //    if (userEmergency == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    ViewBag.UserProfileId = new SelectList(db.UserProfile, "Id", "Address", userEmergency.UserProfileId);
-        //    ViewBag.EmergencyContactPhone = new SelectList(db.EmergencyContact, "Phone", "Phone", userEmergency.EmergencyContactPhone);
-        //    return View(userEmergency);
-        //}
-
         // POST: UserEmergencies/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        // Edit the User's emergency contact.
         [Authorize]
         [Route("edit")]
         public IHttpActionResult Edit(ContactEditModel theContact)
@@ -191,27 +144,8 @@ namespace gosafe_back.Controllers
             return Ok(json);
         }
 
-        //// GET: UserEmergencies/Delete/5
-        //public IHttpActionResult Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    UserEmergency userEmergency = db.UserEmergency.Find(id);
-        //    if (userEmergency == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(userEmergency);
-        //}
-
-        // POST: UserEmergencies/delete
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
- 
-
-
+        // POST: UserEmergencies/RetrieveUser
+        //Retrieve the users' profile who set this user to be a emergency contact.
         [Authorize]
         [Route("retrieveUser")]
         public IHttpActionResult RetrieveUser()
@@ -239,6 +173,8 @@ namespace gosafe_back.Controllers
             return Ok(json);
         }
 
+        // POST: UserEmergencies/RetrieveEmergency
+        //Retrieve the user's all emergency contact.
         [Authorize]
         [Route("retrieveEmergencies")]
         public IHttpActionResult RetrieveEmergencies()
@@ -264,7 +200,8 @@ namespace gosafe_back.Controllers
             json = JsonConvert.SerializeObject(reply);
             return Ok(json);
         }
-
+        // POST: UserEmergencies/getUser
+        //Get a single user profile.
         public Users getUser(UserEmergency theProfile)
         {
             Users result = new Users();
@@ -279,7 +216,8 @@ namespace gosafe_back.Controllers
             result.userDetails.Add(theUser);
             return result;
         }
-
+        // POST: UserEmergencies/CreateNewContact
+        //Create a new record of the emergency contact, if the contact is not included in EmergencyContacts table.
         private void createNewContact(string EmergencyContactPhone)
         {
            

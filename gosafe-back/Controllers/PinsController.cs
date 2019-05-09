@@ -20,39 +20,8 @@ namespace gosafe_back.Controllers
     {
         private Model1Container db = new Model1Container();
 
-        //// GET: Pins
-        //public ActionResult Index()
-        //{
-        //    var pin = db.Pin.Include(p => p.UserProfile).Include(p => p.Suburb);
-        //    return View(pin.ToList());
-        //}
-
-        //// GET: Pins/Details/5
-        //public ActionResult Details(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    Pin pin = db.Pin.Find(id);
-        //    if (pin == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(pin);
-        //}
-
-        //// GET: Pins/Create
-        //public ActionResult Create()
-        //{
-        //    ViewBag.UserProfileId = new SelectList(db.UserProfile, "Id", "Address");
-        //    ViewBag.SuburbSuburbName = new SelectList(db.Suburb, "SuburbName", "Boundary1");
-        //    return View();
-        //}
-
         // POST: Pins/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        // Create a new pin.
         [Authorize]
         [Route("Create")]
         public IHttpActionResult Create(Pin pin)
@@ -80,24 +49,8 @@ namespace gosafe_back.Controllers
             //ViewBag.SuburbSuburbName = new SelectList(db.Suburb, "SuburbName", "Boundary1", pin.SuburbSuburbName);
         }
 
-        //// GET: Pins/Edit/5
-        //public ActionResult Edit(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    Pin pin = db.Pin.Find(id);
-        //    if (pin == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    ViewBag.UserProfileId = new SelectList(db.UserProfile, "Id", "Address", pin.UserProfileId);
-        //    ViewBag.SuburbSuburbName = new SelectList(db.Suburb, "SuburbName", "Boundary1", pin.SuburbSuburbName);
-        //    return View(pin);
-        //}
-
         //POST:Pins/Retrieve/5
+        //Retrieve the pin.
         [Authorize]
         [Route("Retrieve")]
         public IHttpActionResult Retrieve()
@@ -124,6 +77,7 @@ namespace gosafe_back.Controllers
             return Ok(json);
         }
 
+        //Find a single pin.
         public SinglePin getPin(Pin thePin)
         {
             SinglePin result = new SinglePin();
@@ -145,11 +99,8 @@ namespace gosafe_back.Controllers
             return result;
         }
 
-
-
         // POST: Pins/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        // Edit the pin.
         [Authorize]
         [Route("Edit")]
         public IHttpActionResult Edit(Pin thePin)
@@ -172,22 +123,8 @@ namespace gosafe_back.Controllers
             //ViewBag.SuburbSuburbName = new SelectList(db.Suburb, "SuburbName", "Boundary1", pin.SuburbSuburbName);
         }
 
-        //// GET: Pins/Delete/5
-        //public ActionResult Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    Pin pin = db.Pin.Find(id);
-        //    if (pin == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(pin);
-        //}
-
         // POST: Pins/Delete/5
+        // Delete a Pin.
         [Authorize]
         [Route("delete")]
         public IHttpActionResult DeleteConfirmed(PinDelete thePin)
