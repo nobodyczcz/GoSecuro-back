@@ -18,17 +18,20 @@ namespace gosafe_back.Models
         public System.DateTime Time { get; set; }
         public double CoordLat { get; set; }
         public double CoordLog { get; set; }
-        public string StreetLight { get; set; }
-        public string CCTV { get; set; }
-        public string ExperienceType { get; set; }
         public string Experience { get; set; }
         public string OtherDetails { get; set; }
         public string UserProfileId { get; set; }
         public string State { get; set; }
         public string Street { get; set; }
         public string SuburbSuburbName { get; set; }
+        public int CCTVId { get; set; }
+        public int StreetLightId { get; set; }
+        public int ExperienceTypeId { get; set; }
     
         public virtual UserProfile UserProfile { get; set; }
         public virtual Suburb Suburb { get; set; }
+        public virtual CCTV CCTV1 { get; set; }
+        public virtual StreetLight StreetLight1 { get; set; }
+        public virtual ExperienceType ExperienceType1 { get; set; }
     }
 }

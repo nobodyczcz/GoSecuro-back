@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 05/09/2019 17:11:48
+-- Date Created: 05/11/2019 17:04:22
 -- Generated from EDMX file: C:\Users\Jennifer\Desktop\IEproject\gosafe-back\gosafe-back\Models\Model1.edmx
 -- --------------------------------------------------
 
@@ -197,21 +197,21 @@ GO
 
 -- Creating table 'CCTV'
 CREATE TABLE [dbo].[CCTV] (
-    [Id] int IDENTITY(1,1) NOT NULL,
+    [Id] int  NOT NULL,
     [Description] nvarchar(max)  NOT NULL
 );
 GO
 
 -- Creating table 'StreetLight'
 CREATE TABLE [dbo].[StreetLight] (
-    [Id] int IDENTITY(1,1) NOT NULL,
+    [Id] int  NOT NULL,
     [Description] nvarchar(max)  NOT NULL
 );
 GO
 
 -- Creating table 'ExperienceType'
 CREATE TABLE [dbo].[ExperienceType] (
-    [Id] int IDENTITY(1,1) NOT NULL,
+    [Id] int  NOT NULL,
     [Description] nvarchar(max)  NOT NULL
 );
 GO

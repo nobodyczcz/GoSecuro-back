@@ -170,21 +170,21 @@
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Id" Type="int" Nullable="false" />
     <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="StreetLight">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Id" Type="int" Nullable="false" />
     <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="ExperienceType">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Id" Type="int" Nullable="false" />
     <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <Association Name="SuburbCrimeRate">
@@ -646,7 +646,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int32" />
+          <Property Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" Type="Int32" />
           <Property Name="Description" Type="String" Nullable="false" />
           <NavigationProperty Name="Pin" Relationship="Model1.CCTVPin" FromRole="CCTV" ToRole="Pin" />
         </EntityType>
@@ -666,7 +666,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <Property Name="Description" Type="String" Nullable="false" />
           <NavigationProperty Name="Pin" Relationship="Model1.StreetLightPin" FromRole="StreetLight" ToRole="Pin" />
         </EntityType>
@@ -686,7 +686,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <Property Name="Description" Type="String" Nullable="false" />
           <NavigationProperty Name="Pin" Relationship="Model1.ExperienceTypePin" FromRole="ExperienceType" ToRole="Pin" />
         </EntityType>

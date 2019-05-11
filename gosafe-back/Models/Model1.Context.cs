@@ -34,5 +34,8 @@ namespace gosafe_back.Models
         public virtual DbSet<EmergencyContact> EmergencyContact { get; set; }
         public virtual DbSet<Journey> Journey { get; set; }
         public virtual DbSet<Pin> Pin { get; set; }
+        public virtual DbSet<CCTV> CCTV { get; set; }
+        public virtual DbSet<StreetLight> StreetLight { get; set; }
+        public virtual DbSet<ExperienceType> ExperienceType { get; set; }
     }
 }

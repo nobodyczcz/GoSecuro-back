@@ -86,9 +86,13 @@ namespace gosafe_back.Controllers
             thisPin.Time = thePin.Time;
             thisPin.CoordLat = thePin.CoordLat;
             thisPin.CoordLog = thePin.CoordLog;
-            thisPin.StreetLight = thePin.StreetLight;
-            thisPin.CCTV = thePin.CCTV;
-            thisPin.ExperienceType = thePin.ExperienceType;
+            //Find descriptions of StreetLight, CCTV and ExperienceType
+            var theStreetLight = db.StreetLight.Find(thePin.StreetLightId);
+            thisPin.StreetLight = theStreetLight.Description;
+            var theCCTV = db.CCTV.Find(thePin.CCTVId);
+            thisPin.CCTV = theCCTV.Description;
+            var theType = db.CCTV.Find(thePin.ExperienceTypeId);
+            thisPin.ExperienceType = theType.Description;
             thisPin.Experience = thePin.Experience;
             thisPin.OtherDetails = thePin.OtherDetails;
             thisPin.UserProfileId = thePin.UserProfileId;
@@ -110,6 +114,7 @@ namespace gosafe_back.Controllers
 
             if (ModelState.IsValid)
             {
+                thePin.Time = DateTime.Now;
                 db.Entry(thePin).State = EntityState.Modified;
                 db.SaveChanges();
                 reply.result = "success";

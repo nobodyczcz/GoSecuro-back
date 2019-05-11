@@ -2773,7 +2773,8 @@ INSERT INTO [dbo].[CrimeRate](SuburbSuburbName, Rate, OffenceCount, Totpopulatio
 INSERT INTO [dbo].[CrimeRate](SuburbSuburbName, Rate, OffenceCount, Totpopulation) VALUES ('WINJALLOK',NULL,NULL,17);
 INSERT INTO [dbo].[CrimeRate](SuburbSuburbName, Rate, OffenceCount, Totpopulation) VALUES ('WINLATON',NULL,NULL,7);
 INSERT INTO [dbo].[CrimeRate](SuburbSuburbName, Rate, OffenceCount, Totpopulation) VALUES ('WINNAMBOOL',NULL,NULL,22);
-INSERT INTO [dbo].[CrimeRate](SuburbSuburbName, Rate, OffenceCount, Totpopulation) VALUES ('WIRRATE',NULL,NULL,3);
+INSERT 
+INTO [dbo].[CrimeRate](SuburbSuburbName, Rate, OffenceCount, Totpopulation) VALUES ('WIRRATE',NULL,NULL,3);
 INSERT INTO [dbo].[CrimeRate](SuburbSuburbName, Rate, OffenceCount, Totpopulation) VALUES ('WOODGLEN',NULL,NULL,43);
 INSERT INTO [dbo].[CrimeRate](SuburbSuburbName, Rate, OffenceCount, Totpopulation) VALUES ('WOODHOUSE',NULL,NULL,39);
 INSERT INTO [dbo].[CrimeRate](SuburbSuburbName, Rate, OffenceCount, Totpopulation) VALUES ('WOODSTOCK ON LODDON',NULL,NULL,28);
