@@ -77,6 +77,41 @@ namespace gosafe_back.Controllers
             return Ok(json);
         }
 
+        //POST:Pins/Retrieve/5
+        //Retrieve the pin.
+        [Authorize]
+        [Route("AllPins")]
+        public IHttpActionResult AllPins(pinTime time)
+        {
+            Reply reply = new Reply();
+            String json = "";
+            List<SinglePin> PinList = new List<SinglePin>();
+            List<Pin> pins;
+            if (time.Time == null)
+            {
+                pins = db.Pin.OrderBy(s => s.Time).ToList();
+            }
+            else
+            {
+                pins = db.Pin.Where(s => s.Time > time.Time).OrderBy(s => s.Time).ToList();
+
+            }
+
+            if (pins == null)
+            {
+                return NotFound();
+            }
+
+            foreach (Pin thePin in pins)
+            {
+                SinglePin single = getPin(thePin);
+                PinList.Add(single);
+            }
+            reply.result = "success";
+            reply.data = JsonConvert.SerializeObject(PinList);
+            return Ok(reply);
+        }
+
         //Find a single pin.
         public SinglePin getPin(Pin thePin)
         {

@@ -116,6 +116,7 @@
     <Property Name="Gender" Type="nvarchar(max)" Nullable="true" />
     <Property Name="FirstName" Type="nvarchar(max)" Nullable="true" />
     <Property Name="LastName" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="fcmID" Type="nvarchar(max)" Nullable="true" />
     <Property Name="EmergencyContact_Phone" Type="nvarchar" MaxLength="256" Nullable="true" />
   </EntityType>
   <EntityType Name="UserEmergency">
@@ -469,6 +470,7 @@
           <NavigationProperty Name="EmergencyContact" Relationship="Model1.EmergencyContactUserProfile" FromRole="UserProfile" ToRole="EmergencyContact" />
           <NavigationProperty Name="UserEmergency" Relationship="Model1.UserProfileUserEmergency" FromRole="UserProfile" ToRole="UserEmergency" />
           <NavigationProperty Name="Pin" Relationship="Model1.UserProfilePin" FromRole="UserProfile" ToRole="Pin" />
+          <Property Name="fcmID" Type="String" Nullable="true" MaxLength="Max" />
         </EntityType>
         <EntityType Name="UserEmergency">
           <Key>
@@ -755,6 +757,7 @@
           <ScalarProperty Name="Gender" ColumnName="Gender" />
           <ScalarProperty Name="FirstName" ColumnName="FirstName" />
           <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="fcmID" ColumnName="fcmID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

@@ -221,6 +221,10 @@ namespace gosafe_back.Models
         public string SuburbSuburbName { get; set; }
 
     }
+    public class pinTime
+    {
+        public DateTime? Time { get; set; }
+    }
 
     public class EmeContDelete
     {

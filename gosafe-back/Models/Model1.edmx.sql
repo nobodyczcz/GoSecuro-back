@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 05/11/2019 17:04:22
--- Generated from EDMX file: C:\Users\Jennifer\Desktop\IEproject\gosafe-back\gosafe-back\Models\Model1.edmx
+-- Date Created: 05/13/2019 02:00:32
+-- Generated from EDMX file: C:\Users\czcz2\IEProject\gosafe-back\gosafe-back\Models\Model1.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -144,6 +144,7 @@ CREATE TABLE [dbo].[UserProfile] (
     [Gender] nvarchar(max)  NULL,
     [FirstName] nvarchar(max)  NULL,
     [LastName] nvarchar(max)  NULL,
+    [fcmID] nvarchar(max)  NULL,
     [EmergencyContact_Phone] nvarchar(256)  NULL
 );
 GO
