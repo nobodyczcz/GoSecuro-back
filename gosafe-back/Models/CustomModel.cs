@@ -103,7 +103,7 @@ namespace gosafe_back.Models
     {
         [Phone]
         public string phone { get; set; }
-        public List<userProfileModel> userDetails { get; set; }
+        public userProfileModel userDetails { get; set; }
     }
 
     public class test

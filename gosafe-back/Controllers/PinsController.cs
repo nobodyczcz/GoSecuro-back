@@ -84,7 +84,6 @@ namespace gosafe_back.Controllers
         public IHttpActionResult AllPins(pinTime time)
         {
             Reply reply = new Reply();
-            String json = "";
             List<SinglePin> PinList = new List<SinglePin>();
             List<Pin> pins;
             if (time.Time == null)

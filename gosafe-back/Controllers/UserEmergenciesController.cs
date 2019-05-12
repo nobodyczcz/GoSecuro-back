@@ -169,8 +169,7 @@ namespace gosafe_back.Controllers
             }
             reply.result = "success";
             reply.data = JsonConvert.SerializeObject(UserList);
-            json = JsonConvert.SerializeObject(reply);
-            return Ok(json);
+            return Ok(reply);
         }
 
         // POST: UserEmergencies/RetrieveEmergency
@@ -213,7 +212,7 @@ namespace gosafe_back.Controllers
             theUser.FirstName = thisUser.FirstName;
             theUser.LastName = thisUser.LastName;
             theUser.Gender = thisUser.Gender;
-            result.userDetails.Add(theUser);
+            result.userDetails=theUser;
             return result;
         }
         // POST: UserEmergencies/CreateNewContact

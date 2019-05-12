@@ -115,7 +115,7 @@ namespace gosafe_back.Controllers
             theUser.FirstName = thisUser.FirstName;
             theUser.LastName = thisUser.LastName;
             theUser.Gender = thisUser.Gender;
-            result.userDetails.Add(theUser);
+            result.userDetails=(theUser);
             return result;
         }
 
