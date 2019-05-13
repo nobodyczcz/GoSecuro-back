@@ -73,8 +73,7 @@ namespace gosafe_back.Controllers
             }
             reply.result = "success";
             reply.data = JsonConvert.SerializeObject(PinList);
-            json = JsonConvert.SerializeObject(reply);
-            return Ok(json);
+            return Ok(reply);
         }
 
         //POST:Pins/Retrieve/5
