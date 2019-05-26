@@ -11,6 +11,11 @@ using Owin;
 using gosafe_back.Providers;
 using gosafe_back.Models;
 
+using FirebaseAdmin;
+using FirebaseAdmin.Auth;
+using Google.Apis.Auth.OAuth2;
+using System.IO;
+
 namespace gosafe_back
 {
     public partial class Startup
@@ -45,6 +50,11 @@ namespace gosafe_back
 
             // Enable the application to use bearer tokens to authenticate users
             app.UseOAuthBearerTokens(OAuthOptions);
+
+            FirebaseApp.Create(new AppOptions()
+            {
+                Credential = GoogleCredential.FromFile(System.Web.Hosting.HostingEnvironment.MapPath(@"/App_Data/go-safe-notification-firebase-adminsdk-e7748-adfd791430.json") ),
+            });
 
             // Uncomment the following lines to enable logging in with third party login providers
             //app.UseMicrosoftAccountAuthentication(

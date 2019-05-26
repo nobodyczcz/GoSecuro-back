@@ -8,7 +8,12 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web.Http;
 using System.Diagnostics;
-
+using FirebaseAdmin;
+using FirebaseAdmin.Auth;
+using Google.Apis.Auth.OAuth2;
+using FirebaseAdmin.Messaging;
+using System.Threading.Tasks;
+using System.IO;
 
 namespace gosafe_back.Controllers
 {
@@ -85,7 +90,58 @@ namespace gosafe_back.Controllers
             json = JsonConvert.SerializeObject(reply);
             return BadRequest(json);
         }
+        [Authorize]
+        [Route("emergency")]
+        public async Task<IHttpActionResult> EmergencyAsync(List<float> location)
+        {
+            var userId = User.Identity.GetUserId();
+            var userProfile = db.UserProfile.Find(userId);
+            var tempLink = userProfile.TempLink.First();
+            var emergencies = userProfile.UserEmergency.ToList();
+            var userName = userProfile.FirstName + ' ' + userProfile.LastName;
+            foreach (var emergemcy in emergencies)
+            {
+                var targetUser = emergemcy.EmergencyContact.UserProfile;
+                if (targetUser!= null)
+                {
+                    var fcmId = targetUser.fcmID;
+                    if (fcmId != null)
+                    {
+                        // This registration token comes from the client FCM SDKs.
+                        var registrationToken = fcmId;
 
+                        // See documentation on defining a message payload.
+                        var message = new Message()
+                        {
+                            Data = new Dictionary<string, string>()
+                        {
+                            { "lat", location[0].ToString() },
+                            { "lng", location[1].ToString() },
+                            { "Name", userName },
+                            { "Phone", User.Identity.Name },
+                            { "TempLinkId",tempLink.TempLinkId},
+                        },
+                            Token = registrationToken,
+                            Notification = new Notification()
+                            {
+                                Title = "Your friend " + emergemcy.ECname + " might need help",
+                                Body = "You might want to call them to make sure they are alright",
+                            },
+                        };
+
+                        // Send a message to the device corresponding to the provided
+                        // registration token.
+                        string response = await FirebaseMessaging.DefaultInstance.SendAsync(message);
+                        // Response is a message ID string.
+                        Console.WriteLine("Successfully sent message: " + response);
+                    }
+                   
+
+                }
+            }
+
+            return Ok();
+        }
         // POST: UserEmergencies/Edit/5
         // Edit the User's emergency contact.
         [Authorize]
@@ -108,8 +164,6 @@ namespace gosafe_back.Controllers
 
             if (ModelState.IsValid)
             {
-                var userEmergencies = db.UserProfile.Find(userID).UserEmergency;
-                var oldEmergency = userEmergencies.Where(s => s.EmergencyContactPhone == userEmergency.EmergencyContactPhone);
 
                 //Check does the phone exist if not store Contactphone to table EmergencyContacts
                 EmergencyContact thisContact = db.EmergencyContact.Find(newContact.EmergencyContactPhone);
@@ -120,15 +174,22 @@ namespace gosafe_back.Controllers
 
 
                 //Check whether old userEmergency exist
-                if (oldEmergency.Count() == 0)
+                var result = db.UserEmergency.Find(userEmergency.EmergencyContactPhone,userEmergency.UserProfileId);
+                if (result == null)
                 {
                     reply.result = "failed";
                     reply.errors = "Contact do not exist";
                     return BadRequest(JsonConvert.SerializeObject(reply));
                 }
-                oldEmergency.First().EmergencyContactPhone = theContact.now.EmergencyContactPhone;
-                oldEmergency.First().ECname = theContact.now.ECname;
-                db.Entry(oldEmergency.First()).State = EntityState.Modified;
+                var checkNew = db.UserEmergency.Find(newContact.EmergencyContactPhone, newContact.UserProfileId);
+                if(checkNew != null && newContact.EmergencyContactPhone!= userEmergency.EmergencyContactPhone)
+                {
+                    reply.result = "failed";
+                    reply.errors = "The contact phone number already exist";
+                    return BadRequest(JsonConvert.SerializeObject(reply));
+                }
+                db.UserEmergency.Remove(result);
+                db.UserEmergency.Add(newContact);
                 db.SaveChanges();
                 reply.result = "Edit success";
                 json = JsonConvert.SerializeObject(reply);

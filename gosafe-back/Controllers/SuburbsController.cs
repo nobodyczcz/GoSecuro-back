@@ -69,8 +69,9 @@ namespace gosafe_back.Controllers
 
         }
 
-        //Send a message to the user's emergency contact.
+        //Send a message to the user's emergency contact through twillo.
         [Route("Message")]
+        [Authorize]
         public IHttpActionResult Message(List<String> message)
         {
             string accountSid = "AC74cbd14cfcc9ba2223860c576ea50426";

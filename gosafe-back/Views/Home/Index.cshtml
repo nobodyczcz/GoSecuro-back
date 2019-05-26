@@ -204,7 +204,7 @@
 
         }
         var apis = new APIs();
-        apis.url = "http://localhost:54154/";
+        apis.url = "";
 
         function startSuccess(e) {
             console.log(e)
@@ -261,23 +261,24 @@
             //    CoordLat: -37.84,
             //    CoordLog: 145.99,
             //}
-        theApi = 'api/pin/Create'
-        var data = {
-            CoordLog: 145.043976,
-            CoordLat:-37.880276,
-            StreetLightId:1,
-            CCTVId:1,
-            ExperienceTypeId:1,
-            Experience:'no experience',
-            OtherDetails:null,
-            UserProfileId:null,
-            State:'VIC',
-            Street:'Queens Ave',
-            SuburbSuburbName:'CAULFIELD EAST'
-        }
+        //theApi = 'api/pin/Create'
+        //var data = {
+        //    CoordLog: 145.043976,
+        //    CoordLat:-37.880276,
+        //    StreetLightId:1,
+        //    CCTVId:1,
+        //    ExperienceTypeId:1,
+        //    Experience:'no experience',
+        //    OtherDetails:null,
+        //    UserProfileId:null,
+        //    State:'VIC',
+        //    Street:'Queens Ave',
+        //    SuburbSuburbName:'CAULFIELD EAST'
+        //}
+        var theApi = 'api/UserEmergency/emergency/';
 
 
-            window.apis.callApi(theApi, data, startSuccess, startError)
+        window.apis.callApi(theApi, [1.111,2.222], startSuccess, startError)
         }
     </script>
 

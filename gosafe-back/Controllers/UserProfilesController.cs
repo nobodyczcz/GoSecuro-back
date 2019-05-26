@@ -99,6 +99,23 @@ namespace gosafe_back.Controllers
             return Ok(json);
         }
 
+        [Authorize]
+        [Route("setFcmId")]
+        public IHttpActionResult setFcmId(List<string> FcmId)
+        {
+            var UserId = User.Identity.GetUserId();
+            var profile = db.UserProfile.Find(UserId);
+            if(FcmId==null || FcmId.Count() == 0)
+            {
+                return BadRequest();
+            }
+            profile.fcmID = FcmId[0];
+            db.Entry(profile).State = EntityState.Modified;
+            db.SaveChanges();
+
+            return Ok();
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

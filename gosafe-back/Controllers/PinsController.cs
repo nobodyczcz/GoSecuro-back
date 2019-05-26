@@ -124,7 +124,7 @@ namespace gosafe_back.Controllers
             thisPin.StreetLight = theStreetLight.Description;
             var theCCTV = db.CCTV.Find(thePin.CCTVId);
             thisPin.CCTV = theCCTV.Description;
-            var theType = db.CCTV.Find(thePin.ExperienceTypeId);
+            var theType = db.ExperienceType.Find(thePin.ExperienceTypeId);
             thisPin.ExperienceType = theType.Description;
             thisPin.Experience = thePin.Experience;
             thisPin.OtherDetails = thePin.OtherDetails;
