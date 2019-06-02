@@ -53,7 +53,7 @@ namespace gosafe_back
 
             FirebaseApp.Create(new AppOptions()
             {
-                Credential = GoogleCredential.FromFile(System.Web.Hosting.HostingEnvironment.MapPath(@"/App_Data/go-safe-notification-firebase-adminsdk-e7748-adfd791430.json") ),
+                Credential = GoogleCredential.FromFile(System.Web.Hosting.HostingEnvironment.MapPath(@"/App_Data/fcmKey.json") ),
             });
 
             // Uncomment the following lines to enable logging in with third party login providers

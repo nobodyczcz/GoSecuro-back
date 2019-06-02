@@ -368,6 +368,8 @@
       <LastGenOutput>Model1.cs</LastGenOutput>
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
+    <Content Include="Models\Pins SQLQuery2.sql" />
+    <Content Include="Models\Suburbs SQLQuery1.sql" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\HelpPage\Views\Web.config" />
@@ -403,7 +405,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Properties\PublishProfiles\gosafe-back20190407071339 - Web Deploy.pubxml" />
-    <Content Include="App_Data\go-safe-notification-firebase-adminsdk-e7748-adfd791430.json">
+    <Content Include="App_Data\fcmKey.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Properties\PublishProfiles\gosafe-back20190521111748 - Web Deploy.pubxml" />
